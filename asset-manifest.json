@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/ArkhamDrafter/static/css/main.a84d99df.chunk.css",
-    "main.js": "/ArkhamDrafter/static/js/main.306bb2a7.chunk.js",
-    "main.js.map": "/ArkhamDrafter/static/js/main.306bb2a7.chunk.js.map",
+    "main.js": "/ArkhamDrafter/static/js/main.42be50f3.chunk.js",
+    "main.js.map": "/ArkhamDrafter/static/js/main.42be50f3.chunk.js.map",
     "runtime-main.js": "/ArkhamDrafter/static/js/runtime-main.9e06b7e5.js",
     "runtime-main.js.map": "/ArkhamDrafter/static/js/runtime-main.9e06b7e5.js.map",
     "static/js/2.020adf58.chunk.js": "/ArkhamDrafter/static/js/2.020adf58.chunk.js",
     "static/js/2.020adf58.chunk.js.map": "/ArkhamDrafter/static/js/2.020adf58.chunk.js.map",
     "index.html": "/ArkhamDrafter/index.html",
-    "precache-manifest.40d02e32ce91b88ee86a235fb08f8c4a.js": "/ArkhamDrafter/precache-manifest.40d02e32ce91b88ee86a235fb08f8c4a.js",
+    "precache-manifest.22109c1572dd781587e091afccbf81f8.js": "/ArkhamDrafter/precache-manifest.22109c1572dd781587e091afccbf81f8.js",
     "service-worker.js": "/ArkhamDrafter/service-worker.js",
     "static/css/main.a84d99df.chunk.css.map": "/ArkhamDrafter/static/css/main.a84d99df.chunk.css.map",
     "static/js/2.020adf58.chunk.js.LICENSE.txt": "/ArkhamDrafter/static/js/2.020adf58.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.9e06b7e5.js",
     "static/js/2.020adf58.chunk.js",
     "static/css/main.a84d99df.chunk.css",
-    "static/js/main.306bb2a7.chunk.js"
+    "static/js/main.42be50f3.chunk.js"
   ]
 }
