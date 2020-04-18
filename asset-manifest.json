@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/ArkhamDraft/static/css/main.a84d99df.chunk.css",
+    "main.js": "/ArkhamDraft/static/js/main.4249fb61.chunk.js",
+    "main.js.map": "/ArkhamDraft/static/js/main.4249fb61.chunk.js.map",
+    "runtime-main.js": "/ArkhamDraft/static/js/runtime-main.2e9ec000.js",
+    "runtime-main.js.map": "/ArkhamDraft/static/js/runtime-main.2e9ec000.js.map",
+    "static/js/2.020adf58.chunk.js": "/ArkhamDraft/static/js/2.020adf58.chunk.js",
+    "static/js/2.020adf58.chunk.js.map": "/ArkhamDraft/static/js/2.020adf58.chunk.js.map",
+    "index.html": "/ArkhamDraft/index.html",
+    "precache-manifest.a8928b1988461221839ee4459cac0824.js": "/ArkhamDraft/precache-manifest.a8928b1988461221839ee4459cac0824.js",
+    "service-worker.js": "/ArkhamDraft/service-worker.js",
+    "static/css/main.a84d99df.chunk.css.map": "/ArkhamDraft/static/css/main.a84d99df.chunk.css.map",
+    "static/js/2.020adf58.chunk.js.LICENSE.txt": "/ArkhamDraft/static/js/2.020adf58.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2e9ec000.js",
+    "static/js/2.020adf58.chunk.js",
+    "static/css/main.a84d99df.chunk.css",
+    "static/js/main.4249fb61.chunk.js"
+  ]
+}
