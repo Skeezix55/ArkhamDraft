@@ -33,6 +33,7 @@ function App(props) {
                 draftCard={props.draftCard}
                 updateCardList={props.updateCardList}
                 updateDraftPool={props.updateDraftPool}
+                resetApp={props.resetApp}
             />
     }
     else {
@@ -59,7 +60,7 @@ function App(props) {
     return (
         <div className="App">
             <header className="App-header">
-            ArkhamDraft  
+            ArkhamDraft
             </header>
             {contents}
         </div>

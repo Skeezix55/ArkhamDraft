@@ -15,13 +15,14 @@ function AppContainer() {
     const [draftCards, changeDraftCards] = useState([10, 10, 10])
     const [building, changeBuilding] = useState(false)
     const [initialized, changeInitialized] = useState(false)
-
+    const [newPhase, changeNewPhase] = useState(true)
     const [fetching, changeFetching] = useState(false)
     const [cardData, updateCardData] = useState(null)
     const [fetchError, updateFetchError] = useState(false)
     const [cardList, updateCardList] = useState([])
     const [draftPool, updateDraftPool] = useState([])
     const [phase, changePhase] = useState(1)
+    const [complete, changeComplete] = useState(false)
 
     let cardCount = 0
 
@@ -37,7 +38,8 @@ function AppContainer() {
     function fetchData() {
         changeFetching(true)
 
-        fetch("https://www.arkhamdb.com/api/public/cards")
+        fetch("https://cors-anywhere.herokuapp.com/https://arkhamdb.com/api/public/cards/")
+//        fetch("https://cors-anywhere.herokuapp.com/")
         .then(res => {
             return res.json()
         })
@@ -49,115 +51,115 @@ function AppContainer() {
     }
 
     useEffect(() => {
-        if (building && !initialized) {
-            changeInitialized(true)
-            if (draftType === 'chaos') {
-                const list = StandardChaos({
-                    investigator: investigator,
-                    draftCards: deckSize,
-                    upgrade: false,
-                    cardList: cardList,
-                    cardData: cardData,
-                    draftCard: draftCard
-                })
-    
-                updateCardList(list)
-            }
-            else {
-                if (draftCount === 1) {
+        if (building && !complete) {
+            if (newPhase) {
+                if (draftType === 'chaos') {
+                    // first (and only) time through
                     const list = StandardChaos({
                         investigator: investigator,
-                        draftCards: draftCards[phase-1],
+                        draftCards: deckSize,
                         upgrade: false,
                         cardList: cardList,
                         cardData: cardData,
                         draftCard: draftCard
-                    })    
-    
+                    })
+        
                     updateCardList(list)
+                    changeNewPhase(false)
+                    changeComplete(true)
                 }
-                else {
-                    const pool = SimpleDraft({
-                        investigator: investigator,
-                        upgrade: false,
-                        draftCount: draftCount[phase-1],
-                        cardList: cardList,
-                        cardData: cardData,
-                        draftCard: draftCard
-                        })
-
-                    updateDraftPool(pool)
-                }
-            }
-        }
-    }, [building, investigator, draftCards, cardList, cardData, selectedDeckSize, deckSize, draftCount, draftType, phase, initialized])
-
-    useEffect(() => {
-        if (building && draftPool.length < 1) {
-            if (draftType === 'draft') {
-                if (cardCount < deckSize) {
-                    const pool = SimpleDraft({
-                        investigator: investigator,
-                        upgrade: false,
-                        draftCount: draftCount[phase-1],
-                        cardList: cardList,
-                        cardData: cardData,
-                        draftCard: draftCard
-                    })
-
-                    updateDraftPool(pool)
-                }
-            }
-            else if (draftType === 'phaseDraft') {
-                let targetCards = 0
-
-                for (let i = 0; i < phase; i++) targetCards += parseInt(draftCards[i], 10)
-
-                if (cardCount < targetCards) {
-                    const pool = SimpleDraft({
-                        investigator: investigator,
-                        upgrade: false,
-                        draftCount: draftCount[phase-1],
-                        cardList: cardList,
-                        cardData: cardData,
-                        draftCard: draftCard
-                    })
-
-                    updateDraftPool(pool)
-                }
-                else {
-                    if (phase < 3) {
-                        changePhase(phase + 1)
-
-                        const pool = SimpleDraft({
+                else if (cardCount < deckSize) {
+                    if (draftCount[phase-1] == 1) {
+                        const list = StandardChaos({
                             investigator: investigator,
+                            draftCards: draftCards[phase-1],
                             upgrade: false,
-                            draftCount: draftCount[phase],
                             cardList: cardList,
                             cardData: cardData,
                             draftCard: draftCard
-                        })
-
-                        updateDraftPool(pool)
+                        })    
+        
+                        updateCardList(list)
+                        changePhase(phase + 1)
                     }
                     else {
+                        const pool = SimpleDraft({
+                            investigator: investigator,
+                            upgrade: false,
+                            draftCount: draftCount[phase-1],
+                            cardList: cardList,
+                            cardData: cardData,
+                            draftCard: draftCard
+                            })
+    
+                        updateDraftPool(pool)    
+                        changeNewPhase(false)
+                    }
+                }
+            }
+            else {
+                if (draftPool.length < 1) {
+                    if (draftType === 'draft') {
                         if (cardCount < deckSize) {
-                            const list = StandardChaos({
+                            const pool = SimpleDraft({
                                 investigator: investigator,
-                                draftCards: deckSize - cardCount,
                                 upgrade: false,
+                                draftCount: draftCount[phase-1],
                                 cardList: cardList,
                                 cardData: cardData,
                                 draftCard: draftCard
-                            })    
+                            })
         
-                            updateCardList(list)        
+                            updateDraftPool(pool)
+                        }
+                        else {
+                            changeComplete(true)
                         }
                     }
-                }   
+                    else {
+                        let targetCards = 0
+                        for (let i = 0; i < phase; i++) targetCards += parseInt(draftCards[i], 10)
+                        if (targetCards > deckSize) targetCards = deckSize
+
+                        if (cardCount < targetCards) {
+                            const pool = SimpleDraft({
+                                investigator: investigator,
+                                upgrade: false,
+                                draftCount: draftCount[phase-1],
+                                cardList: cardList,
+                                cardData: cardData,
+                                draftCard: draftCard
+                            })
+    
+                            updateDraftPool(pool)
+                        }
+                        else {
+                            if (phase >= 3) {
+                                if (cardCount < deckSize) {
+                                    const list = StandardChaos({
+                                        investigator: investigator,
+                                        draftCards: deckSize - cardCount,
+                                        upgrade: false,
+                                        cardList: cardList,
+                                        cardData: cardData,
+                                        draftCard: draftCard
+                                    })    
+                
+                                    updateCardList(list)
+                                }
+                                
+                                changeComplete(true)
+                            }
+                            else {
+                                changePhase(phase + 1)
+                                changeNewPhase(true)
+                            }
+                        }
+                    }
+                }
             }
         }
-    }, [building, draftPool, cardCount, cardData, cardList, selectedDeckSize, deckSize, draftCards, draftCount, draftType, investigator, phase])
+    }, [building, initialized, newPhase, phase, investigator, draftCards, cardList, cardData, selectedDeckSize, deckSize, draftCount, draftType, cardCount, complete, draftPool])
 
     function handleChange(name, value) {
         if (name === 'investigator') {
@@ -225,6 +227,16 @@ function AppContainer() {
         return list
     }
 
+    function resetApp() {
+        changeBuilding(false)
+        changeInitialized(false)
+        changeNewPhase(true)
+        updateCardList([])
+        updateDraftPool([])
+        changePhase(1)
+        changeComplete(false)
+    }
+
     const ready = cardData && !fetching && !fetchError
 
     return (
@@ -248,6 +260,7 @@ function AppContainer() {
         draftCard={draftCard}
         updateCardList={updateCardList}
         updateDraftPool={updateDraftPool}
+        resetApp={resetApp}
         />
     )
 }

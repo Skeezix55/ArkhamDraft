@@ -4,7 +4,7 @@ import CardList from './CardList'
 import DraftArea from './DraftArea'
 
 function DraftBuild(props) {
-    const { investigator, deckSize, draftCount, cardCount, draftType, phase, cardList, draftPool, cardData, draftCard, updateCardList, updateDraftPool } = props
+    const { investigator, deckSize, draftCount, cardCount, draftType, phase, cardList, draftPool, cardData, draftCard, updateCardList, updateDraftPool, resetApp } = props
 
     let investigatorCardImage = null
     let investigatorCardImageBack = null
@@ -49,6 +49,7 @@ function DraftBuild(props) {
             <CardList 
                 cardList={cardList}
             />
+            <button onClick={resetApp}>Restart</button>
         </div>
     )
 }

@@ -2,7 +2,6 @@ import DrawCard from './DraftData'
 import FilterCards from './DraftFilters'
 
 function SimpleDraft(props) {
-    console.log('SimpleDraft')
     const { draftCount } = props
 
     // generates draft cards

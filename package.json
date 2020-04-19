@@ -1,5 +1,6 @@
 {
   "name": "arkhamdraftweb",
+  "homepage": "https://skeexiz55.github.io/ArkhamDraft",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -36,5 +37,4 @@
   "devDependencies": {
     "gh-pages": "^2.2.0"
   }
-  "homepage": "http://skeexiz55.github.io/ArkhamDraft"
 }
