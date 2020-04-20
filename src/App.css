@@ -11,6 +11,7 @@
 }
 
 .settings {
+    display: relative;
   margin: auto;
   padding-bottom: 5px;
   margin-bottom: 5px;
@@ -19,6 +20,10 @@
   border: 2px solid black;
   background-color: #ebebeb;
   font-family: 'Open Sans', sans-serif;
+}
+
+.offsetDiv {
+    width: 92%;
 }
 
 label {
@@ -31,7 +36,7 @@ label {
 select, input {
   display: inline-block;
   margin: 2px;
-  width: 40%;
+  width: min(30%, 250px);
   font-size: min(2.5vw, 10pt);
 }
 
@@ -40,8 +45,8 @@ select, input {
 }
 
 .description {
-  margin: auto;
-  margin-top: 10px;
+  margin: 10px 20% 0 14%;
+/*  margin-top: 10px; */
   padding: 5px;
   width: 80%;
   font-size: min(2vw, 9pt);
@@ -74,13 +79,15 @@ button {
 }
 
 .button-ready {
-  background-color: #60c060;
-  color: #000000;
+    margin-top: 10px;
+    background-color: #60c060;
+    color: #000000;
 }
 
 .button-loading {
-  background-color: #c03030;
-  color: #000000;
+    margin-top: 10px;
+    background-color: #c03030;
+    color: #000000;
 }
 
 .draft-button {
@@ -96,18 +103,18 @@ button {
 
 .draftPhase {
   width: 85%;
-  margin: auto;
-  margin-top: 10px;
+    margin: 10px auto 0 11%;
   padding: 5px 10px 5px 5px;
   border: black 1px solid;
 }
 
 .draftPhase > label {
-  width: 50%;
+  width: 40%;
 }
 
 .draftPhase > input {
   width: 30%;
+  background-color:yellow;
 }
 
 .warning {
@@ -182,4 +189,20 @@ p {
   .col1 {
     width: 100%;
   }
+}
+
+.floatingImageLeft {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 25%;
+    transform: translateY(-50%);
+}
+
+.floatingImageRight {
+    display: block;
+    position: fixed;
+    top: 50%;
+    right: 25%;
+    transform: translateY(-50%);
 }

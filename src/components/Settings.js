@@ -11,13 +11,19 @@ function Settings(props) {
 
     const draftSettings = props.draftTab === 'Build Deck' ?
         <SettingsBuild 
-            draftType={props.draftType} 
-            draftCount={props.draftCount} 
-            draftCards={props.draftCards} 
-            deckSize={props.deckSize} 
+            draftType={props.draftType}
+            draftCount={props.draftCount}
+            draftCards={props.draftCards}
+            deckSize={props.deckSize}
             onChangeSetting={props.onChangeSetting}
         /> :
         <SettingsUpgrade 
+            draftType={props.draftType}
+            draftWeighting={props.draftWeighting}
+            draftXP={props.draftXP}
+            draftCount={props.draftCount}
+            draftCards={props.draftCards}
+            deckSize={props.deckSize}
             onChangeSetting={props.onChangeSetting}
         />
 
@@ -31,7 +37,7 @@ function Settings(props) {
             <h3>Draft Options</h3>
             <h5>{props.draftTab}</h5>
             {draftSettings}
-            {button}
+            {(props.draftTab === 'Build Deck') ? button : null}
         </div>
     )
 }

@@ -10,13 +10,13 @@ function StandardChaos(props) {
     // generates all cards, sets cardList state
     const filteredData = FilterCards(props)
 
-    let cardCount = 0;
+    let draftProgress = 0;
 
-    while (cardCount < draftCards) {
+    while (draftProgress < draftCards) {
         const card = DrawCard(filteredData)
         newList = draftCard(card, newList)
 
-        if (!card.permanent) cardCount++
+        if (!card.permanent) draftProgress++
     }
 
     return newList

@@ -64,7 +64,7 @@
 // xp
 
 function FilterCards(props) {
-    const { investigator, cardData, cardList } = props
+    const { investigator, cardData, cardList, upgrade } = props
 
     const legalSets = { 'core': 1
         ,'dwl': 1, 'tmm': 1, 'tece': 1, 'bota': 1, 'uau': 1, 'wda': 1, 'litas': 1
@@ -83,9 +83,14 @@ function FilterCards(props) {
 
     const filteredDeck = filterDeckForLimited(cardList, deckOptions)
 
-//    const minLevel = 0
-//    const maxLevel = 0
+    let minLevel = 0
+    let maxLevel = 0
 
+    if (upgrade) {
+        minLevel = 1
+        maxLevel = 5
+    }
+//console.log('Filter : ' + props.draftXP)
     const filteredData = cardData.filter(card => {
         if (card.type_code === 'investigator') return false
         if (card.type_code === 'story') return false
@@ -95,7 +100,17 @@ function FilterCards(props) {
         if (card.bonded_to) return false
         // currently means weakness
         if (card.subtype_code) return false
-        if (card.xp && card.xp > 0) return false
+
+        let xp = 0
+        if (card.xp) xp = card.xp
+        if (card.exceptional) xp *= 2
+
+        if (xp < minLevel) return false
+        if (xp > maxLevel) return false
+
+//        arcane research!!!! oh no!!
+//        green man medallion as well
+
         if (card.restrictions && card.restrictions.investigator) return false
         if (!legalSets[card.pack_code]) return false
 
@@ -128,7 +143,7 @@ function FilterCards(props) {
         cardList.forEach(item => {
             if (item.name === card.name) {
                 if (item.count >= card.deck_limit) {
-                    console.log(card.name + ' : Over the limit')
+//                    console.log(card.name + ' : Over the limit')
                     limited = true
                 }
             }

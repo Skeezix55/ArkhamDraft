@@ -3,8 +3,8 @@ import React from 'react'
 import CardList from './CardList'
 import DraftArea from './DraftArea'
 
-function DraftBuild(props) {
-    const { investigator, deckSize, draftCount, cardCount, draftType, phase, cardList, draftPool, cardData, draftCard, updateCardList, updateDraftPool, resetApp } = props
+function Draft(props) {
+    const { investigator, deckSize, draftTab, draftXP, draftCount, draftProgress, draftType, phase, cardList, draftPool, cardData, draftCard, updateCardList, updateDraftPool, resetApp, updateCardOverlay } = props
 
     let investigatorCardImage = null
     let investigatorCardImageBack = null
@@ -36,6 +36,10 @@ function DraftBuild(props) {
         />
     }
 
+    const progress = draftTab === 'Build Deck' ? 
+        <p><b>Cards: </b>{draftProgress}/{deckSize}</p> : 
+        <p><b>XP: </b>{draftProgress}/{draftXP}</p>
+
     return (
         <div>
             <div className="settings">
@@ -43,15 +47,17 @@ function DraftBuild(props) {
                 <br />
                 {investigatorCardImage}
                 {investigatorCardImageBack}
-                <p><b>Cards: </b>{cardCount}/{deckSize}</p>
+                {progress}
             </div>
             {draftContent}
             <CardList 
                 cardList={cardList}
+                cardData={cardData}
+                updateCardOverlay={updateCardOverlay}
             />
             <button onClick={resetApp}>Restart</button>
         </div>
     )
 }
 
-export default DraftBuild
+export default Draft

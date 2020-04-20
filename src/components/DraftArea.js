@@ -24,7 +24,7 @@ function DraftArea(props) {
         images.push(<div className="draft-card" key={i}><img className="draft-image" src={imageSrc} alt={draftPool[i].name} onClick={handleClick}/></div>)
     }
 
-    const phaseText = draftType === 'phaseDraft' ? ' - Phase ' + phase : null
+    const phaseText = draftType === 'phaseDraft' ? ' - Stage ' + phase : null
 
     return (
         <div className="settings">

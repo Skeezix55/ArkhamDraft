@@ -10,11 +10,13 @@ function AppContainer() {
     const [selectedDeckSize, changeSelectedDeckSize] = useState("30")
     const [deckSize, changeDeckSize] = useState("30")
     const [draftTab, changeDraftTab] = useState("Build Deck")
-    const [draftType, changeDraftType] = useState("chaos")
+    const [draftType, changeDraftType] = useState("draft")
+    const [draftWeighting, changeDraftWeighting] = useState('medium')
+    const [draftXP, changeDraftXP] = useState(1)
     const [draftCount, changeDraftCount] = useState([3, 3, 3])
     const [draftCards, changeDraftCards] = useState([10, 10, 10])
     const [building, changeBuilding] = useState(false)
-    const [initialized, changeInitialized] = useState(false)
+//    const [initialized, changeInitialized] = useState(false)
     const [newPhase, changeNewPhase] = useState(true)
     const [fetching, changeFetching] = useState(false)
     const [cardData, updateCardData] = useState(null)
@@ -24,12 +26,15 @@ function AppContainer() {
     const [phase, changePhase] = useState(1)
     const [complete, changeComplete] = useState(false)
 
-    let cardCount = 0
+    // card count for Build, xp for Upgrade
+    let draftProgressBuild = 0
+    let draftProgressUpgrade = 0
 
     if (cardList) {
         for (let item in cardList) {
             // permanent don't count
-            if (!cardList[item].permanent) cardCount += cardList[item].count
+            if (!cardList[item].permanent) draftProgressBuild += cardList[item].count
+            draftProgressUpgrade += cardList[item].xp * cardList[item].count;
         }
     }
 
@@ -39,7 +44,6 @@ function AppContainer() {
         changeFetching(true)
 
         fetch("https://cors-anywhere.herokuapp.com/https://arkhamdb.com/api/public/cards/")
-//        fetch("https://cors-anywhere.herokuapp.com/")
         .then(res => {
             return res.json()
         })
@@ -52,13 +56,16 @@ function AppContainer() {
 
     useEffect(() => {
         if (building && !complete) {
+            const draftProgress = (draftTab === 'Build Deck') ? draftProgressBuild : draftProgressUpgrade
+
             if (newPhase) {
                 if (draftType === 'chaos') {
                     // first (and only) time through
                     const list = StandardChaos({
                         investigator: investigator,
                         draftCards: deckSize,
-                        upgrade: false,
+                        draftXP: draftXP,
+                        upgrade: (draftTab === 'Upgrade'),
                         cardList: cardList,
                         cardData: cardData,
                         draftCard: draftCard
@@ -68,12 +75,13 @@ function AppContainer() {
                     changeNewPhase(false)
                     changeComplete(true)
                 }
-                else if (cardCount < deckSize) {
+                else if (draftProgress < deckSize) {
                     if (draftCount[phase-1] == 1) {
                         const list = StandardChaos({
                             investigator: investigator,
                             draftCards: draftCards[phase-1],
-                            upgrade: false,
+                            draftXP: draftXP,
+                            upgrade: (draftTab === 'Upgrade'),
                             cardList: cardList,
                             cardData: cardData,
                             draftCard: draftCard
@@ -85,8 +93,9 @@ function AppContainer() {
                     else {
                         const pool = SimpleDraft({
                             investigator: investigator,
-                            upgrade: false,
                             draftCount: draftCount[phase-1],
+                            draftXP: draftXP,
+                            upgrade: (draftTab === 'Upgrade'),
                             cardList: cardList,
                             cardData: cardData,
                             draftCard: draftCard
@@ -100,11 +109,12 @@ function AppContainer() {
             else {
                 if (draftPool.length < 1) {
                     if (draftType === 'draft') {
-                        if (cardCount < deckSize) {
+                        if (draftProgress < deckSize) {
                             const pool = SimpleDraft({
                                 investigator: investigator,
-                                upgrade: false,
                                 draftCount: draftCount[phase-1],
+                                draftXP: draftXP,
+                                upgrade: (draftTab === 'Upgrade'),
                                 cardList: cardList,
                                 cardData: cardData,
                                 draftCard: draftCard
@@ -121,11 +131,12 @@ function AppContainer() {
                         for (let i = 0; i < phase; i++) targetCards += parseInt(draftCards[i], 10)
                         if (targetCards > deckSize) targetCards = deckSize
 
-                        if (cardCount < targetCards) {
+                        if (draftProgress < targetCards) {
                             const pool = SimpleDraft({
                                 investigator: investigator,
-                                upgrade: false,
                                 draftCount: draftCount[phase-1],
+                                draftXP: draftXP,
+                                upgrade: (draftTab === 'Upgrade'),
                                 cardList: cardList,
                                 cardData: cardData,
                                 draftCard: draftCard
@@ -135,11 +146,12 @@ function AppContainer() {
                         }
                         else {
                             if (phase >= 3) {
-                                if (cardCount < deckSize) {
+                                if (draftProgress < deckSize) {
                                     const list = StandardChaos({
                                         investigator: investigator,
-                                        draftCards: deckSize - cardCount,
-                                        upgrade: false,
+                                        draftCards: deckSize - draftProgress,
+                                        draftXP: draftXP,
+                                        upgrade: (draftTab === 'Upgrade'),
                                         cardList: cardList,
                                         cardData: cardData,
                                         draftCard: draftCard
@@ -159,7 +171,7 @@ function AppContainer() {
                 }
             }
         }
-    }, [building, initialized, newPhase, phase, investigator, draftCards, cardList, cardData, selectedDeckSize, deckSize, draftCount, draftType, cardCount, complete, draftPool])
+    }, [building, complete, newPhase, draftType, draftProgressBuild, draftProgressUpgrade, deckSize, investigator, cardList, cardData, draftCount, phase, draftCards, draftPool, draftTab])
 
     function handleChange(name, value) {
         if (name === 'investigator') {
@@ -179,6 +191,8 @@ function AppContainer() {
         }
         else if (name === 'draftTab') changeDraftTab(value)
         else if (name === 'draftType') changeDraftType(value)
+        else if (name === 'draftWeighting') changeDraftWeighting(value)
+        else if (name === 'draftXP') changeDraftXP(value)
         else if (name === 'draftCount1') doChangeDraftCount(1, value)
         else if (name === 'draftCount2') doChangeDraftCount(2, value)
         else if (name === 'draftCount3') doChangeDraftCount(3, value)
@@ -229,7 +243,7 @@ function AppContainer() {
 
     function resetApp() {
         changeBuilding(false)
-        changeInitialized(false)
+//        changeInitialized(false)
         changeNewPhase(true)
         updateCardList([])
         updateDraftPool([])
@@ -246,9 +260,11 @@ function AppContainer() {
         deckSize={deckSize}
         draftTab={draftTab}
         draftType={draftType}
+        draftWeighting={draftWeighting}
+        draftXP={draftXP}
         draftCount={draftCount}
         draftCards={draftCards}
-        cardCount={cardCount}
+        draftProgress={draftTab === 'Build Deck' ? draftProgressBuild : draftProgressUpgrade}
         ready={ready}
         building={building}
         fetchError={fetchError}
