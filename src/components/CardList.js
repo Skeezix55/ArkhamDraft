@@ -22,15 +22,15 @@ function CardList(props) {
     const other = []
 
     cardList.forEach(item => {
-        if (item.type === 'event') {
+        if (item.type_code === 'event') {
             event.push(item)
             eventCount += item.count
         }
-        else if (item.type === 'skill') {
+        else if (item.type_code === 'skill') {
             skill.push(item)
             skillCount += item.count
         }
-        else if (item.type === 'asset') {
+        else if (item.type_code === 'asset') {
             if (item.permanent) permanent.push(item)
             else if (item.slot === 'Hand') hand.push(item)
             else if (item.slot === 'Hand x2') hand2.push(item)

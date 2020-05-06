@@ -52,9 +52,9 @@ function SettingsPhasedDraft(props) {
 
     return (
         <div className="draftSettingsDraft">
-            <SettingsPhase phase="1" draftCount={props.draftCount[0]} draftCards={props.draftCards[0]} maxCards={props.deckSize} onChangeSetting={handleChange1} />
-            <SettingsPhase phase="2" draftCount={props.draftCount[1]} draftCards={props.draftCards[1]} maxCards={props.deckSize} onChangeSetting={handleChange2} />
-            <SettingsPhase phase="3" draftCount={props.draftCount[2]} draftCards={props.draftCards[2]} maxCards={props.deckSize} onChangeSetting={handleChange3} />
+            <SettingsPhase phase="1" draftCount={props.draftCount[0]} draftCards={props.draftCards[0]} draftUseLimited={props.draftUseLimited[0]} maxCards={props.deckSize} onChangeSetting={handleChange1} />
+            <SettingsPhase phase="2" draftCount={props.draftCount[1]} draftCards={props.draftCards[1]} draftUseLimited={props.draftUseLimited[1]} maxCards={props.deckSize} onChangeSetting={handleChange2} />
+            <SettingsPhase phase="3" draftCount={props.draftCount[2]} draftCards={props.draftCards[2]} draftUseLimited={props.draftUseLimited[2]} maxCards={props.deckSize} onChangeSetting={handleChange3} />
             <div className="warning" style={warningStyle2}>
                 <b>Warning:</b> {warningText2} cards will be drawn in Phase 2.
             </div>

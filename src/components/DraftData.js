@@ -2,6 +2,8 @@ function DrawCard(cardData, draftPool) {
     let legal = false
     let randomCard = null
 
+    if (cardData.length == 0) return null
+
     while (!legal) {
         randomCard = cardData[Math.floor(Math.random() * cardData.length)]
 

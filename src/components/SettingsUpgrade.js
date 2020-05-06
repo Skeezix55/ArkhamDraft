@@ -19,11 +19,12 @@ function SettingsUpgrade(props) {
         />
 
         return (
+/*
             <div>
                 Unfinished.
             </div>
         )
-/*
+*/
         <div className="offsetDiv">
             <label>Type:</label>
             <select name="draftType" value={props.draftType} onChange={handleChange}>
@@ -40,7 +41,7 @@ function SettingsUpgrade(props) {
             <input name="draftXP" type="number" value={props.draftXP} min="1" onChange={handleChange}></input>
             {draftSettings}
         </div>
-*/
+        )
 }
 
 export default SettingsUpgrade

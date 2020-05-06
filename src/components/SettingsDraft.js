@@ -9,7 +9,7 @@ function SettingsDraft(props) {
     return (
         <div className="draftSettingsDraft">
             <label>Cards to select from:</label>
-            <input type="range" min="2" max="9" step="1" value={props.draftCount} className="slider" name="draftCount1" onChange={handleChange}/>
+            <input type="range" min="2" max="15" step="1" value={props.draftCount} className="slider" name="draftCount1" onChange={handleChange}/>
             <span className="sliderValue">{props.draftCount}</span>
         </div>
     )

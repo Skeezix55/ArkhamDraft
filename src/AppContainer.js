@@ -6,8 +6,8 @@ import SimpleDraft from './components/SimpleDraft'
 
 function AppContainer() {
     const [investigator, changeInvestigator] = useState("Roland Banks")
-    const [secondaryClass, changeSecondaryClass] = useState("guardian")
-    const [selectedDeckSize, changeSelectedDeckSize] = useState("30")
+    const [secondaryClass, changeSecondaryClass] = useState(null)
+    const [selectedDeckSize, changeSelectedDeckSize] = useState(null)
     const [deckSize, changeDeckSize] = useState("30")
     const [draftTab, changeDraftTab] = useState("Build Deck")
     const [draftType, changeDraftType] = useState("draft")
@@ -15,8 +15,8 @@ function AppContainer() {
     const [draftXP, changeDraftXP] = useState(1)
     const [draftCount, changeDraftCount] = useState([3, 3, 3])
     const [draftCards, changeDraftCards] = useState([10, 10, 10])
+    const [draftUseLimited, changeDraftUseLimited] = useState([true, true, true])
     const [building, changeBuilding] = useState(false)
-//    const [initialized, changeInitialized] = useState(false)
     const [newPhase, changeNewPhase] = useState(true)
     const [fetching, changeFetching] = useState(false)
     const [cardData, updateCardData] = useState(null)
@@ -44,6 +44,7 @@ function AppContainer() {
         changeFetching(true)
 
         fetch("https://cors-anywhere.herokuapp.com/https://arkhamdb.com/api/public/cards/")
+//        fetch("https://arkhamdb.com/api/public/cards/")
         .then(res => {
             return res.json()
         })
@@ -57,14 +58,33 @@ function AppContainer() {
     useEffect(() => {
         if (building && !complete) {
             const draftProgress = (draftTab === 'Build Deck') ? draftProgressBuild : draftProgressUpgrade
+            let draftTarget = 0
+
+            if (draftTab === 'Build Deck') {
+                if (draftType === 'phaseDraft') {
+                    if (phase > 3) draftTarget = deckSize
+                    else for (let i = 0; i < phase; i++) draftTarget += parseInt(draftCards[i], 10)
+                    
+                    if (draftTarget > deckSize) draftTarget = deckSize
+                }
+                else {
+                    draftTarget = deckSize
+                }
+            }
+            else
+            {
+                draftTarget = draftXP
+            }
 
             if (newPhase) {
                 if (draftType === 'chaos') {
                     // first (and only) time through
                     const list = StandardChaos({
                         investigator: investigator,
+                        secondaryClass: secondaryClass,
+                        deckSize: deckSize,
                         draftCards: deckSize,
-                        draftXP: draftXP,
+                        draftXP: draftXP - draftProgress,
                         upgrade: (draftTab === 'Upgrade'),
                         cardList: cardList,
                         cardData: cardData,
@@ -75,12 +95,14 @@ function AppContainer() {
                     changeNewPhase(false)
                     changeComplete(true)
                 }
-                else if (draftProgress < deckSize) {
+                else if (draftProgress < draftTarget) {
                     if (draftCount[phase-1] == 1) {
                         const list = StandardChaos({
                             investigator: investigator,
-                            draftCards: draftCards[phase-1],
-                            draftXP: draftXP,
+                            secondaryClass: secondaryClass,
+                            deckSize: deckSize,
+                            draftCards: draftTarget - draftProgress,
+                            draftXP: draftXP - draftProgress,
                             upgrade: (draftTab === 'Upgrade'),
                             cardList: cardList,
                             cardData: cardData,
@@ -93,8 +115,11 @@ function AppContainer() {
                     else {
                         const pool = SimpleDraft({
                             investigator: investigator,
+                            secondaryClass: secondaryClass,
+                            deckSize: deckSize,
                             draftCount: draftCount[phase-1],
-                            draftXP: draftXP,
+                            draftUseLimited: draftUseLimited[phase-1],
+                            draftXP: draftXP - draftProgress,
                             upgrade: (draftTab === 'Upgrade'),
                             cardList: cardList,
                             cardData: cardData,
@@ -109,11 +134,14 @@ function AppContainer() {
             else {
                 if (draftPool.length < 1) {
                     if (draftType === 'draft') {
-                        if (draftProgress < deckSize) {
+                        if (draftProgress < draftTarget) {
                             const pool = SimpleDraft({
                                 investigator: investigator,
+                                secondaryClass: secondaryClass,
+                                deckSize: deckSize,
                                 draftCount: draftCount[phase-1],
-                                draftXP: draftXP,
+                                draftUseLimited: draftUseLimited[phase-1],
+                                draftXP: draftXP - draftProgress,
                                 upgrade: (draftTab === 'Upgrade'),
                                 cardList: cardList,
                                 cardData: cardData,
@@ -127,15 +155,14 @@ function AppContainer() {
                         }
                     }
                     else {
-                        let targetCards = 0
-                        for (let i = 0; i < phase; i++) targetCards += parseInt(draftCards[i], 10)
-                        if (targetCards > deckSize) targetCards = deckSize
-
-                        if (draftProgress < targetCards) {
+                        if (draftProgress < draftTarget) {
                             const pool = SimpleDraft({
                                 investigator: investigator,
+                                secondaryClass: secondaryClass,
+                                deckSize: deckSize,
                                 draftCount: draftCount[phase-1],
-                                draftXP: draftXP,
+                                draftUseLimited: draftUseLimited[phase-1],
+                                draftXP: draftXP - draftProgress,
                                 upgrade: (draftTab === 'Upgrade'),
                                 cardList: cardList,
                                 cardData: cardData,
@@ -149,8 +176,10 @@ function AppContainer() {
                                 if (draftProgress < deckSize) {
                                     const list = StandardChaos({
                                         investigator: investigator,
+                                        secondaryClass: secondaryClass,
+                                        deckSize: deckSize,
                                         draftCards: deckSize - draftProgress,
-                                        draftXP: draftXP,
+                                        draftXP: draftXP - draftProgress,
                                         upgrade: (draftTab === 'Upgrade'),
                                         cardList: cardList,
                                         cardData: cardData,
@@ -171,21 +200,29 @@ function AppContainer() {
                 }
             }
         }
-    }, [building, complete, newPhase, draftType, draftProgressBuild, draftProgressUpgrade, deckSize, investigator, cardList, cardData, draftCount, phase, draftCards, draftPool, draftTab])
+    }, [building, complete, newPhase, draftType, draftProgressBuild, draftProgressUpgrade, deckSize, investigator, cardList, cardData, draftCount, draftUseLimited, phase, draftCards, draftPool, draftTab, draftXP])
 
     function handleChange(name, value) {
         if (name === 'investigator') {
             changeInvestigator(value)
 
-            const investigatorID = Object.keys(cardData)
-            .filter(key => {
-                return  cardData[key].name === value
-            })[0]
+            if (cardData && !selectedDeckSize) {
+                const investigatorID = Object.keys(cardData)
+                .filter(key => {
+                    return  cardData[key].name === value
+                })[0]
 
-            changeDeckSize(cardData[investigatorID].deck_requirements.size)
+                changeDeckSize(cardData[investigatorID].deck_requirements.size)
+
+                const classOptions = cardData[investigatorID].deck_options.filter(item => item.name === 'Secondary Class')
+
+                if (classOptions.length > 0) {
+                    changeSecondaryClass(classOptions[0].faction_select[0])
+                }
+            }
         }
         else if (name === 'secondaryClass') changeSecondaryClass(value)
-        else if (name === 'deckSize') {
+        else if (name === 'selectedDeckSize') {
             changeSelectedDeckSize(value)
             changeDeckSize(value)
         }
@@ -199,7 +236,30 @@ function AppContainer() {
         else if (name === 'draftCards1') doChangeDraftCards(1, value)
         else if (name === 'draftCards2') doChangeDraftCards(2, value)
         else if (name === 'draftCards3') doChangeDraftCards(3, value)
-        else if (name === 'building') changeBuilding(value)
+        else if (name === 'draftUseLimited1') doChangeDraftUseLimited(1, value)
+        else if (name === 'draftUseLimited2') doChangeDraftUseLimited(2, value)
+        else if (name === 'draftUseLimited3') doChangeDraftUseLimited(3, value)
+        else if (name === 'building') {
+            if (value == true && cardData) {
+                const investigatorID = Object.keys(cardData)
+                .filter(key => {
+                    return  cardData[key].name === investigator
+                })[0]
+
+                if (!selectedDeckSize) {
+                    changeDeckSize(cardData[investigatorID].deck_requirements.size)    
+                }
+
+                if (!secondaryClass) {
+                    const classOptions = cardData[investigatorID].deck_options.filter(item => item.name === 'Secondary Class')
+
+                    if (classOptions.length > 0) {
+                        changeSecondaryClass(classOptions[0].faction_select[0])
+                    }
+                }
+            }
+            changeBuilding(value)
+        }
     }
 
     function doChangeDraftCount(index, value) {
@@ -216,7 +276,21 @@ function AppContainer() {
         changeDraftCards(newCards)
     }
 
+    function doChangeDraftUseLimited(index, value) {
+        let newUseLimited = []
+        newUseLimited = newUseLimited.concat(draftUseLimited)
+        newUseLimited[index-1] = !draftUseLimited[index-1]
+        changeDraftUseLimited(newUseLimited)
+    }
+
     function draftCard(card, list) {
+        let cardXP = 0
+
+        if (card.xp) {
+            cardXP = card.xp
+            if (card.exceptional) cardXP *= 2
+        }
+
         if (list) {
             const existingIndex = list.length > 0 ? list.findIndex(item => item.key === card.code) : -1
 
@@ -231,11 +305,11 @@ function AppContainer() {
                 })
             }
             else {
-                list.push({ name: card.name, key: card.code, type: card.type_code, slot: card.slot, faction_code: card.faction_code, faction2_code: card.faction2_code, xp: card.xp, permanent: card.permanent, count: 1 })
+                list.push({ name: card.name, key: card.code, type_code: card.type_code, slot: card.slot, faction_code: card.faction_code, faction2_code: card.faction2_code, traits: card.traits, xp: cardXP, permanent: card.permanent, count: 1 })
             }
         }
         else {
-            list = [{ name: card.name, key: card.code, type: card.type_code, slot: card.slot, faction_code: card.faction_code, faction2_code: card.faction2_code, xp: card.xp, permanent: card.permanent, count: 1 }]
+            list = [{ name: card.name, key: card.code, type_code: card.type_code, slot: card.slot, faction_code: card.faction_code, faction2_code: card.faction2_code, traits: card.traits, xp: cardXP, permanent: card.permanent, count: 1 }]
         }
 
         return list
@@ -257,6 +331,7 @@ function AppContainer() {
         <App
         investigator={investigator}
         secondaryClass={secondaryClass}
+        selectedDeckSize={selectedDeckSize}
         deckSize={deckSize}
         draftTab={draftTab}
         draftType={draftType}
@@ -264,6 +339,7 @@ function AppContainer() {
         draftXP={draftXP}
         draftCount={draftCount}
         draftCards={draftCards}
+        draftUseLimited={draftUseLimited}
         draftProgress={draftTab === 'Build Deck' ? draftProgressBuild : draftProgressUpgrade}
         ready={ready}
         building={building}

@@ -36,7 +36,8 @@ function SettingsBuild(props) {
     else if (props.draftType === 'phaseDraft') {
         draftSettings = <SettingsPhasedDraft
             draftCount={props.draftCount} 
-            draftCards={props.draftCards} 
+            draftCards={props.draftCards}
+            draftUseLimited={props.draftUseLimited}
             deckSize={props.deckSize} 
             onChangeSetting={props.onChangeSetting}
         />

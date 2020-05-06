@@ -21,7 +21,7 @@ function App(props) {
     let overlay = null
 
     if (overlayImage) {
-        overlay = <div className={"floatingImage"+overlayPosition}><img src={overlayImage} /></div>
+        overlay = <div className={"floatingImage"+overlayPosition}><img src={overlayImage} alt="" /></div>
     }
 
     if (props.fetchError) {
@@ -59,7 +59,9 @@ function App(props) {
             <InvestigatorSettings 
                 investigator={props.investigator}
                 secondaryClass={props.secondaryClass}
+                selectedDeckSize={props.selectedDeckSize}
                 deckSize={props.deckSize}
+                cardData={props.cardData}
                 onChangeSetting={props.handleChange}
             />
             <Settings
@@ -69,6 +71,7 @@ function App(props) {
                 draftXP={props.draftXP}
                 draftCount={props.draftCount}
                 draftCards={props.draftCards}
+                draftUseLimited={props.draftUseLimited}
                 deckSize={props.deckSize}
                 ready={props.ready}
                 onChangeSetting={props.handleChange}

@@ -14,6 +14,7 @@ function Settings(props) {
             draftType={props.draftType}
             draftCount={props.draftCount}
             draftCards={props.draftCards}
+            draftUseLimited={props.draftUseLimited}
             deckSize={props.deckSize}
             onChangeSetting={props.onChangeSetting}
         /> :
@@ -37,9 +38,11 @@ function Settings(props) {
             <h3>Draft Options</h3>
             <h5>{props.draftTab}</h5>
             {draftSettings}
-            {(props.draftTab === 'Build Deck') ? button : null}
+            {button}
         </div>
     )
 }
+
+//{(props.draftTab === 'Build Deck') ? button : null}
 
 export default Settings
