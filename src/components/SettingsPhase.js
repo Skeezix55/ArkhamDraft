@@ -12,7 +12,7 @@ function SettingsPhase(props) {
             <input type="range" min="0" max={props.maxCards} value={props.draftCards} className="slider" name="draftCards" onChange={props.onChangeSetting}/>
             <span className="sliderValue">{props.draftCards}</span>
             <label>Include cards with limited deck slots:</label>
-            <input type="checkbox" checked={props.draftUseLimited} name="draftUseLimited" onChange={props.onChangeSetting}/>
+            <input type="checkbox" checked={props.draftUseLimited} name="draftUseLimited" className="checkbox" onChange={props.onChangeSetting}/>
         </div>
     )
 }

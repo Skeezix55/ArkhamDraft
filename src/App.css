@@ -30,7 +30,7 @@ label {
   display: inline-block;
   margin: 2px;
   text-align: right;
-  width: 40%;
+  width: 45%;
 }
 
 select, input {
@@ -114,7 +114,6 @@ button {
 
 .draftPhase > input {
   width: 30%;
-  background-color:yellow;
 }
 
 .warning {
