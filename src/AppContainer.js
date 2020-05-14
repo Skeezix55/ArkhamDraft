@@ -8,6 +8,7 @@ function AppContainer() {
     const [investigator, changeInvestigator] = useState("Roland Banks")
     const [secondaryClass, changeSecondaryClass] = useState(null)
     const [selectedDeckSize, changeSelectedDeckSize] = useState(null)
+    const [selectedTaboo, changeSelectedTaboo] = useState('None')
     const [deckSize, changeDeckSize] = useState("30")
     const [draftTab, changeDraftTab] = useState("Build Deck")
     const [draftType, changeDraftType] = useState("draft")
@@ -18,8 +19,10 @@ function AppContainer() {
     const [draftUseLimited, changeDraftUseLimited] = useState([true, true, true])
     const [building, changeBuilding] = useState(false)
     const [newPhase, changeNewPhase] = useState(true)
-    const [fetching, changeFetching] = useState(false)
+//    const [fetching, changeFetching] = useState(false)
     const [cardData, updateCardData] = useState(null)
+    const [tabooData, updateTabooData] = useState(null)
+//    const [tabooCardData, updateTabooCardData] = useState(null)
     const [fetchError, updateFetchError] = useState(false)
     const [cardList, updateCardList] = useState([])
     const [draftPool, updateDraftPool] = useState([])
@@ -40,19 +43,57 @@ function AppContainer() {
 
     useEffect(() => fetchData(), [])
 
-    function fetchData() {
-        changeFetching(true)
+    useEffect(() => fetchTaboo(), [])
 
-        fetch("https://cors-anywhere.herokuapp.com/https://arkhamdb.com/api/public/cards/")
-//        fetch("https://arkhamdb.com/api/public/cards/")
+    function fetchData() {
+//        fetch("https://cors-anywhere.herokuapp.com/https://arkhamdb.com/api/public/cards/")
+        fetch("https://arkhamdb.com/api/public/cards/")
         .then(res => {
             return res.json()
         })
         .then(res => {
             updateCardData(res)
-            changeFetching(false)
         })
         .catch(() => updateFetchError(true))
+    }
+
+    function fetchTaboo() {
+//        fetch("https://cors-anywhere.herokuapp.com/https://arkhamdb.com/api/public/cards/")
+        fetch("https://arkhamdb.com/api/public/taboos/")
+        .then(res => {
+            return res.json()
+        })
+        .then(res => {
+            res = res.map(item => {
+                item.cards = JSON.parse(item.cards)
+                return item
+            }).sort((item1, item2) => item1.id > item2.id ? 1 : -1)
+
+            updateTabooData(res)
+        })
+        .catch(() => {})
+    }
+
+    function mergeTabooData(cData, tData) {
+        var tCardData = cData.map(item => {
+            delete item.tabooxp
+            delete item.tabooexceptional
+
+            var tabooEntry = null
+            
+            if (tData.length > 0) tabooEntry = tData[0].cards.filter(taboo => taboo.code === item.code)
+
+            if (tabooEntry) {
+                tabooEntry.forEach(taboo => {
+                    if (taboo.xp) item.tabooxp = taboo.xp
+                    if (taboo.exceptional) item.tabooexceptional = true
+                })
+            }
+            
+            return item
+        })
+
+        return tCardData
     }
 
     useEffect(() => {
@@ -82,11 +123,13 @@ function AppContainer() {
                     const list = StandardChaos({
                         investigator: investigator,
                         secondaryClass: secondaryClass,
+//                        selectedTaboo: tabooData.filter(item => item.code === selectedTaboo ? true : false),
                         deckSize: deckSize,
                         draftCards: deckSize,
                         draftXP: draftXP - draftProgress,
                         upgrade: (draftTab === 'Upgrade'),
                         cardList: cardList,
+//                        tabooData: tabooData,
                         cardData: cardData,
                         draftCard: draftCard
                     })
@@ -96,7 +139,7 @@ function AppContainer() {
                     changeComplete(true)
                 }
                 else if (draftProgress < draftTarget) {
-                    if (draftCount[phase-1] == 1) {
+                    if (draftCount[phase-1] === 1) {
                         const list = StandardChaos({
                             investigator: investigator,
                             secondaryClass: secondaryClass,
@@ -106,6 +149,7 @@ function AppContainer() {
                             upgrade: (draftTab === 'Upgrade'),
                             cardList: cardList,
                             cardData: cardData,
+//                            tabooData: tabooData.filter(item => item.code === selectedTaboo ? true : false),
                             draftCard: draftCard
                         })    
         
@@ -123,6 +167,7 @@ function AppContainer() {
                             upgrade: (draftTab === 'Upgrade'),
                             cardList: cardList,
                             cardData: cardData,
+//                            tabooData: tabooData.filter(item => item.code === selectedTaboo ? true : false),
                             draftCard: draftCard
                             })
     
@@ -145,6 +190,7 @@ function AppContainer() {
                                 upgrade: (draftTab === 'Upgrade'),
                                 cardList: cardList,
                                 cardData: cardData,
+//                                tabooData: tabooData.filter(item => item.code === selectedTaboo ? true : false),
                                 draftCard: draftCard
                             })
         
@@ -166,6 +212,7 @@ function AppContainer() {
                                 upgrade: (draftTab === 'Upgrade'),
                                 cardList: cardList,
                                 cardData: cardData,
+//                                tabooData: tabooData.filter(item => item.code === selectedTaboo ? true : false),
                                 draftCard: draftCard
                             })
     
@@ -183,6 +230,7 @@ function AppContainer() {
                                         upgrade: (draftTab === 'Upgrade'),
                                         cardList: cardList,
                                         cardData: cardData,
+//                                        tabooData: tabooData.filter(item => item.code === selectedTaboo ? true : false),
                                         draftCard: draftCard
                                     })    
                 
@@ -200,7 +248,7 @@ function AppContainer() {
                 }
             }
         }
-    }, [building, complete, newPhase, draftType, draftProgressBuild, draftProgressUpgrade, deckSize, investigator, cardList, cardData, draftCount, draftUseLimited, phase, draftCards, draftPool, draftTab, draftXP])
+    }, [building, complete, newPhase, draftType, draftProgressBuild, draftProgressUpgrade, deckSize, investigator, cardList, cardData, tabooData, draftCount, draftUseLimited, phase, draftCards, draftPool, draftTab, draftXP, secondaryClass])
 
     function handleChange(name, value) {
         if (name === 'investigator') {
@@ -239,8 +287,10 @@ function AppContainer() {
         else if (name === 'draftUseLimited1') doChangeDraftUseLimited(1, value)
         else if (name === 'draftUseLimited2') doChangeDraftUseLimited(2, value)
         else if (name === 'draftUseLimited3') doChangeDraftUseLimited(3, value)
+        else if (name === 'taboo') changeSelectedTaboo(value)
         else if (name === 'building') {
-            if (value == true && cardData) {
+            if (value === true && cardData && tabooData) {
+//            if (value == true && cardData) {
                 const investigatorID = Object.keys(cardData)
                 .filter(key => {
                     return  cardData[key].name === investigator
@@ -257,6 +307,10 @@ function AppContainer() {
                         changeSecondaryClass(classOptions[0].faction_select[0])
                     }
                 }
+
+                let tData = tabooData.filter(item => item.code === selectedTaboo ? true : false)
+
+                updateCardData(mergeTabooData(cardData, tData))
             }
             changeBuilding(value)
         }
@@ -325,13 +379,14 @@ function AppContainer() {
         changeComplete(false)
     }
 
-    const ready = cardData && !fetching && !fetchError
+    const ready = cardData && tabooData && !fetchError
 
     return (
         <App
         investigator={investigator}
         secondaryClass={secondaryClass}
         selectedDeckSize={selectedDeckSize}
+        selectedTaboo={selectedTaboo}
         deckSize={deckSize}
         draftTab={draftTab}
         draftType={draftType}
@@ -348,6 +403,7 @@ function AppContainer() {
         cardList={cardList}
         draftPool={draftPool}
         cardData={cardData}
+        tabooData={tabooData}
         handleChange={handleChange}
         draftCard={draftCard}
         updateCardList={updateCardList}

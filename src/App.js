@@ -30,6 +30,12 @@ function App(props) {
                 Fetch error!
             </div>
     }
+    else if (!props.cardData || !props.tabooData) {
+        contents =
+            <div style={{marginBottom: "20px"}}>
+                Loading...
+            </div>
+    }
     else if (props.building) {
         contents = 
             <Draft
@@ -60,8 +66,10 @@ function App(props) {
                 investigator={props.investigator}
                 secondaryClass={props.secondaryClass}
                 selectedDeckSize={props.selectedDeckSize}
+                selectedTaboo={props.selectedTaboo}
                 deckSize={props.deckSize}
                 cardData={props.cardData}
+                tabooData={props.tabooData}
                 onChangeSetting={props.handleChange}
             />
             <Settings
@@ -86,6 +94,9 @@ function App(props) {
             </header>
             {contents}
             {overlay}
+            <div className="copyright" style={{padding: "5px", boxSizing: "border-box"}}>
+                Arkham Horror: The Card Game and all information presented here, both literal and graphical, is copyrighted by Fantasy Flight Games. This website is not produced, endorsed, supported, or affiliated with Fantasy Flight Games.
+            </div>
         </div>
     )
 }

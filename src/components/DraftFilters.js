@@ -64,7 +64,7 @@
 // xp
 
 function FilterCards(props) {
-    const { investigator, secondaryClass, cardData, cardList, deckSize, upgrade, draftUseLimited, draftXP } = props
+    const { investigator, secondaryClass, cardData, tabooData, cardList, deckSize, upgrade, draftUseLimited, draftXP } = props
 
     const legalSets = { 'core': 1
         ,'dwl': 1, 'tmm': 1, 'tece': 1, 'bota': 1, 'uau': 1, 'wda': 1, 'litas': 1
@@ -161,8 +161,9 @@ function FilterCards(props) {
 
         let xp = 0
         if (card.xp) xp = card.xp
-        if (card.exceptional) xp *= 2
-
+        if (card.tabooxp) xp += card.tabooxp
+        if (card.exceptional || card.tabooexceptional) xp *= 2
+        
         if (xp < minLevel) return false
         if (xp > maxLevel) return false
 

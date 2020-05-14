@@ -1,7 +1,7 @@
 import React from "react"
 
 function InvestigatorSettings(props) {
-    const { investigator, secondaryClass, selectedDeckSize, deckSize, cardData } = props
+    const { investigator, secondaryClass, selectedDeckSize, selectedTaboo, deckSize, cardData, tabooData } = props
 
     function handleChange(event) {
         props.onChangeSetting(event.target.name, event.target.value)
@@ -9,6 +9,7 @@ function InvestigatorSettings(props) {
 
     let secondaryFactionList = null
     let deckSizeList = null
+    let tabooList = null
     let secondaryClassValue = secondaryClass
     let deckSizeValue = selectedDeckSize ? selectedDeckSize : deckSize
 
@@ -43,6 +44,25 @@ function InvestigatorSettings(props) {
             }
         }
     }
+
+    if (tabooData) {
+        tabooList = tabooData.map((item, index) => {
+            return <option value={item.code} key={index}>
+                {item.date_start}
+                </option>
+        })
+
+        tabooList.unshift(<option value="None" key="100">
+            {"None"}
+            </option>)
+    }
+
+    const tabooDiv = <div>
+        <label className="taboo" value={selectedTaboo}>Taboo list:</label>
+        <select className="taboo" name="taboo" value={selectedTaboo} onChange={handleChange}>
+            {tabooList}
+        </select>
+    </div>
 
     let skidsName = '"Skids" '
     skidsName = skidsName + "O'Toole"
@@ -111,6 +131,7 @@ function InvestigatorSettings(props) {
             </select>
             {secondaryClassDiv}
             {deckSizeDiv}
+            {tabooDiv}
         </div>
     )
 }
