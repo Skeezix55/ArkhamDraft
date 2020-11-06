@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "e65c63ba042ecd5b63535e49a6a6e38e",
+    "revision": "8f0dcb155e3a243052d3dff01a496e2f",
     "url": "/ArkhamDraft/index.html"
   },
   {
-    "revision": "f6602d998e4972d98692",
+    "revision": "799911cf9582f459a941",
     "url": "/ArkhamDraft/static/css/main.fa2b5f79.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ArkhamDraft/static/js/2.dab2232b.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "f6602d998e4972d98692",
-    "url": "/ArkhamDraft/static/js/main.6359514e.chunk.js"
+    "revision": "799911cf9582f459a941",
+    "url": "/ArkhamDraft/static/js/main.af644fa6.chunk.js"
   },
   {
     "revision": "c9c1d82233f3e7462bb8",
