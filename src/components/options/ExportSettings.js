@@ -6,8 +6,8 @@ function SettingsExport(props) {
     const [basicWeakness, changeBasicWeakness] = useState(['Random basic weakness', '01000'])
     const [deckTitle, changeDeckTitle] = useState('')
 
-    const { investigator, cardData, collectionSets, updateCardOverlay } = props
-
+    const { investigator, deckSize, cardData, collectionSets, updateCardOverlay } = props
+    
     function handleInput(event) {
         changeDeckTitle(event.target.value)
     }
@@ -73,8 +73,15 @@ function SettingsExport(props) {
                     })[0]
                 
                     const card = cardData[cardID]
-                
-                    specialCards.push({name: card.name, key: card.code, type_code: card.type_code, count: 1 })
+                    let sigQuantity = card.quantity
+
+                    if (card.name === 'Occult Evidence') {
+                        if (deckSize === '50') sigQuantity = 3
+                        else if (deckSize === '40') sigQuantity = 2
+                        else sigQuantity = 1
+                    }
+
+                    specialCards.push({name: card.name, key: card.code, type_code: card.type_code, count: sigQuantity })
                 }
             }
         }
@@ -147,9 +154,19 @@ function SettingsExport(props) {
                             return cardData[key].code === code
                         })[0]
 
+                        let sigQuantity = cardData[signatureID].quantity
+
+                        if (cardData[signatureID].name === 'Occult Evidence') {
+                            if (deckSize === '50') sigQuantity = 3
+                            else if (deckSize === '40') sigQuantity = 2
+                            else sigQuantity = 1
+                        }
+
+                        const quantityText = (sigQuantity > 1) ? ' x' + sigQuantity : ''
+
                         return (useCheckbox ?
-                            <p id={cardData[signatureID].code} key={cardData[signatureID].code} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard}>{cardData[signatureID].name + ' (' + cardData[signatureID].pack_name + ')'}</p> :
-                            <p id={cardData[signatureID].code} key={cardData[signatureID].code} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard}>{cardData[signatureID].name}</p>)
+                            <p id={cardData[signatureID].code} key={cardData[signatureID].code} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard}>{cardData[signatureID].name + ' (' + cardData[signatureID].pack_name + ')' + quantityText}</p> :
+                            <p id={cardData[signatureID].code} key={cardData[signatureID].code} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard}>{cardData[signatureID].name + quantityText}</p>)
                     })
 
                     return (useCheckbox ?

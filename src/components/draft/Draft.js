@@ -40,6 +40,7 @@ function Draft(props) {
     else if (draftTab === 'Build Deck') {
         exportContent = <ExportSettings
             investigator={investigator}
+            deckSize={deckSize}
             cardList={cardList}
             cardData={cardData}
             collectionSets={collectionSets}

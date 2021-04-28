@@ -164,6 +164,18 @@ function FilterCards(props) {
         if (card.restrictions && card.restrictions.investigator) return false
         if (!collectionSets[card.pack_code]) return false
 
+        if (card.duplicate_of_code) {
+            const duplicateID = Object.keys(cardData)
+            .filter(key => {
+                return cardData[key].code === card.duplicate_of_code
+            })[0]
+
+            const duplicateCard = cardData[duplicateID]
+
+            // if the set of the card that this card is duplicating is included, don't include this
+            if (collectionSets[duplicateCard.pack_code]) return false
+        }
+
         // restricted list, normal limit test only happens on cards already in deck
         if (card.taboodecklimit !== undefined && card.taboodecklimit === 0) return false
 
@@ -207,7 +219,7 @@ function FilterCards(props) {
         let limited = false
         
         cardList.forEach(item => {
-            if (item.name === card.name) {
+            if (item.name === card.name && !(card.subtitle !== undefined && item.subtitle !== card.subtitle)) {
                 var deckLimit = card.deck_limit
                 if (card.taboodecklimit !== undefined) {
                     deckLimit = card.taboodecklimit

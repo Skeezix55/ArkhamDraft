@@ -53,7 +53,7 @@ function ExportDeck(props) {
     })
 
     if (fileType === 'OCTGN') ExportO8D({
-        deckTitle: deckTitle,
+        deckTitle: (deckTitle.length > 0 ? deckTitle : 'Deck'),
         investigator: investigatorCard,
         assets: asset,
         events: event,
@@ -64,7 +64,7 @@ function ExportDeck(props) {
     })
 
     else ExportTXT({
-        deckTitle: deckTitle,
+        deckTitle: (deckTitle.length > 0 ? deckTitle : 'Deck'),
         investigator: investigatorCard,
         assets: asset,
         events: event,

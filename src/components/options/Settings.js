@@ -31,7 +31,7 @@ function Settings(props) {
         />
 
     const button = props.ready
-        ? (props.filteredCount >= props.deckSize 
+        ? (props.draftTab === 'Upgrade' || props.filteredCount >= props.deckSize 
             ? <button className="button-rect button-green" onClick={handleStart}>Start</button>
             : <div>
                 <br />

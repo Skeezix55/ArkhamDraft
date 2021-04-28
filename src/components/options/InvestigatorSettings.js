@@ -15,6 +15,7 @@ function InvestigatorSettings(props) {
         'Diana Stanley',
         'Father Mateo',
         'Finn Edwards',
+        'Gloria Goldberg',
         'Harvey Walters',
         'Jacqueline Fine',
         'Jenny Barnes',

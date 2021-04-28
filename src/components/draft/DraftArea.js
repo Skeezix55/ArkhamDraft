@@ -20,7 +20,9 @@ function DraftArea(props) {
     let images = []
 
     for (let i = 0; i < draftCount; i++) {
-        const imageSrc = "https://www.arkhamdb.com" + draftPool[i].imagesrc
+        let imageSrc = "https://www.arkhamdb.com" + draftPool[i].imagesrc
+        if (imageSrc === undefined) imageSrc = ''
+
         images.push(<div className="draft-card" key={i}><img className="draft-image" src={imageSrc} alt={draftPool[i].name} onClick={handleClick}/></div>)
     }
 

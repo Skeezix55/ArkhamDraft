@@ -18,7 +18,7 @@ function SettingsUpgrade(props) {
         onChangeSetting={props.onChangeSetting}
     />
 
-    const myriadText = props.myriadCount === '1' ? 'card' : 'cards'
+    //const myriadText = props.myriadCount === '1' ? 'card' : 'cards'
 
     return (
         <div className="draftsettings">

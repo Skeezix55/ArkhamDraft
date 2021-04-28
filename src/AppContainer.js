@@ -46,7 +46,10 @@ function mergeTabooData(cData, tData) {
         if (tabooEntry) {
             tabooEntry.forEach(taboo => {
                 if (taboo.xp !== undefined) item.tabooxp = taboo.xp
-                if (taboo.exceptional !== undefined && taboo.exceptional) item.tabooexceptional = true
+                if (taboo.exceptional !== undefined && taboo.exceptional) {
+                    item.tabooexceptional = true
+                    item.taboodecklimit = 1
+                }
                 if (taboo.deck_limit !== undefined) {
                     item.taboodecklimit = taboo.deck_limit
                 }
@@ -97,7 +100,7 @@ function standardChaosDraft(props) {
         }
         else {
             for (let item in newList) {
-                draftProgress += newList[item].xp * newList[item].count;
+                draftProgress += newList[item].xp * newList[item].count
             }
 
             props.cardList = newList
@@ -157,9 +160,9 @@ function AppContainer() {
         ,'dwl': 1, 'tmm': 1, 'tece': 1, 'bota': 1, 'uau': 1, 'wda': 1, 'litas': 1
         ,'ptc': 1, 'eotp': 1, 'tuo': 1, 'apot': 1, 'tpm': 1, 'bsr': 1, 'dca': 1
         ,'tfa': 1, 'tof': 1, 'tbb': 1, 'hote': 1, 'tcoa': 1, 'tdoy': 1, 'sha': 1
-        ,'tcu': 1, 'tsn': 1, 'wos': 1, 'tgg': 1, 'uad': 1, 'icc': 1, 'bbt': 1
+        ,'tcu': 1, 'tsn': 1, 'wos': 1, 'fgg': 1, 'uad': 1, 'icc': 1, 'bbt': 1
         ,'tde': 1, 'sfk': 1, 'tsh': 1, 'dsm': 1, 'pnr': 1, 'wgd': 1, 'woc': 1
-        ,'tic': 1
+        ,'tic': 1, 'itd': 1, 'def': 1, 'hhg': 1, 'lif': 1, 'lod': 1, 'itm': 1
         ,'rtnotz': 1, 'rtdwl': 1, 'rtptc': 1, 'rttfa': 1
         ,'nat': 1, 'har': 1, 'win': 1, 'jac': 1, 'ste': 1
         ,'books' : 0 })
@@ -186,9 +189,10 @@ function AppContainer() {
     
         if (card.xp) {
             cardXP = card.xp
-            if (card.exceptional) cardXP *= 2
         }
-    
+        if (card.tabooxp !== undefined) cardXP += card.tabooxp
+        if (card.exceptional || (card.tabooexceptional !== undefined && card.tabooexceptional)) cardXP *= 2
+
         let addCount = 1
 
         // just let upgrade draft 1, they can choose however many they want
@@ -215,15 +219,15 @@ function AppContainer() {
                 })
             }
             else {
-                list.push({ name: card.name, key: card.code, type_code: card.type_code, slot: card.slot, faction_code: card.faction_code, faction2_code: card.faction2_code, traits: card.traits, xp: cardXP, permanent: card.permanent, count: addCount })
+                list.push({ name: card.name, subtitle: card.subtitle, key: card.code, type_code: card.type_code, slot: card.slot, faction_code: card.faction_code, faction2_code: card.faction2_code, traits: card.traits, xp: cardXP, permanent: card.permanent, count: addCount, duplicateKey: card.duplicate_of_code })
             }
         }
         else {
-            list = [{ name: card.name, key: card.code, type_code: card.type_code, slot: card.slot, faction_code: card.faction_code, faction2_code: card.faction2_code, traits: card.traits, xp: cardXP, permanent: card.permanent, count: addCount }]
+            list = [{ name: card.name, subtitle: card.subtitle, key: card.code, type_code: card.type_code, slot: card.slot, faction_code: card.faction_code, faction2_code: card.faction2_code, traits: card.traits, xp: cardXP, permanent: card.permanent, count: addCount, duplicateKey: card.duplicate_of_code }]
         }
     
         return list
-    }, [myriadCount, draftProgressBuild, deckSize])
+    }, [myriadCount, draftProgressBuild, deckSize, draftTab])
 
     useEffect(() => {
         if (building && !complete) {

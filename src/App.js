@@ -124,7 +124,7 @@ function App(props) {
             filteredCount += cardLimit
         })
 
-        // there has to be enonpm ugh extra to allow for a final card choice
+        // there has to be enough extra to allow for a final card choice
         if (props.draftType === 'chaos') filteredCount -= 2
         else filteredCount -= 30    // max of 15 draft options * counting 2 each in filteredCount
 

@@ -9,7 +9,7 @@ function CollectionSettings(props) {
         props.onChangeSetting('expandCollection', !expandCollection)
     }
 
-    // I'm lazy, just gonna hard code this...
+    // I'm lazy, just gonna hard code this... (also avoids incomplete ArkhamDB entries)
     if (expandCollection) {
         return (
             <div className="settingsDiv">
@@ -45,7 +45,7 @@ function CollectionSettings(props) {
                     />
                     <CollectionCycle 
                         collectionSets={collectionSets}
-                        includedSets={['tcu', 'tsn', 'wos', 'tgg', 'uad', 'icc', 'bbt']}
+                        includedSets={['tcu', 'tsn', 'wos', 'fgg', 'uad', 'icc', 'bbt']}
                         columnValue='col2'
                         onChangeSetting={onChangeSetting}
                     />
@@ -59,7 +59,7 @@ function CollectionSettings(props) {
                     />
                     <CollectionCycle 
                         collectionSets={collectionSets}
-                        includedSets={['tic']}
+                        includedSets={['tic', 'itd', 'def', 'hhg', 'lif', 'lod']}
                         columnValue='col2'
                         onChangeSetting={onChangeSetting}
                     />
