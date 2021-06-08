@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/ArkhamDraft/precache-manifest.77b096ba67922927b15e40fa0fe3fccc.js"
+  "/ArkhamDraft/precache-manifest.68c03f9ffffc343a84546ed25fde19cd.js"
 );
 
 self.addEventListener('message', (event) => {
