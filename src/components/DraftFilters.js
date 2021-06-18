@@ -64,11 +64,12 @@
 // xp
 
 function FilterCards(props) {
-    const { investigator, secondaryClass, cardData, cardList, deckSize, upgrade, draftUseLimited, draftXP, collectionSets } = props
+    const { investigator, parallel, secondaryClass, cardData, cardList, deckSize, upgrade, draftUseLimited, draftXP, collectionSets } = props
 
     const investigatorID = Object.keys(cardData)
     .filter(key => {
-        return cardData[key].name === investigator
+//        return cardData[key].name === investigator
+        return cardData[key].name === investigator && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' : true)
     })[0]
 
     const deckOptions = cardData[investigatorID].deck_options
@@ -184,6 +185,7 @@ function FilterCards(props) {
         let rejected = false
 
         for (let i = 0; i < deckOptions.length; i++) {
+//console.log(deckOptions[i])
             if (deckOptions[i].requirement) continue
 
             let optionLegal = false
@@ -197,6 +199,7 @@ function FilterCards(props) {
                     rejected = true
                 }
                 else if (deckOptions[i].limit) {
+//console.log(deckOptions[i].limit)
                     if (!draftUseLimited) optionLegal = false
                     else {
                         const inDeck = countDeckLimited(filteredDeck, deckOptions[i])
@@ -345,16 +348,16 @@ function FilterCards(props) {
         }
 
         if (option.trait) {
-//console.log('Trait')
-//console.log(option.trait)
             trait = false
 
             const cardTraits = card.traits
-//console.log(cardTraits)
-            if (cardTraits && cardTraits.search(new RegExp(option.trait, "i")) >= 0)
-                trait = true
-//console.log(trait)
+
+            for (let i = 0; i < option.trait.length; i++) {
+                if (cardTraits && cardTraits.search(new RegExp(option.trait[i], "i")) >= 0) {
+                    trait = true
+                }
             }
+        }
 
         if (option.uses) {
             uses = false
@@ -384,6 +387,8 @@ function FilterCards(props) {
 //console.log(faction + ' ' + level + ' ' + trait + ' ' + uses + ' ' + type + ' ' + secondaryFaction)
         return faction && level && trait && uses && type && secondaryFaction && text
     }
+
+//    filteredData.forEach(element => console.log(element.name))
 
     return filteredData
 }

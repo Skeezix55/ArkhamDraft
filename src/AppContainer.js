@@ -93,6 +93,7 @@ function standardChaosDraft(props) {
                 if (!newList[item].permanent) draftProgress += newList[item].count
             }
 
+            // special deckbuilding requirements
             if (investigator === 'Joe Diamond' || investigator === 'Lola Hayes') {
                 props.cardList = newList
                 filteredData = FilterCards(props)
@@ -132,6 +133,7 @@ function simpleDraft(props) {
 
 function AppContainer() {
     const [investigator, changeInvestigator] = useState("Agnes Baker")
+    const [parallel, changeParallel] = useState(false)
     const [secondaryClass, changeSecondaryClass] = useState(null)
     const [selectedDeckSize, changeSelectedDeckSize] = useState(null)
     const [selectedTaboo, changeSelectedTaboo] = useState('None')
@@ -162,7 +164,7 @@ function AppContainer() {
         ,'tfa': 1, 'tof': 1, 'tbb': 1, 'hote': 1, 'tcoa': 1, 'tdoy': 1, 'sha': 1
         ,'tcu': 1, 'tsn': 1, 'wos': 1, 'fgg': 1, 'uad': 1, 'icc': 1, 'bbt': 1
         ,'tde': 1, 'sfk': 1, 'tsh': 1, 'dsm': 1, 'pnr': 1, 'wgd': 1, 'woc': 1
-        ,'tic': 1, 'itd': 1, 'def': 1, 'hhg': 1, 'lif': 1, 'lod': 1, 'itm': 1
+        ,'tic': 1, 'itd': 1, 'def': 1, 'hhg': 1, 'lif': 1, 'lod': 1
         ,'rtnotz': 1, 'rtdwl': 1, 'rtptc': 1, 'rttfa': 1
         ,'nat': 1, 'har': 1, 'win': 1, 'jac': 1, 'ste': 1
         ,'books' : 0 })
@@ -256,6 +258,7 @@ function AppContainer() {
                     const list = standardChaosDraft({
                         draftTab: draftTab,
                         investigator: investigator,
+                        parallel: parallel,
                         secondaryClass: secondaryClass,
                         deckSize: deckSize,
                         draftCards: draftTarget,
@@ -276,6 +279,7 @@ function AppContainer() {
                         const list = standardChaosDraft({
                             draftTab: draftTab,
                             investigator: investigator,
+                            parallel: parallel,
                             secondaryClass: secondaryClass,
                             deckSize: deckSize,
                             draftCards: draftTarget,
@@ -293,6 +297,7 @@ function AppContainer() {
                     else {
                         const pool = simpleDraft({
                             investigator: investigator,
+                            parallel: parallel,
                             secondaryClass: secondaryClass,
                             deckSize: deckSize,
                             draftCount: draftCount[phase-1],
@@ -315,6 +320,7 @@ function AppContainer() {
                         if (draftProgress < draftTarget) {
                             const pool = simpleDraft({
                                 investigator: investigator,
+                                parallel: parallel,
                                 secondaryClass: secondaryClass,
                                 deckSize: deckSize,
                                 draftCount: draftCount[phase-1],
@@ -336,6 +342,7 @@ function AppContainer() {
                         if (draftProgress < draftTarget) {
                             const pool = simpleDraft({
                                 investigator: investigator,
+                                parallel: parallel,
                                 secondaryClass: secondaryClass,
                                 deckSize: deckSize,
                                 draftCount: draftCount[phase-1],
@@ -355,6 +362,7 @@ function AppContainer() {
                                     const list = standardChaosDraft({
                                         draftTab: draftTab,
                                         investigator: investigator,
+                                        parallel: parallel,
                                         secondaryClass: secondaryClass,
                                         deckSize: deckSize,
                                         draftCards: deckSize - draftProgress,
@@ -380,28 +388,31 @@ function AppContainer() {
                 }
             }
         }
-    }, [building, complete, newPhase, draftType, draftProgressBuild, draftProgressUpgrade, deckSize, investigator, cardList, cardData, tabooData, collectionSets, draftCount, draftUseLimited, phase, draftCards, draftPool, draftTab, draftXP, secondaryClass, draftCard])
+    }, [building, complete, newPhase, draftType, draftProgressBuild, draftProgressUpgrade, deckSize, investigator, parallel, cardList, cardData, tabooData, collectionSets, draftCount, draftUseLimited, phase, draftCards, draftPool, draftTab, draftXP, secondaryClass, draftCard])
     
-    function handleChange(name, value) {
-        if (name === 'investigator') {
-            changeInvestigator(value)
+    function handleInvestigatorChange(value, parallel) {
+        changeParallel(parallel)
+        changeInvestigator(value)
 
-            if (cardData && !selectedDeckSize) {
-                const investigatorID = Object.keys(cardData)
-                .filter(key => {
-                    return  cardData[key].name === value
-                })[0]
+        if (cardData && !selectedDeckSize) {
+            const investigatorID = Object.keys(cardData)
+            .filter(key => {
+//                    return  cardData[key].name === value
+                return cardData[key].name === value && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' : true)
+            })[0]
 
-                changeDeckSize(cardData[investigatorID].deck_requirements.size)
+            changeDeckSize(cardData[investigatorID].deck_requirements.size)
 
-                const classOptions = cardData[investigatorID].deck_options.filter(item => item.name === 'Secondary Class')
+            const classOptions = cardData[investigatorID].deck_options.filter(item => item.name === 'Secondary Class')
 
-                if (classOptions.length > 0) {
-                    changeSecondaryClass(classOptions[0].faction_select[0])
-                }
+            if (classOptions.length > 0) {
+                changeSecondaryClass(classOptions[0].faction_select[0])
             }
         }
-        else if (name === 'secondaryClass') changeSecondaryClass(value)
+    }
+
+    function handleChange(name, value) {
+        if (name === 'secondaryClass') changeSecondaryClass(value)
         else if (name === 'selectedDeckSize') {
             changeSelectedDeckSize(value)
             changeDeckSize(value)
@@ -444,7 +455,8 @@ function AppContainer() {
             if (value === true && cardData && tabooData) {
                 const investigatorID = Object.keys(cardData)
                 .filter(key => {
-                    return  cardData[key].name === investigator
+//                    return cardData[key].name === investigator
+                    return cardData[key].name === investigator && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' : true)
                 })[0]
 
                 if (!selectedDeckSize) {
@@ -503,6 +515,7 @@ function AppContainer() {
     return (
         <App
         investigator={investigator}
+        parallel={parallel}
         secondaryClass={secondaryClass}
         selectedDeckSize={selectedDeckSize}
         selectedTaboo={selectedTaboo}
@@ -526,6 +539,7 @@ function AppContainer() {
         cardData={cardData}
         tabooData={tabooData}
         handleChange={handleChange}
+        handleChangeInvestigator={handleInvestigatorChange}
         draftCard={draftCard}
         updateCardList={updateCardList}
         updateDraftPool={updateDraftPool}

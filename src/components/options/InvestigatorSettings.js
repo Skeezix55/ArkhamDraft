@@ -1,16 +1,18 @@
 import React from "react"
 
 function InvestigatorSettings(props) {
-    const { investigator, secondaryClass, selectedDeckSize, selectedTaboo, deckSize, cardData, tabooData } = props
+    const { investigator, parallel, secondaryClass, selectedDeckSize, selectedTaboo, deckSize, cardData, tabooData } = props
 
     const investigatorData = [
         'Agnes Baker',
+        'Agnes Baker (Parallel)',
         'Akachi Onyele',
         'Amanda Sharpe',
         '"Ashcan" Pete',
         'Calvin Wright',
         'Carolyn Fern',
         'Daisy Walker',
+        'Daisy Walker (Parallel)',
         'Dexter Drake',
         'Diana Stanley',
         'Father Mateo',
@@ -39,6 +41,7 @@ function InvestigatorSettings(props) {
         'Silas Marsh',
         'Sister Mary',
         '"Skids" O\'Toole',
+        '"Skids" O\'Toole (Parallel)',
         'Stella Clark',
         'Tommy Muldoon',
         'Tony Morgan',
@@ -50,12 +53,36 @@ function InvestigatorSettings(props) {
         'Zoey Samaras'
     ]
 
+    const investigatorFull = parallel ? investigator + ' (Parallel)' : investigator
+
     function handleChange(event) {
         props.onChangeSetting(event.target.name, event.target.value)
     }
 
+    function changeInvestigator(value) {
+        let re = /(.*)(\s\(Parallel\))/
+
+        const match = value.match(re)
+
+        if (match) {
+            // parallel investigator
+//            props.onChangeSetting('parallel', true)
+//            props.onChangeSetting('investigator', match[1])
+            props.onChangeInvestigator(match[1], true)
+        }
+        else {
+//            props.onChangeSetting('parallel', false)
+//            props.onChangeSetting('investigator', value)
+            props.onChangeInvestigator(value, false)
+        }
+    }
+
+    function handleChangeInvestigator(event) {
+        changeInvestigator(event.target.value)
+    }
+
     function handleRandom(event) {
-        props.onChangeSetting('investigator', investigatorData[Math.floor(Math.random() * investigatorData.length)])
+        changeInvestigator(investigatorData[Math.floor(Math.random() * investigatorData.length)])
     }
 
     let secondaryFactionList = null
@@ -67,7 +94,7 @@ function InvestigatorSettings(props) {
     if (cardData) {
         const investigatorID = Object.keys(cardData)
         .filter(key => {
-            return  cardData[key].name === investigator
+            return cardData[key].name === investigator && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' : true)
         })[0]
 
         const deckOptions = cardData[investigatorID].deck_options
@@ -150,7 +177,7 @@ function InvestigatorSettings(props) {
             <h3>Investigator Options</h3>
             <label>Investigator:</label>
             <span className="investigator-option">
-                <select name="investigator" value={investigator} onChange={handleChange}>
+                <select name="investigator" value={investigatorFull} onChange={handleChangeInvestigator}>
                     {investigatorData.map( (name, index) => (
                         <option value={name} key={name}>{name}</option>
                     ))}

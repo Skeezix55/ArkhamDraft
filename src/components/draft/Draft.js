@@ -5,7 +5,7 @@ import DraftArea from './DraftArea'
 import ExportSettings from '../options/ExportSettings'
 
 function Draft(props) {
-    const { investigator, deckSize, draftTab, draftXP, draftCount, draftProgress, draftType, phase, cardList, draftPool, cardData, draftCard, updateCardList, updateDraftPool, resetApp, collectionSets, updateCardOverlay } = props
+    const { investigator, parallel, deckSize, draftTab, draftXP, draftCount, draftProgress, draftType, phase, cardList, draftPool, cardData, draftCard, updateCardList, updateDraftPool, resetApp, collectionSets, updateCardOverlay } = props
 
     let investigatorCardImage = null
     let investigatorCardImageBack = null
@@ -13,7 +13,8 @@ function Draft(props) {
     if (cardData) {
         const investigatorID = Object.keys(cardData)
         .filter(key => {
-            return  cardData[key].name === investigator
+//            return  cardData[key].name === investigator
+            return cardData[key].name === investigator && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' : true)
         })[0]
 
         const imagesrc = "https://www.arkhamdb.com" + cardData[investigatorID].imagesrc

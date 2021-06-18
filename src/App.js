@@ -69,6 +69,7 @@ function App(props) {
                 draftType={props.draftType}
                 draftTab={props.draftTab}
                 investigator={props.investigator} 
+                parallel={props.parallel}
                 secondaryClass={props.secondaryClass} 
                 deckSize={props.deckSize}
                 draftXP={props.draftXP}
@@ -93,6 +94,7 @@ function App(props) {
 
         const filteredCards = FilterCards({
             investigator: props.investigator,
+            parallel: props.parallel,
             secondaryClass: props.secondaryClass,
             deckSize: props.deckSize,
 //            draftCount: draftCount[phase-1],
@@ -132,6 +134,7 @@ function App(props) {
         <div>
             <InvestigatorSettings 
                 investigator={props.investigator}
+                parallel={props.parallel}
                 secondaryClass={props.secondaryClass}
                 selectedDeckSize={props.selectedDeckSize}
                 selectedTaboo={props.selectedTaboo}
@@ -139,6 +142,7 @@ function App(props) {
                 cardData={props.cardData}
                 tabooData={props.tabooData}
                 onChangeSetting={props.handleChange}
+                onChangeInvestigator={props.handleChangeInvestigator}
             />
             <CollectionSettings 
                 expandCollection={props.expandCollection}

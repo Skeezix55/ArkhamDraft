@@ -6,7 +6,7 @@ function SettingsExport(props) {
     const [basicWeakness, changeBasicWeakness] = useState(['Random basic weakness', '01000'])
     const [deckTitle, changeDeckTitle] = useState('')
 
-    const { investigator, deckSize, cardData, collectionSets, updateCardOverlay } = props
+    const { investigator, parallel, deckSize, cardData, collectionSets, updateCardOverlay } = props
     
     function handleInput(event) {
         changeDeckTitle(event.target.value)
@@ -110,7 +110,8 @@ function SettingsExport(props) {
 
     const investigatorID = Object.keys(cardData)
     .filter(key => {
-        return cardData[key].name === investigator
+//        return cardData[key].name === investigator
+        return cardData[key].name === investigator && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' : true)
     })[0]
 
     const investigatorCard = cardData[investigatorID]

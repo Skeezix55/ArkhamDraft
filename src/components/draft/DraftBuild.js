@@ -4,7 +4,7 @@ import CardList from './CardList'
 import DraftArea from './DraftArea'
 
 function DraftBuild(props) {
-    const { investigator, deckSize, draftCount, cardCount, draftType, phase, cardList, draftPool, cardData, draftCard, updateCardList, updateDraftPool, resetApp } = props
+    const { investigator, parallel, deckSize, draftCount, cardCount, draftType, phase, cardList, draftPool, cardData, draftCard, updateCardList, updateDraftPool, resetApp } = props
 
     let investigatorCardImage = null
     let investigatorCardImageBack = null
@@ -12,7 +12,8 @@ function DraftBuild(props) {
     if (cardData) {
         const investigatorID = Object.keys(cardData)
         .filter(key => {
-            return  cardData[key].name === investigator
+//            return  cardData[key].name === investigator
+            return cardData[key].name === investigator && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' : true)
         })[0]
 
         const imagesrc = "https://www.arkhamdb.com" + cardData[investigatorID].imagesrc
