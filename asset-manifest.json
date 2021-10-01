@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/ArkhamDraft/static/css/main.19857e04.chunk.css",
-    "main.js": "/ArkhamDraft/static/js/main.4e00afa9.chunk.js",
-    "main.js.map": "/ArkhamDraft/static/js/main.4e00afa9.chunk.js.map",
+    "main.css": "/ArkhamDraft/static/css/main.340adc27.chunk.css",
+    "main.js": "/ArkhamDraft/static/js/main.ea8a14dc.chunk.js",
+    "main.js.map": "/ArkhamDraft/static/js/main.ea8a14dc.chunk.js.map",
     "runtime-main.js": "/ArkhamDraft/static/js/runtime-main.2389b8c3.js",
     "runtime-main.js.map": "/ArkhamDraft/static/js/runtime-main.2389b8c3.js.map",
     "static/js/2.eeb84fca.chunk.js": "/ArkhamDraft/static/js/2.eeb84fca.chunk.js",
     "static/js/2.eeb84fca.chunk.js.map": "/ArkhamDraft/static/js/2.eeb84fca.chunk.js.map",
     "index.html": "/ArkhamDraft/index.html",
-    "precache-manifest.848c691e73f3866760e680e59e2f38f9.js": "/ArkhamDraft/precache-manifest.848c691e73f3866760e680e59e2f38f9.js",
+    "precache-manifest.452e68a31ced693beac466429422f9e6.js": "/ArkhamDraft/precache-manifest.452e68a31ced693beac466429422f9e6.js",
     "service-worker.js": "/ArkhamDraft/service-worker.js",
-    "static/css/main.19857e04.chunk.css.map": "/ArkhamDraft/static/css/main.19857e04.chunk.css.map",
+    "static/css/main.340adc27.chunk.css.map": "/ArkhamDraft/static/css/main.340adc27.chunk.css.map",
     "static/js/2.eeb84fca.chunk.js.LICENSE.txt": "/ArkhamDraft/static/js/2.eeb84fca.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.2389b8c3.js",
     "static/js/2.eeb84fca.chunk.js",
-    "static/css/main.19857e04.chunk.css",
-    "static/js/main.4e00afa9.chunk.js"
+    "static/css/main.340adc27.chunk.css",
+    "static/js/main.ea8a14dc.chunk.js"
   ]
 }
