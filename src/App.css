@@ -1,5 +1,6 @@
 .App {
-  text-align: center;
+    font-family: sans-serif;
+    text-align: center;
   font-size: min(3vw, 10pt);
 }
 
@@ -16,7 +17,7 @@
   padding: 5px;
   width: 90%;
   max-width: 700px;
-  font-family: 'Open Sans', sans-serif;
+/*  font-family: 'Open Sans', sans-serif;*/
   font-size: min(2.0vw, 8pt);
 }
 
@@ -46,7 +47,7 @@ label {
     max-width: 700px;
     border: 2px solid black;
     background-color: #ebebeb;
-    font-family: 'Open Sans', sans-serif;
+/*    font-family: 'Open Sans', sans-serif;*/
   }
 
 .settingsDiv label {
@@ -318,10 +319,41 @@ button {
   width: 94%;
   margin: 5px auto 0 auto;
 }
-*/
+*/  
+.investigator-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 10px;
+    justify-items: center;
+    align-items: start;
+    gap: 10px;
+    margin: 0 40px 10px 40px
+}
+
+.investigator-div {
+    width: 100%;
+    height: 0;
+    padding-bottom: 70%;
+}
+
+.investigator-div-loading { 
+    width: 100%;
+    height: 0;
+    padding-bottom: 70%;
+    border: black solid 1px;
+    border-radius: 8px;
+}
+
 .investigator-image {
-  margin: 5px 5px 0 5px;
-  width: min(45%, 200px)
+    width: 100%;
+}
+.investigator-div-loading > p {
+    margin-bottom: 5px;
+}
+
+.investigator-div-loading > h3 {
+    padding: 10px 10px;
+    margin-bottom: 30px;
 }
 
 p {
@@ -374,6 +406,47 @@ p {
     text-align: left;
   }
 
+  .draft-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    row-gap: 10px;
+    justify-items: center;
+    align-items: start;
+    gap: 10px;
+    margin: 0 10px 10px 10px;
+  }
+  
+  .draft-card {
+    width: 100%;
+    height: 0;
+    padding-bottom: 139%;
+ }
+
+.draft-card-loading {
+    width: 100%;
+    height: 0;
+    padding-bottom: 139%;
+    border: black solid 1px;
+    border-radius: 8px;
+}
+  
+  .draft-image {
+      width: 100%;
+  }
+
+  .draft-card-loading > p {
+      margin-bottom: 5px;
+  }
+
+  .draft-card-loading > button {
+      margin-top: 50px;
+  }
+
+  .draft-card-loading > h3 {
+      padding: 10px 10px;
+      margin-bottom: 30px;
+  }
+  
 @media only screen and (max-width:600px)
 {
     .cardContainer {
@@ -432,31 +505,76 @@ p {
         margin: 2px 0 2px 0;
         background-color: #60c060;
         color: #000000;
-      }        
-}
+      }  
+      
+      .draft-container {
+        gap: 4px;
+        row-gap: 4px;
+        margin: 0 4px 4px 4px;
+      }
 
-.draft-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  row-gap: 10px;
-  justify-items: center;
-  align-items: center;
-}
+      .draft-card {
+        width: 100%;
+        height: 0;
+        padding-bottom: 137%;
+        font-size: 5pt;
+      }    
 
-.draft-card {
-  width: 110%;
-  margin-bottom: 5px;
-}
+      .draft-card-loading {
+        width: 100%;
+        height: 0;
+        padding-bottom: 137%;
+        border: black solid 1px;
+        border-radius: 5px;
+        font-size: 6pt;
+    }
 
-.draft-image {
-  width: 80%;
+     .draft-card-loading > p {
+        margin-bottom: 5px;
+    }
+  
+    .draft-card-loading > h3 {
+        padding: 5px 5px;
+        margin-bottom: 0px;
+    }
+    
+    .draft-card-loading > button {
+        margin-top: 15px;
+    }
+  
+    .investigator-div-loading {
+        font-size: 6pt;
+    }
+
+    .investigator-div-loading > p {
+        margin-bottom: 0px;
+        font-size: 6pt;
+    }
+        
+    .investigator-div-loading > h3 {
+        padding: 10px 5px;
+        margin-bottom: 5px;
+    }
+    
+     .button-green {
+        margin-top: 10px;
+        background-color: #60c060;
+        color: #000000;
+        width: 75%;
+        height: 25px;
+        max-width: 100px;
+        font-size: 8pt;
+    }    
 }
 
 .slot-header {
-    font-size: 9pt;
+    font-size: 10pt;
     font-weight: bold;
     padding-top: 3px;
 }
+ .cardlist-item {
+    margin-left: 10px;
+ }
 
 @media screen and (max-width: 600px) {
   .col1 {

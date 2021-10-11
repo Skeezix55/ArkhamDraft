@@ -3,6 +3,7 @@ import React from 'react'
 import CardList from './CardList'
 import DraftArea from './DraftArea'
 import ExportSettings from '../options/ExportSettings'
+import ColorForClass from '../ClassColors'
 
 function Draft(props) {
     const { investigator, parallel, deckSize, draftTab, draftXP, draftCount, draftProgress, draftType, phase, cardList, draftPool, cardData, draftCard, updateCardList, updateDraftPool, resetApp, collectionSets, updateCardOverlay } = props
@@ -17,10 +18,25 @@ function Draft(props) {
             return cardData[key].name === investigator && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' : true)
         })[0]
 
-        const imagesrc = "https://www.arkhamdb.com" + cardData[investigatorID].imagesrc
-        const backimagesrc = "https://www.arkhamdb.com" + cardData[investigatorID].backimagesrc
-        investigatorCardImage = <img className="investigator-image" src={imagesrc} alt={props.investigator} />
-        investigatorCardImageBack = <img className="investigator-image" src={backimagesrc} alt={props.investigator + ' (back)'} />
+        const factionCode = cardData[investigatorID].faction_code;
+        const classColor = ColorForClass(factionCode)
+
+        if (cardData[investigatorID].imagesrc === undefined) {
+            investigatorCardImage = <div className="investigator-div-loading" style={{backgroundColor: classColor}}><h3>{investigator + ' (Back)'}</h3><p>Image not available</p><p><a href={cardData[investigatorID].url} target="_blank" rel="noreferrer noopener">View on ArkhamDB</a></p></div>
+        }
+        else {
+            const imagesrc = "https://www.arkhamdb.com" + cardData[investigatorID].imagesrc
+            investigatorCardImage = <div className="investigator-div" style={{backgroundColor: classColor}}><img className="investigator-image" src={imagesrc} alt={props.investigator} /></div>
+        }
+
+        if (cardData[investigatorID].backimagesrc === undefined) {
+            investigatorCardImageBack = <div className="investigator-div-loading" style={{backgroundColor: classColor}}><h3>{investigator + ' (Back)'}</h3><p>Image not available</p><p><a href={cardData[investigatorID].url} target="_blank" rel="noreferrer noopener">View on ArkhamDB</a></p></div>
+        }
+        else {
+            const backimagesrc = "https://www.arkhamdb.com" + cardData[investigatorID].backimagesrc
+            investigatorCardImageBack = <div className="investigator-div" style={{backgroundColor: classColor}}><img className="investigator-image" src={backimagesrc} alt={props.investigator + ' (back)'} /></div>
+        }
+//        investigatorCardImageBack = <img className="investigator-image" src={backimagesrc} alt={props.investigator + ' (back)'} />
     }
 
     let draftContent = null
@@ -57,8 +73,10 @@ function Draft(props) {
         <div>
             <div className="settingsDiv">
                 <h2>{investigator}</h2>
-                {investigatorCardImage}
-                {investigatorCardImageBack}
+                <div className="investigator-grid">
+                    {investigatorCardImage}
+                    {investigatorCardImageBack}
+                </div>
                 {progress}
             </div>
             {draftContent}

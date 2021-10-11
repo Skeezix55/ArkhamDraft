@@ -59,10 +59,20 @@ function CollectionSettings(props) {
                     />
                     <CollectionCycle 
                         collectionSets={collectionSets}
-                        includedSets={['tic', 'itd', 'def', 'hhg', 'lif', 'lod']}
+                        includedSets={['tic', 'itd', 'def', 'hhg', 'lif', 'lod', 'itm']}
                         columnValue='col2'
                         onChangeSetting={onChangeSetting}
                     />
+                </div>
+                <div className="cardContainer">
+                    <CollectionCycle 
+                        collectionSets={collectionSets}
+                        includedSets={['eoep']}
+                        columnValue='col1'
+                        onChangeSetting={onChangeSetting}
+                    />
+                    <div className='col2'>
+                    </div>
                 </div>
                 <div className="cardContainer">
                     <CollectionCycle 
@@ -74,7 +84,7 @@ function CollectionSettings(props) {
                     />
                     <CollectionCycle 
                         collectionSets={collectionSets}
-                        includedSets={['rtnotz', 'rtdwl', 'rtptc', 'rttfa']}
+                        includedSets={['rtnotz', 'rtdwl', 'rtptc', 'rttfa', 'rttcu']}
                         header='Return to Boxes'
                         columnValue='col2'
                         onChangeSetting={onChangeSetting}

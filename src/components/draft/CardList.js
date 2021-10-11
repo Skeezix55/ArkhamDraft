@@ -52,7 +52,7 @@ function CardList(props) {
     function onEnterCard(event) {
         const cardArray = cardData.filter(item => item.code === event.target.id)
 
-        if (cardArray && cardArray.length > 0) {
+        if (cardArray && cardArray.length > 0 && cardArray[0].imagesrc) {
             const imagesrc = "http://www.arkhamdb.com" + cardArray[0].imagesrc
 
             updateCardOverlay(imagesrc, event.clientX)
@@ -79,91 +79,91 @@ function CardList(props) {
     const handContents = hand.sort((a, b) => (a.name > b.name) ? 1 : -1).map((item, index) => {
         const countStr = item.count > 1 ? ' x' + item.count : null
 
-        return <p id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
+        return <p className='cardlist-item' id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
     })
 
     const hand2Header = hand2.length > 0 ? <p className='slot-header'>Hand x2</p> : null
     const hand2Contents = hand2.sort((a, b) => (a.name > b.name) ? 1 : -1).map((item, index) => {
         const countStr = item.count > 1 ? ' x' + item.count : null
 
-        return <p id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
+        return <p className='cardlist-item' id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
     })
 
     const arcaneHeader = arcane.length > 0 ? <p className='slot-header'>Arcane</p> : null
     const arcaneContents = arcane.sort((a, b) => (a.name > b.name) ? 1 : -1).map((item, index) => {
         const countStr = item.count > 1 ? ' x' + item.count : null
 
-        return <p id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
+        return <p className='cardlist-item' id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
     })
 
     const arcane2Header = arcane2.length > 0 ? <p className='slot-header'>Arcane x2</p> : null
     const arcane2Contents = arcane2.sort((a, b) => (a.name > b.name) ? 1 : -1).map((item, index) => {
         const countStr = item.count > 1 ? ' x' + item.count : null
 
-        return <p id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
+        return <p className='cardlist-item' id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
     })
 
     const accessoryHeader = accessory.length > 0 ? <p className='slot-header'>Accessory</p> : null
     const accessoryContents = accessory.sort((a, b) => (a.name > b.name) ? 1 : -1).map((item, index) => {
         const countStr = item.count > 1 ? ' x' + item.count : null
 
-        return <p id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
+        return <p className='cardlist-item' id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
     })
 
     const bodyHeader = body.length > 0 ? <p className='slot-header'>Body</p> : null
     const bodyContents = body.sort((a, b) => (a.name > b.name) ? 1 : -1).map((item, index) => {
         const countStr = item.count > 1 ? ' x' + item.count : null
 
-        return <p id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
+        return <p className='cardlist-item' id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
     })
 
     const allyHeader = ally.length > 0 ? <p className='slot-header'>Ally</p> : null
     const allyContents = ally.sort((a, b) => (a.name > b.name) ? 1 : -1).map((item, index) => {
         const countStr = item.count > 1 ? ' x' + item.count : null
 
-        return <p id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
+        return <p className='cardlist-item' id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
     })
 
     const tarotHeader = tarot.length > 0 ? <p className='slot-header'>Tarot</p> : null
     const tarotContents = tarot.sort((a, b) => (a.name > b.name) ? 1 : -1).map((item, index) => {
         const countStr = item.count > 1 ? ' x' + item.count : null
 
-        return <p id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
+        return <p className='cardlist-item' id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
     })
 
     const otherassetHeader = otherasset.length > 0 ? <p className='slot-header'>Other</p> : null
     const otherassetContents = otherasset.sort((a, b) => (a.name > b.name) ? 1 : -1).map((item, index) => {
         const countStr = item.count > 1 ? ' x' + item.count : null
 
-        return <p id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
+        return <p className='cardlist-item' id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
     })
 
     const permanentHeader = permanent.length > 0 ? <p className='slot-header'>Permanent</p> : null
     const permanentContents = permanent.sort((a, b) => (a.name > b.name) ? 1 : -1).map((item, index) => {
         const countStr = item.count > 1 ? ' x' + item.count : null
 
-        return <p id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
+        return <p className='cardlist-item' id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
     })
 
     const eventHeader = eventCount > 0 ? <h4>Events ({eventCount})</h4> : null
     const eventContents = event.sort((a, b) => (a.name > b.name) ? 1 : -1).map((item, index) => {
         const countStr = item.count > 1 ? ' x' + item.count : null
 
-        return <p id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
+        return <p className='cardlist-item' id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
     })
 
     const skillHeader = skillCount > 0 ? <h4>Skills ({skillCount})</h4> : null
     const skillContents = skill.sort((a, b) => (a.name > b.name) ? 1 : -1).map((item, index) => {
         const countStr = item.count > 1 ? ' x' + item.count : null
 
-        return <p id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
+        return <p className='cardlist-item' id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
     })
 
     const otherHeader = otherCount > 0 ? <h4>Other ({otherCount})</h4> : null
     const otherContents = other.sort((a, b) => (a.name > b.name) ? 1 : -1).map((item, index) => {
         const countStr = item.count > 1 ? ' x' + item.count : null
 
-        return <p id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
+        return <p className='cardlist-item' id={item.key} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard} key={index}>{item.name}{countStr}</p>
     })
 
     return (

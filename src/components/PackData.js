@@ -42,7 +42,7 @@ const PackData = {
     'hhg': 'Horror in High Gear',
     'lif': 'A Light in the Fog',
     'lod': 'The Lair of Dagon',
-//    'itm': 'Into the Maelstrom',
+    'itm': 'Into the Maelstrom',
     'nat': 'Nathaniel Cho',
     'har': 'Harvey Walters',
     'win': 'Winifred Habbamock',
@@ -51,7 +51,9 @@ const PackData = {
     'rtnotz': 'Return to the Night of the Zealot',
     'rtdwl': 'Return to the Dunwich Legacy',
     'rtptc': 'Return to the Path to Carcosa',
-    'rttfa': 'Return to the Forgotten Age'
+    'rttfa': 'Return to the Forgotten Age',
+    'rttcu': 'Return to the Circle Undone',
+    'eoep': 'Edge of the Earth'
 }
 
 export default PackData

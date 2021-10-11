@@ -11,6 +11,9 @@ const investigatorRequirements = {
     '"Ashcan" Pete': {
         deluxe: {}
     },
+    'Bob Jenkins': {
+        deluxe: {}
+    },
     'Calvin Wright': {
         deluxe: {}
     },
@@ -21,6 +24,9 @@ const investigatorRequirements = {
     'Daisy Walker': {
         deluxe: {},
         advanced1: {},
+    },
+    'Daniela Reyes': {
+        deluxe: {}
     },
     'Dexter Drake': {
         deluxe: {},
@@ -54,6 +60,9 @@ const investigatorRequirements = {
     'Leo Anderson': {
         deluxe: {}
     },
+    'Lily Chen': {
+        deluxe: {}
+    },
     'Lola Hayes': {
         deluxe: {}
     },
@@ -72,10 +81,14 @@ const investigatorRequirements = {
     'Minh Thi Phan': {
         deluxe: {}
     },
+    'Monterey Jack': {
+        deluxe: {}
+    },
     'Nathaniel Cho': {
         deluxe: {}
     },
     'Norman Withers': {
+        deluxe: {},
         replacement1: {}
     },
     'Patrice Hathaway': {

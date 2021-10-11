@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ExportDeck from '../ExportDeck'
 
 function SettingsExport(props) {
-    const [useSignatures, changeUseSignatures] = useState([ true, false, false])
+    const [useSignatures, changeUseSignatures] = useState([ true, false, false, false])
     const [basicWeakness, changeBasicWeakness] = useState(['Random basic weakness', '01000'])
     const [deckTitle, changeDeckTitle] = useState('')
 
@@ -15,7 +15,8 @@ function SettingsExport(props) {
     function handleCheckbox(event) {
         var index = 0
 
-        if (event.target.name === 'CB2') index = 2
+        if (event.target.name === 'CB3') index = 3
+        else if (event.target.name === 'CB2') index = 2
         else if (event.target.name === 'CB1') index = 1
 
         var newSignatures = { ...useSignatures }
@@ -30,7 +31,7 @@ function SettingsExport(props) {
 
         const cardArray = cardData.filter(item => item.code === event.target.id)
 
-        if (cardArray && cardArray.length > 0) {
+        if (cardArray && cardArray.length > 0 && cardArray[0].imagesrc !== undefined) {
             const imagesrc = "http://www.arkhamdb.com" + cardArray[0].imagesrc
 
             updateCardOverlay(imagesrc, event.clientX)
@@ -62,6 +63,7 @@ function SettingsExport(props) {
 
     function handleExportClick(fileType) {
         var specialCards = []
+        let burdenOfDestinyAdded =  false
 
 //        for (let i = 0; i < signatureCards.length; i++) {
         for (let [signatureIndex, signatureArray] of signatureCards.entries()) {
@@ -81,7 +83,19 @@ function SettingsExport(props) {
                         else sigQuantity = 1
                     }
 
-                    specialCards.push({name: card.name, key: card.code, type_code: card.type_code, count: sigQuantity })
+                    if (card.name === 'Burden of Destiny') {
+                        sigQuantity = 0
+
+                        if (!burdenOfDestinyAdded) {
+
+                            for (let i = 0; i < 4; i++)
+                                if (useSignatures[i]) sigQuantity++
+
+                            burdenOfDestinyAdded = true
+                        }
+                    }
+
+                    if (sigQuantity > 0) specialCards.push({name: card.name, key: card.code, type_code: card.type_code, count: sigQuantity })
                 }
             }
         }
@@ -106,39 +120,53 @@ function SettingsExport(props) {
         })
     }
 
-    var signatureCards = [ [], [], [] ]
-
-    const investigatorID = Object.keys(cardData)
-    .filter(key => {
-//        return cardData[key].name === investigator
-        return cardData[key].name === investigator && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' : true)
-    })[0]
-
-    const investigatorCard = cardData[investigatorID]
-
-    const cardRequirements = investigatorCard.deck_requirements.card
+    var signatureCards = [ [], [], [], [] ]
     var useCheckbox = false
 
-    for (let crkey = 0; crkey < Object.keys(cardRequirements).length; crkey++) {
-        const requirement = cardRequirements[Object.keys(cardRequirements)[crkey]]
+    if (investigator === 'Lily Chen') {
+        signatureCards[0].push('08011a')
+        signatureCards[0].push('08015')
+        signatureCards[1].push('08012a')
+        signatureCards[1].push('08015')
+        signatureCards[2].push('08013a')
+        signatureCards[2].push('08015')
+        signatureCards[3].push('08014a')
+        signatureCards[3].push('08015')
 
-        if (Object.keys(requirement).length > 1) useCheckbox = true
-
-        for (let rkey = 0; rkey < Object.keys(requirement).length; rkey++) {
-            signatureCards[rkey].push(requirement[Object.keys(requirement)[rkey]])
-        }
+        useCheckbox = true
     }
+    else {
+        const investigatorID = Object.keys(cardData)
+        .filter(key => {
+    //        return cardData[key].name === investigator
+            return cardData[key].name === investigator && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' : true)
+        })[0]
 
-    signatureCards.sort( (a1, a2) => {
-        if (a1.length > 0) {
-            if (a2.length > 0) {
-                return parseInt(a1[0]) - parseInt(a2[0])
+        const investigatorCard = cardData[investigatorID]
+
+        const cardRequirements = investigatorCard.deck_requirements.card
+
+        for (let crkey = 0; crkey < Object.keys(cardRequirements).length; crkey++) {
+            const requirement = cardRequirements[Object.keys(cardRequirements)[crkey]]
+
+            if (Object.keys(requirement).length > 1) useCheckbox = true
+
+            for (let rkey = 0; rkey < Object.keys(requirement).length; rkey++) {
+                signatureCards[rkey].push(requirement[Object.keys(requirement)[rkey]])
             }
-            else return -1
         }
+    
+        signatureCards.sort( (a1, a2) => {
+            if (a1.length > 0) {
+                if (a2.length > 0) {
+                    return parseInt(a1[0]) - parseInt(a2[0])
+                }
+                else return -1
+            }
 
-        return 1
-    })
+            return 1
+        })
+    }
 
     // make sure it's selected in the collection too
     var weaknessCards = cardData.filter( card => {
@@ -163,11 +191,25 @@ function SettingsExport(props) {
                             else sigQuantity = 1
                         }
 
+                        if (cardData[signatureID].name === 'Burden of Destiny') {
+                            sigQuantity = 1
+                        }
+
                         const quantityText = (sigQuantity > 1) ? ' x' + sigQuantity : ''
 
-                        return (useCheckbox ?
-                            <p id={cardData[signatureID].code} key={cardData[signatureID].code} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard}>{cardData[signatureID].name + ' (' + cardData[signatureID].pack_name + ')' + quantityText}</p> :
-                            <p id={cardData[signatureID].code} key={cardData[signatureID].code} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard}>{cardData[signatureID].name + quantityText}</p>)
+                        let cardName = cardData[signatureID].name
+                        if (investigator === 'Lily Chen') {
+                            if (cardData[signatureID].subname) cardName = cardName + ': ' + cardData[signatureID].subname
+                        }
+                        else if (useCheckbox) {
+                            cardName = cardName + ' (' + cardData[signatureID].pack_name + ')'
+                        }
+                        
+//                        return (useCheckbox ?
+//                            <p id={cardData[signatureID].code} key={cardData[siif gnatureID].code} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard}>{cardData[signatureID].name + ' (' + cardData[signatureID].pack_name + ')' + quantityText}</p> :
+//                            <p id={cardData[signatureID].code} key={cardData[signatureID].code} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard}>{cardData[signatureID].name + quantityText}</p>)
+                    return (
+                        <p id={cardData[signatureID].code} key={cardData[signatureID].code} onPointerEnter={onEnterCard} onPointerLeave={onLeaveCard}>{cardName + quantityText}</p>)
                     })
 
                     return (useCheckbox ?

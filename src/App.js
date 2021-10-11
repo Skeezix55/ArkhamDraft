@@ -97,6 +97,8 @@ function App(props) {
             parallel: props.parallel,
             secondaryClass: props.secondaryClass,
             deckSize: props.deckSize,
+            draftCount: props.deckSize,
+            draftProgress: 0,
 //            draftCount: draftCount[phase-1],
             draftUseLimited: [true, true, true],
             draftXP: props.draftXP,

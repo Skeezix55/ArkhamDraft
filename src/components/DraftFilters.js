@@ -64,7 +64,7 @@
 // xp
 
 function FilterCards(props) {
-    const { investigator, parallel, secondaryClass, cardData, cardList, deckSize, upgrade, draftUseLimited, draftXP, collectionSets } = props
+    const { investigator, parallel, secondaryClass, cardData, cardList, deckSize, upgrade, draftUseLimited, draftProgress, draftXP, collectionSets } = props
 
     const investigatorID = Object.keys(cardData)
     .filter(key => {
@@ -133,6 +133,8 @@ function FilterCards(props) {
         }
     }
 
+    const underworldSupport = cardList.filter( item => item.name === 'Underworld Support').length
+
     let minLevel = 0
     let maxLevel = 0
 
@@ -149,6 +151,7 @@ function FilterCards(props) {
         if (card.type_code === 'treachery') return false
         if (card.bonded_to) return false
         // currently means weakness
+
         if (card.subtype_code) return false
 
         let xp = 0
@@ -179,6 +182,19 @@ function FilterCards(props) {
 
         // restricted list, normal limit test only happens on cards already in deck
         if (card.taboodecklimit !== undefined && card.taboodecklimit === 0) return false
+
+        if (card.name === 'Underworld Support') {
+            // can't draft if this would create too big a deck
+            if (draftProgress > deckSize - 5) {
+                return false
+            }
+
+            // can't draft if there are any duplicates in deck, as this would also be illegal
+            const duplicates = cardList.filter( item => item.count > 1 ).length
+            if (duplicates > 0) {
+                return false
+            }
+        }
 
         // this isn't right for upgrades yet
         let legal = false
@@ -218,6 +234,9 @@ function FilterCards(props) {
 //console.log(rejected)
         if (!legal || rejected) return false
 
+        // Discipline doesn't have an entry to differentiate it as a sig card
+        if (card.name === 'Discipline') return false
+
         // check to see if there's already max in the deck
         let limited = false
         
@@ -228,6 +247,9 @@ function FilterCards(props) {
                     deckLimit = card.taboodecklimit
 //                    console.log('TabooDeckLimit : ' + card.taboodecklimit)
                 }
+
+                // if underworld support has been drafted, duplicates are illegal
+                if (underworldSupport) deckLimit = 1
 
                 var quantity = card.quantity
 

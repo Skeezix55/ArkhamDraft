@@ -41,15 +41,21 @@ function SettingsBuild(props) {
             deckSize={props.deckSize} 
             onChangeSetting={props.onChangeSetting}
         />
-        draftDescription = <div className="description">
-            The draft will proceed through 3 distinct stages.  All stages will draft 
-            from the full set of cards available to the chosen investigator.  Each stage 
-            will draft a number of cards equal to "Cards selected in this stage", not 
-            including Permanent cards.  Each will be selected from a number of cards 
-            determined by the "Cards to select from" option.  This allows you to use 
-            completely random selection for part of the deck, or use a wider range of 
-            choices for part of the deck.
+        draftDescription = <div><div className="description">
+                The draft will proceed through 3 distinct stages.  All stages will draft 
+                from the full set of cards available to the chosen investigator.  Each stage 
+                will draft a number of cards equal to "Cards selected in this stage", not 
+                including Permanent cards.  Each will be selected from a number of cards 
+                determined by the "Cards to select from" option.  This allows you to use 
+                completely random selection for part of the deck, or use a wider range of 
+                choices for part of the deck.
+            </div>
+            <div className="description"><b>Note:</b> Once the number of cards specified in the options have been drafted, 
+                if additional cards are necessary for a legal deck, they will be drafted using the settings for phase 3.  
+                If the required number of cards is reached before any phase is completed, the draft will end immediately.
+            </div>
         </div>
+
     }
 
     const myriadText = props.myriadCount === '1' ? 'card' : 'cards'
