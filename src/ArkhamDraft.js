@@ -178,7 +178,7 @@ function ArkhamDraft() {
             {contents}
             {overlay}
             <div className="copyright">
-                Bug reports and feedback to: Discord: jaqenZann#6463, Reddit: u/jaqenZann, BGG: Skeezix55
+                Bug reports and feedback to: Discord: jaqenZann#6463, Reddit: u/jaqenZann
             </div>
             <div className="copyright">
                 Arkham Horror: The Card Game and all information presented here, both literal and graphical, is
