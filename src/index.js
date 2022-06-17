@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import AppContainer from './AppContainer';
-//import * as serviceWorker from './serviceWorker';
+import ArkhamDraft from './ArkhamDraft';
+import store from './store'
+import { Provider } from 'react-redux'
+
+import { fetchCards, fetchTaboo } from './features/data/dataSlice'
+store.dispatch(fetchCards)
+store.dispatch(fetchTaboo)
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppContainer />
+    <Provider store={store}>
+        <ArkhamDraft />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

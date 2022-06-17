@@ -1,0 +1,969 @@
+.App {
+    font-family: sans-serif;
+    text-align: center;
+    font-size: min(3vw, 10pt);
+}
+
+button {
+    background: transparent;
+    border: none;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+    cursor: default;
+}
+
+.App-header {
+    padding-top: 3vw;
+    justify-content: center;
+    color: black;
+    font-size: min(10vw, 54pt);
+}
+
+.copyright {
+    display: relative;
+    margin: auto;
+    padding: 5px;
+    width: 90%;
+    max-width: 700px;
+    font-size: min(2.0vw, 8pt);
+    box-sizing: border-box;
+}
+
+.mb10 {
+    margin-bottom: 10px;
+}
+
+.settingsDiv {
+    display: relative;
+    margin: auto;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    width: 95%;
+    max-width: 700px;
+    border: 2px solid black;
+    background-color: #ebebeb;
+  }
+.card-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: stretch;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+}
+
+.list-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: stretch;
+    align-items: flex-start;
+    margin: -5px 0 0 0;
+    padding: 0 0 5px 5px;
+}
+
+.cardSet {
+    position: relative;
+    margin: 5px 5px 0 5px; 
+    border: 1px solid black;
+}
+
+.col1 {
+  flex-grow: 1;
+  flex-basis: 25%;
+/*  padding: 5px 0 5px 10px;*/
+ padding: 5px 20px 5px 10px;
+  margin-left: 10px;
+  margin-right: 3px;
+  font-size: 10pt;
+  text-align: left;
+}
+
+.col2 {
+  flex-grow: 1;
+  flex-basis: 25%;
+/*  padding: 5px 0 5px 10px;*/
+  padding: 5px 20px 5px 10px;
+  margin-right: 10px;
+  margin-left: 3px;
+  font-size: 10pt;
+  text-align: left;
+}
+
+.colcenter {
+    margin:  5px auto 0 auto;
+    width: 45%;
+    padding: 5px 20px 5px 10px;
+    font-size: 10pt;
+    text-align: left;
+}
+
+.button-rect {
+    margin: 5px 5px 10px 5px;
+    width: 100px;
+    height: 30px;
+    font-size: min(5vw, 10pt);
+    border: black 1px solid;
+}
+
+.button-green {
+      margin-top: 10px;
+      background-color: #60c060;
+      color: #000000;
+}
+.button-red {
+    margin-top: 10px;
+    background-color: #c03030;
+    color: #000000;
+}
+.button-drawweakness {
+    width: max(20%, 150px);
+    height: 24px;
+    font-size: min(3vw, 10pt);
+    margin-top: 3px;
+    margin-bottom: 15px;
+}
+.button-export {
+    width: max(20%, 150px);
+    height: 24px;
+    font-size: min(3vw, 10pt);
+    margin: 10px 10px 5px 10px;
+}
+
+.set-header {
+    margin: 2px 0 0 0;
+    padding: 0 0 4px 0;
+}
+.set-checkbox {
+    width: 12px;
+    height: 12px;
+    margin-top: 0px;
+    margin-left: 0px;
+    vertical-align: middle;
+}
+
+.pack-option label {
+    display: inline-block;
+    text-align: left;
+    margin: -2px 4px 0px 2px;
+    width: 80%;
+    vertical-align: middle;
+    height: 16px;
+}
+
+.setbutton-div {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40%;
+}
+
+.draft-progress {
+    margin-bottom: 5px;
+    margin-top: -5px;
+}
+
+.button-selectset {
+    background-image: url('selectall.png');
+    background-repeat: no-repeat;
+    float: right;
+    width: 14px;
+    height: 14px;
+    margin: 5px 2px 5px 5px;
+    outline: none;
+}
+.button-deselectset {
+    background-image: url('selectnone.png');
+    background-repeat: no-repeat;
+    float: right;
+    width: 14px;
+    height: 14px;
+    margin: 5px 5px 5px 2px;
+    outline: none;
+}
+
+.draft-tabs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: stretch;
+    align-items: flex-start;
+}
+.tab-button {
+    flex-grow: 1;
+    flex-basis: 25%;
+    padding: 5px 0 5px 0;
+    font-weight: bolder;
+}
+.build-selected {
+    background-color: #ebebeb;
+}
+.upgrade-unselected {
+    background-color: #bababa;
+    border-left: black 2px solid;
+    border-bottom: black 2px solid;
+}
+.build-unselected {
+    background-color: #bababa;
+    border-right: black 2px solid;
+    border-bottom: black 2px solid;
+}
+.upgrade-selected {
+    background-color: #ebebeb;
+}
+.draft-quantity {
+    margin-top: -15px;
+    margin-bottom: -5px;
+}
+
+.draft-modifiers-expanded {
+    margin: auto;
+    padding-bottom: 2px;
+    width: 96%;
+    border: black solid 2px;
+    border-radius: 10px;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 2;
+}
+.draft-modifiers-minimized {
+    margin: 0;
+    padding: 0;
+    width: 15%;
+    border: black solid 2px;
+    border-radius: 10px;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 2;
+
+}
+.modifierleft {
+    display: inline-block;
+    width: 60%;
+    text-align: right;
+    vertical-align: middle;
+}
+.modifierright {
+    display: inline-block;
+    width: 20%;
+    margin: 0 0 0 4px;
+    padding: 0;
+    text-align: left;
+    margin-left: 4px;
+    margin-top: 0px;
+    vertical-align: middle;
+}
+.modifiercheckbox {
+    height: 12px;
+    margin-top: 2px;
+}
+
+.description {
+    margin: 10px auto 0 auto;
+    padding: 10px 10px 10px 12px;
+    width: 80%;
+    font-size: min(2.7vw, 9pt);
+    border: black 1px solid;
+    text-align: left;
+}
+.draft-phase {
+    width: 94%;
+    margin: 10px auto 0 auto;
+    padding: 5px 10px 5px 5px; 
+    border: black 1px solid;
+}
+.investigator-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 10px;
+    justify-items: center;
+    align-items: start;
+    gap: 10px;
+    margin: 0 40px 10px 40px
+}
+.investigator-div {
+    width: 100%;
+    height: 0;
+    padding-bottom: 70%;
+}
+.investigator-div-loading { 
+    width: 100%;
+    height: 0;
+    padding-bottom: 70%;
+    border: black solid 1px;
+    border-radius: 8px;
+}
+.investigator-image {
+    width: 100%;
+}
+.investigator-div-loading > p {
+    margin-bottom: 5px;
+}
+.investigator-div-loading > h3 {
+    padding: 10px 10px;
+    margin-bottom: 30px;
+}
+
+.slot-header {
+    font-size: 10pt;
+    font-weight: bold;
+    padding-top: 3px;
+}
+.cardlist-item {
+    margin-left: 10px;
+}
+
+.floatingImageLeft {
+    display: block;
+    position: fixed;
+    z-index: 3;
+    top: 50%;
+    left: 3%;
+    transform: translateY(-50%);
+}
+.floatingImageRight {
+    display: block;
+    position: fixed;
+    z-index: 3;
+    top: 50%;
+    right: 3%;
+    transform: translateY(-50%);
+}
+.signatureDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    margin-bottom: 5px;
+}
+.signatureLeft {
+    flex-grow: 1;
+    flex-basis: 0;
+    text-align: right;
+    padding-right: 5px;
+}
+.signatureRight {
+    flex-grow: 2;
+    flex-basis: 0;
+    text-align: left;
+}
+.signatureCenter {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.draft-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: start;
+    gap: 8px 8px;
+    margin: 0 10px 0 10px;
+}
+.draft-card {
+    width: 100%;
+    height: 0;
+    padding-bottom: 139%;
+    border: transparent solid 1px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    position: relative;
+}
+.draft-card-selected {
+    width: 100%;
+    height: 0;
+    padding-bottom: 150%;
+    border: 2px solid black;
+    border-radius: 12px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+}
+.draft-card-loading {
+    width: 100%;
+    height: 0;
+    padding-bottom: 139%;
+    border: black solid 1px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    position: relative;
+}  
+.draft-image {
+    width: 100%;
+    box-sizing: border-box;
+}
+.draft-image-selected {
+    width: 100%;
+    box-sizing: border-box;
+    border-width: 8px 10px 5px 10px;
+    border-style: solid;
+    border-color: transparent;
+}
+
+.draft-card-loading > h3 {
+    padding: 10px 10px;
+    margin-bottom: -10px;
+}
+.imageStatus {
+    display: inline-block;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 44%;
+    left: 0%;
+    width: 100%;
+}
+.ADBlink {
+    display: inline-block;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 50%;
+    left: 0%;
+    width: 100%;
+}
+.draft-card-button {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 88%;
+    left: 28%;
+}
+.xpDots {
+    font-size: 80%;
+    color: black;
+    vertical-align: 10%;
+}
+.xpExileDots {
+    vertical-align: top;
+}
+
+.section-header {
+    margin: 5px 0;
+}
+.full-width {
+    width: 100%;
+}
+
+.modifier-panel-div {
+    margin: 2px 0 2px 0;
+    padding: 0;
+    font-size: 9pt;
+}
+.minimized-modifier-cost {
+    font-size: 14pt;
+    line-height: 1em;
+    vertical-align: middle;
+/*    margin-bottom: 0px;*/
+/*    margin-top: -7px;*/
+    margin: 0;
+    padding: 0;
+}
+.minimized-modifier-xp {
+    font-size: 6pt;
+/*    margin-bottom: -2px;
+    margin-top: -2px;*/
+    vertical-align: middle;
+    padding: 0;
+}
+.upgrade-header {
+    font-size: 9pt;
+    margin-bottom: 1px;
+    margin-top: 6px;
+}
+.upgradeselect {
+    width: '60%';
+    margin-top: 2px;
+    margin-bottom: 4px;
+}
+.fbsetting {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: flex-start;
+    gap: 5px;
+    margin: 0 0 2px 0;
+    padding: 0;
+}
+.fblist {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: flex-start;
+    gap: 5px;
+    margin: 0 0 0 0;
+    padding: 0;
+}
+.fbburnsetting {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: flex-start;
+    gap: 2px;
+    margin: 2px 0 4px 0;
+    padding: 0;
+}
+.fbexilesetting {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: flex-start;
+    gap: 2px;
+    margin: 2px 0 4px 0;
+    padding: 0;
+}
+
+.fbinvestigatorleft {
+    flex-basis: 40%;
+    text-align: right;
+    height: 20px;
+    line-height: 20px;
+}
+.fbinvestigatorcenter {
+    flex-basis: 25%;
+    height: 20px;
+    line-height: 20px;
+}
+.fbinvestigatorbutton {
+    position: relative;
+    flex-basis: 30%;
+    height: 20px;
+    line-height: 20px;
+}
+.fbinvestigatorselect {
+    width: 100%;
+    height: 20px;
+    line-height: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+.fbdraftsettingleft {
+    flex-basis: 45%;
+    text-align: right;
+    height: 22px;
+    line-height: 22px;
+}
+.fbdraftsettingcenter {
+    flex-basis: 20%;
+    text-align: left;
+    height: 22px;
+    line-height: 22px;
+}
+.fbdraftsettingright {
+    flex-basis: 30%;
+    text-align: left;
+    height: 22px;
+    line-height: 22px;
+}
+.fbdraftsettingselect {
+    width: 100%;
+    height: 20px;
+    line-height: 20px;
+    padding: 0;
+    margin: 0;
+}
+.fbdraftsettingnumber {
+    width: 95%;
+    height: 15px;
+    line-height: 20px;
+}
+.fbdraftsettingcheckbox {
+    text-align: left;
+    height: 20px;
+    line-height: 20px;
+}
+.fbdraftsettingslider {
+    flex-basis: 45%;
+    height: 22px;
+    line-height: 22px;
+}
+.fbdraftsettingslidervalue {
+    flex-basis: 5%;
+    text-align: left;
+    margin-left: -2px;
+}
+
+.fblistleft {
+    flex-basis: 40%;
+    text-align: right;
+    height: 16px;
+    line-height: 16px;
+}
+.fblistcenter {
+    flex-basis: 30%;
+    height: 16px;
+    line-height: 16px;
+    text-align: left;
+}
+.fblistright {
+    flex-basis: 15%;
+    height: 16px;
+    line-height: 16px;
+}
+.fbexileleft {
+    flex-basis: 40%;
+    text-align: right;
+    margin-top: 0px;
+    height: 16px;
+    line-height: 16px;
+}
+.fbexileright {
+    flex-basis: 40%;
+    text-align: left;
+    margin-top: 0px;
+    height: 16px;
+    line-height: 16px;
+}
+.fbexilecheckbox {
+    margin-top: 0px;
+    padding: 0;
+}
+
+.fbburnleft {
+    flex-basis: 40%;
+    text-align: right;
+    margin-top: 0px;
+    height: 20px;
+    line-height: 20px;
+}
+.fbburnright {
+    flex-basis: 40%;
+    text-align: left;
+    margin-top: 0px;
+    height: 20px;
+    line-height: 20px;
+}
+.fbburnselect {
+    width: 65%;
+    height: 20px;
+    line-height: 20px;
+    margin: 0;
+    padding: 0 0 0 2px;
+}
+
+.fbresearchleft {
+    flex-basis: 20%;
+    text-align: right;
+    margin-top: -2px;
+    height: 18px;
+    line-height: 18px;
+
+}
+.fbresearchright {
+    flex-basis: 60%;
+    text-align: left;
+    margin-top: 0px;
+    height: 18px;
+    line-height: 18px;
+}
+.fbresearchcheckbox {
+    margin: 0;
+    padding: 0;
+}
+
+.fbtitleleft {
+    flex-basis: 25%;
+    text-align: right;
+    margin-top: 0px;
+    height: 24px;
+    line-height: 24px;
+}
+.fbtitleright {
+    flex-basis: 50%;
+    text-align: left;
+    margin-top: 0px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.fbdeckidleft {
+    flex-basis: 40%;
+    text-align: right;
+    margin-top: 0px;
+    height: 24px;
+    line-height: 24px;
+}
+.fbdeckidright {
+    flex-basis: 40%;
+    text-align: left;
+    margin-top: 0px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.fbphasesettingleft {
+    flex-basis: 40%;
+    text-align: right;
+    height: 20px;
+    line-height: 20px;
+}
+.fbphasesettingslider {
+    flex-basis: 40%;
+    height: 22px;    
+    line-height: 22px;
+}
+.fbphasesettingslidervalue {
+    flex-basis: 5%;
+    text-align: left;
+    margin-left: -2px;
+
+}
+.fbphasesettingright {
+    flex-basis: 24.5%;
+    text-align: left;
+    height: 20px;
+    line-height: 20 px;
+}
+.fbphasesettingcenter {
+    flex-basis: 20%;
+    text-align: left;
+    height: 22px;
+    line-height: 22px;
+}
+
+input[type="range"] {
+    width:98%;
+    height: 20px;
+    margin-top: 2px;
+}
+input[type="text"] {
+    width: 97%;
+    height: 14px;
+    line-height: 14px;
+    font-size: min(3vw, 9pt);
+}
+input[type="checkbox"] {
+    height: 14px;
+    margin-left: 1px;
+    vertical-align: middle;
+}
+input, select {
+    font-size: min(3vw, 10pt);
+    }
+
+#fbbutton-random {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 1.7em;
+    width: 6em;
+    font-size: min(2.7vw, 9pt);
+    background-color: #60c060;
+    color: #000000;
+}
+
+@media only screen and (max-width:600px)
+{
+    .card-container {
+        flex-wrap: wrap;
+    }
+    .list-container {
+        flex-wrap: wrap;
+    }
+    .col1 {
+        flex-grow: 1;
+        flex-basis: 50%;
+        padding: 0 0 0 5px;
+        margin-left: 3px;
+        margin-right: 3px;
+        font-size: 10pt;
+        text-align: left;
+    }
+      
+    .col2 {
+        flex-grow: 1;
+        flex-basis: 50%;
+        padding: 0 0 0 5px;
+        margin-right: 3px;
+        margin-left: 3px;
+        font-size: 10pt;
+        text-align: left;
+    }
+    
+    .colcenter {
+        flex-grow: 1;
+        flex-basis: 50%;
+        padding: 0 0 0 5px;
+        margin-right: 3px;
+        margin-left: 3px;
+        font-size: 10pt;
+        text-align: left;
+    }    
+    .fbinvestigatorleft {
+        flex-basis: 32%;
+    }
+    .fbinvestigatorcenter {
+        flex-basis: 40%;
+    }
+    .fbinvestigatorbutton {
+        flex-basis: 23%;
+        margin-right: auto;
+
+    }
+
+    .fbdraftsettingleft {
+        flex-basis: 50%;
+    }
+    .fbdraftsettingcenter {
+        flex-basis: 30%;
+    }
+    .fbdraftsettingright {
+        flex-basis: 15%;
+    }
+    .fbdraftsettingslider {
+        flex-basis: 40%;
+    }
+    .fbdraftsettingslidervalue {
+        flex-basis: 5%;
+    }
+    .fblistleft {
+        flex-basis: 50%;
+    }
+    .fblistcenter {
+        flex-basis: 30%;
+    }
+    .fblistright {
+        flex-basis: 15%;
+    }
+    
+    .fbburnselect {
+        width: 100%;
+    }
+    .fbresearchleft {
+        flex-basis: 5%;
+    }
+    .fbresearchright {
+        flex-basis: 75%;
+    }
+        
+    .modifier-panel-div {
+        margin: 2px 0 2px 0;
+        font-size: 5pt;
+    }
+    .upgrade-header {
+        font-size: 5pt;
+        margin-bottom: 2px;
+        margin-top: 4px;
+    }
+    .draft-modifiers-expanded {
+        margin: auto;
+        padding-bottom: 2px;
+        width: 94%;
+        border: black solid 1px;
+        border-radius: 6px;
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        z-index: 2;
+    }    
+    .modifier-option {
+        display: inline-block;
+        width: 32%;
+        text-align: left;
+        margin-left: 5px;
+        margin-top: -20px;
+    }    
+    .draft-modifiers-minimized {
+        width: 22%;
+        border: black solid 1px;
+        border-radius: 6px;
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        z-index: 2;
+    }    
+    .minimized-modifier-cost {
+        font-size: 9pt;
+        line-height: 1em;
+        vertical-align: middle;
+        margin: 0;
+        padding: 0;
+    }
+    .minimized-modifier-xp {
+        font-size: 5pt;
+        vertical-align: middle;
+        margin: -1px 0 0 0;
+        padding: 0;
+    }
+    .upgradeselect {
+        width: '60%';
+        font-size: 5pt;
+        margin: 2px 0 0 0;
+    }
+    .draft-card-loading {
+        padding-bottom: 137%;
+        border: transparent solid 2px;
+        border-radius: 6px;
+    }  
+    .cardName {
+        font-size: 10pt;
+    }
+    .imageStatus {
+        font-size: 8pt;
+        top: 40%;
+        left: 0%;
+    }
+    .ADBlink {
+        font-size: 8pt;
+        top: 50%;
+        left: 0%;
+    }
+    .draft-card-button {
+        top: 84%;
+        left: 20%;
+        width: 60%;
+        height: 13%;
+    }
+    .draft-image-selected {
+        border-width: 6px 6px 2px 6px;
+        border-style: solid;
+        border-color: transparent;
+    }    
+    .draft-card {
+        padding-bottom: 137%;
+        border-radius: 6px;
+    }
+    .draft-card-selected {
+        padding-bottom: 155%;
+        border-radius: 6px;
+    }
+    .draft-card-loading {
+        width: 100%;
+        padding-bottom: 137%;
+        border-radius: 6px;
+    }  
+    .modifierleft {
+        height: 10px;
+        line-height: 10px;
+    }
+    .modifierright {
+        height: 10px;
+        line-height: 10px;
+        margin-left: 2px;
+    }
+    .modifiercheckbox {
+        height: 0.8em;
+        width: 0.8em;
+        line-height: 0.8em;
+        margin-top: -2px;
+        vertical-align: middle;
+    }
+}

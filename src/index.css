@@ -37,12 +37,12 @@ h3 {
 
 h4 {
   margin: 0;
-  padding: 5px 0 0 0;
+  padding: 0px 0 0 0;
   cursor: default;
 }
 
 h5 {
-  margin: -12px 0 5px 0;
+  margin: -12px 0 10px 0;
   padding: 2px;
   cursor: default;
 }
