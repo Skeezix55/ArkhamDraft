@@ -73,8 +73,12 @@ function FilterCards(props) {
         draftUseLimited, draftProgress, draftXP, draftWeighting, deckModifiers, level0Swaps, level0Adds, collection } = props
 
 //console.log('FILTER')
+//console.log(draftUseLimited)
+//console.log(phase)
 //console.log(mergedList)
     if (!cardData || !investigatorData) return []
+
+    const useLimited = phase >= 1 && phase <= 3 ? draftUseLimited[phase-1] : true
 
     const deckOptions = investigatorData.deck_options
     const filteredDeck = filterDeckForLimited(mergedList, deckOptions)
@@ -230,7 +234,8 @@ function FilterCards(props) {
                     rejected = true
                 }
                 else if (deckOptions[i].limit) {
-                    if (!draftUseLimited) optionLegal = false
+//                    if (!draftUseLimited) optionLegal = false
+                    if (!useLimited) optionLegal = false
                     else {
                         const inDeck = countDeckLimited(filteredDeck, deckOptions[i])
 

@@ -103,6 +103,7 @@ const settingsSlice = createSlice({
                         break
                     case 'DraftType':
                         state.draftType = action.payload.value
+                        if (state.draftType !== 'phaseDraft') state.draftUseLimited[0] = true
                         break
                     case 'MyriadCount':
                         state.myriadCount = parseInt(action.payload.value)
@@ -120,7 +121,7 @@ const settingsSlice = createSlice({
                         state.filteredResearch = action.payload.value
                         break
                     case 'DraftUseLimited':
-                        state.draftUseLimited[action.payload.phase-1] = !state.draftUseLimited[action.payload.phase-1]
+                        state.draftUseLimited[action.payload.value.phase-1] = !state.draftUseLimited[action.payload.value.phase-1]
                         break
                     case 'DraftWeighting':
                         state.draftWeighting = action.payload.value
