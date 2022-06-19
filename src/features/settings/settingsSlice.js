@@ -8,6 +8,7 @@ const initialState = {
     investigator: 'Agnes Baker',
     parallel: false,
     secondaryClass: '',
+    classChoices: { faction_1: 'guardian', faction_2: 'seeker' },
     selectedDeckSize: '',
     traitChoice: {},
     selectedTaboo: 0,
@@ -48,9 +49,15 @@ const settingsSlice = createSlice({
             state.investigator = state.investigatorData.name
             state.parallel = action.payload.parallel
 
-            const classOptions = state.investigatorData.deck_options.filter(item => item.name === 'Secondary Class')
-            if (classOptions.length > 0) {
-                state.secondaryClass = classOptions[0].faction_select[0]
+            const secondaryOptions = state.investigatorData.deck_options.filter(item => item.name === 'Secondary Class')
+            if (secondaryOptions.length > 0) {
+                state.secondaryClass = secondaryOptions[0].faction_select[0]
+            }   
+
+            const classOptions = state.investigatorData.deck_options.filter(item => item.name === 'Class Choice')
+            for (let i = 0; i < classOptions.length; i++) {
+                // i = 0 => 'guardian', 1 => 'seeker'
+                state.classChoices[classOptions[i].id] = classOptions[i].faction_select[i]
             }   
 
             state.deckSize = state.investigatorData.deck_requirements.size
@@ -77,6 +84,12 @@ const settingsSlice = createSlice({
                     case 'SecondaryClass':
                         state.secondaryClass = action.payload.value
                         break
+                    case 'ClassChoice1':
+                        state.classChoices['faction_1'] = action.payload.value
+                        break;
+                    case 'ClassChoice2':
+                        state.classChoices['faction_2'] = action.payload.value
+                        break;
                     case 'DeckSize':
                         state.deckSize = parseInt(action.payload.value)
                         break
@@ -244,6 +257,7 @@ function calculateFilteredCount(dispatch, getState) {
         investigatorData: state.settings.investigatorData,
         parallel: state.settings.parallel,
         secondaryClass: state.settings.secondaryClass,
+        classChoices: state.settings.classChoices,
         traitChoice: state.settings.traitChoice,
         filteredResearch: state.settings.filteredResearch,
         researchSelection: state.settings.researchSelection,
@@ -275,6 +289,7 @@ function calculateFilteredCount(dispatch, getState) {
         investigatorData: state.settings.investigatorData,
         parallel: state.settings.parallel,
         secondaryClass: state.settings.secondaryClass,
+        classChoices: state.settings.classChoices,
         traitChoice: state.settings.traitChoice,
         filteredResearch: {},
         researchSelection: state.settings.researchSelection,

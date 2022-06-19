@@ -22,6 +22,9 @@ const investigatorRequirements = {
         deluxe: {},
         replacement1: {}
     },
+    'Charlie Kane': {
+        deluxe: {}
+    },
     'Daisy Walker': {
         deluxe: {},
         advanced1: {},

@@ -13,6 +13,7 @@ function InvestigatorPanel(props) {
         'Bob Jenkins',
         'Calvin Wright',
         'Carolyn Fern',
+        'Charlie Kane',
         'Daisy Walker',
         'Daisy Walker (Parallel)',
         'Daniela Reyes',
@@ -81,10 +82,13 @@ function InvestigatorPanel(props) {
     }
 
     let secondaryFactionList = null
+    let classChoiceList = []
     let deckSizeList = null
     let traitChoiceList = null
     let tabooList = null
     let secondaryClassValue = settings.secondaryClass
+    let classChoice1Value = settings.classChoices['faction_1']
+    let classChoice2Value = settings.classChoices['faction_2']
     let traitChoiceValue = settings.traitChoice
     let deckSizeValue = settings.selectedDeckSize ? settings.selectedDeckSize : settings.deckSize
 
@@ -97,6 +101,16 @@ function InvestigatorPanel(props) {
                 const list = deckOptions[i].faction_select
 
                 secondaryFactionList = list.map((item, index) => {
+                    return <option value={item} key={index}>
+                        {item[0].toUpperCase() + item.slice(1)}
+                        </option>
+                })
+            }
+            else if (deckOptions[i].name === 'Class Choice')
+            {
+                const list = deckOptions[i].faction_select
+
+                classChoiceList[deckOptions[i].id] = list.map((item, index) => {
                     return <option value={item} key={index}>
                         {item[0].toUpperCase() + item.slice(1)}
                         </option>
@@ -160,6 +174,32 @@ function InvestigatorPanel(props) {
         :
         null
 
+    const classChoice1Div = classChoiceList['faction_1'] ?
+        <div className="fbsetting">
+            <label className="fbinvestigatorleft" value={classChoice1Value}>Class choice 1:</label>
+            <span className="fbinvestigatorcenter">
+                <select className="fbinvestigatorselect" name="ClassChoice1" value={classChoice1Value} onChange={handleChange}>
+                    {classChoiceList['faction_1']}
+                </select>
+            </span>
+            <span className="fbinvestigatorbutton"></span>
+        </div>
+        :
+        null
+
+    const classChoice2Div = classChoiceList['faction_2'] ?
+        <div className="fbsetting">
+            <label className="fbinvestigatorleft" value={classChoice2Value}>Class choice 2:</label>
+            <span className="fbinvestigatorcenter">
+                <select className="fbinvestigatorselect" name="ClassChoice2" value={classChoice2Value} onChange={handleChange}>
+                    {classChoiceList['faction_2']}
+                </select>
+            </span>
+            <span className="fbinvestigatorbutton"></span>
+        </div>
+        :
+        null
+
     const deckSizeDiv = deckSizeList ?
         <div className="fbsetting">
             <label className="fbinvestigatorleft" value={deckSizeValue}>Deck size:</label>
@@ -201,6 +241,8 @@ function InvestigatorPanel(props) {
                 <span className="fbinvestigatorbutton"><button id="fbbutton-random" onClick={handleRandom}>Random</button></span>
             </div>
             {secondaryClassDiv}
+            {classChoice1Div}
+            {classChoice2Div}
             {deckSizeDiv}
             {traitChoiceDiv}
             {tabooDiv}

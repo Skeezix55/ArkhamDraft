@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, setState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { advanceDraft, updateUpgradeOption, changeIndex, expandModifiers, minimizeModifiers, holdModifiers, selectDraftCard, changeDraftPoolProperty } from '../features/draft/draftSlice'
@@ -111,10 +111,11 @@ function DraftPanel(props) {
     {
         const { index } = props;
 
-        const newLoaded = [...imageLoaded]
-        newLoaded[index] = true
-
-        setImageLoaded(newLoaded)
+        setImageLoaded(prevData => {
+            var a = [...prevData]
+            a[index] = true
+            return a
+        })
     }
 
     let images = []

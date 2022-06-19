@@ -69,7 +69,7 @@ import DraftPhases, { isLevel0Build, isLevel0Upgrade, isUpgrade } from './DraftP
 
 // block cards that say only when building deck
 function FilterCards(props) {
-    const { cardData, investigatorData, parallel, secondaryClass, traitChoice, mergedList, phase, filteredResearch, researchSelection, excludeNormalVersatile, deckSize, 
+    const { cardData, investigatorData, parallel, secondaryClass, classChoices, traitChoice, mergedList, phase, filteredResearch, researchSelection, excludeNormalVersatile, deckSize, 
         draftUseLimited, draftProgress, draftXP, draftWeighting, deckModifiers, level0Swaps, level0Adds, collection } = props
 
 //console.log('FILTER')
@@ -349,7 +349,7 @@ function FilterCards(props) {
                 for (let i = 0; i < requirementOptions.length; i++) {
                     if (requirementOptions[i].count < requirementOptions[i].requirement) {
                         if (!testDeckOption(card, requirementOptions[i])) {
-//    console.log('Reject (Failed requirement): ' + card.name + ' (' + card.code + ')')
+//console.log('Reject (Failed requirement): ' + card.name + ' (' + card.code + ')')
                             return false
                         }
 
@@ -443,20 +443,31 @@ function FilterCards(props) {
     function testDeckOption(card, option) {
         let level = true
         let faction = true
-        let secondaryFaction = true
+        let factionChoice = true
         let trait = true
         let uses = true
         let type = true
         let text = true
     
         if (option.name === 'Secondary Class') {
-            secondaryFaction = false
+            factionChoice = false
     
             if (card.faction_code === secondaryClass) {
-                secondaryFaction = true
+                factionChoice = true
             }
             if (card.faction2_code === secondaryClass) {
-                secondaryFaction = true
+                factionChoice = true
+            }
+        }
+
+        if (option.name === 'Class Choice') {
+            factionChoice = false
+
+            if (card.faction_code === classChoices['faction_1'] || card.faction_code === classChoices['faction_2']) {
+                factionChoice = true
+            }
+            if (card.faction2_code === classChoices['faction_1'] || card.faction2_code === classChoices['faction_2']) {
+                factionChoice = true
             }
         }
     
@@ -522,7 +533,7 @@ function FilterCards(props) {
         }
 
     //console.log(faction + ' ' + level + ' ' + trait + ' ' + uses + ' ' + type + ' ' + secondaryFaction)
-        return faction && level && trait && uses && type && secondaryFaction && text
+        return faction && level && trait && uses && type && factionChoice && text
     }
 
     calculateWeights(filteredData, draftWeighting)
