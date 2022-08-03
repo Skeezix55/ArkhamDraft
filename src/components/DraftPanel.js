@@ -1,4 +1,4 @@
-import React, { useState, setState } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { advanceDraft, updateUpgradeOption, changeIndex, expandModifiers, minimizeModifiers, holdModifiers, selectDraftCard, changeDraftPoolProperty } from '../features/draft/draftSlice'

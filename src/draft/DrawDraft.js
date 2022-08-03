@@ -783,7 +783,7 @@ function testForAdvance(dispatch, getState) {
     let draftCount = state.settings.draftCount
 
     var draftFinished = false
-    var refillDraft = false;
+    var refillDraft = false
 
     const draftTarget = calculateDraftTarget({
         draftType: state.settings.draftType,
@@ -837,7 +837,8 @@ function testForAdvance(dispatch, getState) {
                     draftFinished = true
                 }
             }
-            else if (draftCount[phase-1] > 1) {
+//            else if (draftCount[phase-1] > 1) {
+            else {
                 refillDraft = true
             }
         }
