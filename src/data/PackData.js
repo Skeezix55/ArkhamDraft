@@ -53,7 +53,8 @@ const PackData = {
     'rtptc': 'Return to the Path to Carcosa',
     'rttfa': 'Return to the Forgotten Age',
     'rttcu': 'Return to the Circle Undone',
-    'eoep': 'Edge of the Earth'
+    'eoep': 'Edge of the Earth',
+    'tskp': 'The Scarlet Keys'
 }
 
 export default PackData

@@ -58,8 +58,10 @@ function CollectionSettings(props) {
                         includedSets={['eoep']}
                         columnValue='col1'
                     />
-                    <div className='col2'>
-                    </div>
+                    <CollectionCycle 
+                        includedSets={['tskp']}
+                        columnValue='col2'
+                    />
                 </div>
                 <div className="card-container">
                     <CollectionCycle 

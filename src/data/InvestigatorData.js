@@ -9,6 +9,9 @@ const investigatorRequirements = {
     'Amanda Sharpe': {
         deluxe: {}
     },
+    'Amina Zidane': {
+        deluxe: {}
+    },
     '"Ashcan" Pete': {
         deluxe: {}
     },
@@ -22,6 +25,9 @@ const investigatorRequirements = {
         deluxe: {},
         replacement1: {}
     },
+    'Carson Sinclair': {
+        deluxe: {}
+    },
     'Charlie Kane': {
         deluxe: {}
     },
@@ -30,6 +36,9 @@ const investigatorRequirements = {
         advanced1: {},
     },
     'Daniela Reyes': {
+        deluxe: {}
+    },
+    'Darrell Simmons': {
         deluxe: {}
     },
     'Dexter Drake': {
@@ -59,6 +68,9 @@ const investigatorRequirements = {
         deluxe: {}
     },
     'Joe Diamond': {
+        deluxe: {}
+    },
+    'Kymani Jones': {
         deluxe: {}
     },
     'Leo Anderson': {
@@ -139,6 +151,9 @@ const investigatorRequirements = {
         deluxe: {}
     },
     'Ursula Downs': {
+        deluxe: {}
+    },
+    'Vincent Lee': {
         deluxe: {}
     },
     'Wendy Adams': {

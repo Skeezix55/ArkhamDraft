@@ -780,7 +780,7 @@ function testForAdvance(dispatch, getState) {
     let phase = state.draft.phase
     let draftType = state.settings.draftType
     let deckSize = state.settings.deckSize
-    let draftCount = state.settings.draftCount
+//    let draftCount = state.settings.draftCount
 
     var draftFinished = false
     var refillDraft = false

@@ -73,6 +73,7 @@ function UpgradeTab(props) {
                     because of an upgrade or because they were forcibly removed, such as by On Your Own, will appear in a removed cards list.</p>
                 </div>
             </div>
+            <p style={{marginTop:'10px', padding:'0 20%', color:'red', fontSize:'125%'}}>NOTE: Customizable cards are not implemented yet and will not appear in the upgrade draft.</p>
         </div>
     )
 /*They will not be removed from their original list, to keep the original deck list unchanged, and to keep the record of drafts
