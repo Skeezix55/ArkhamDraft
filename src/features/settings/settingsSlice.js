@@ -236,7 +236,7 @@ function changeInvestigatorList(entry) {
         const cardData = getState().data.cardData
         const investigatorID = Object.keys(cardData)
         .filter(key => {
-            return cardData[key].name === name && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' : true)
+            return cardData[key].name === name && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' && cardData[key].duplicate_of_name === undefined : true)
         })[0]
 
         dispatch(changeInvestigator({ data: cardData[investigatorID], parallel: parallel }))

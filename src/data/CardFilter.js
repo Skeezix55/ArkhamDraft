@@ -135,7 +135,7 @@ function FilterCards(props) {
         if (card.type_code === 'enemy') return false
         if (card.type_code === 'treachery') return false
         if (card.bonded_to) return false
-
+//console.log(card.name)
         if (isLevel0Upgrade(phase) && card.permanent) {
 //console.log('Reject (Permanent): ' + card.name + ' (' + card.code + ')')
             return false
@@ -384,9 +384,11 @@ function FilterCards(props) {
             slot: card.slot,
             faction_code: card.faction_code,
             faction2_code: card.faction2_code,
+            faction3_code: card.faction3_code,
             deck_limit: card.deck_limit,
             traits: card.traits,
             text: card.text,
+            tags: card.tags,
             xp: card.xp,
             permanent: card.permanent,
             exceptional: card.exceptional,
@@ -448,7 +450,8 @@ function FilterCards(props) {
         let uses = true
         let type = true
         let text = true
-    
+        let tag = true
+
         if (option.name === 'Secondary Class') {
             factionChoice = false
     
@@ -456,6 +459,9 @@ function FilterCards(props) {
                 factionChoice = true
             }
             if (card.faction2_code === secondaryClass) {
+                factionChoice = true
+            }
+            if (card.faction3_code === secondaryClass) {
                 factionChoice = true
             }
         }
@@ -467,6 +473,9 @@ function FilterCards(props) {
                 factionChoice = true
             }
             if (card.faction2_code === classChoices['faction_1'] || card.faction2_code === classChoices['faction_2']) {
+                factionChoice = true
+            }
+            if (card.faction3_code === classChoices['faction_1'] || card.faction3_code === classChoices['faction_2']) {
                 factionChoice = true
             }
         }
@@ -481,9 +490,12 @@ function FilterCards(props) {
                 if (card.faction2_code === option.faction[f]) {
                     faction = true
                 }
+                if (card.faction3_code === option.faction[f]) {
+                    faction = true
+                 }
             }
         } 
-    
+
         if (option.level) {
             level = false
     
@@ -512,8 +524,13 @@ function FilterCards(props) {
     
             const cardText = card.text
     
-            if (cardText && cardText.search(new RegExp('Uses \\([0-9\\s]+' + option.uses[0] + '\\)', "i")) >= 0)
-                uses = true
+            if (cardText) {
+                for (let i = 0; i < option.uses.length; i++) {
+                    if (cardText.search(new RegExp('Uses \\([0-9\\s]+' + option.uses[i] + '\\)', "i")) >= 0) {
+                        uses = true
+                    }
+                }
+            }
         }
     
         if (option.type) {
@@ -527,13 +544,25 @@ function FilterCards(props) {
             
         if (option.text) {
             text = false
-            
-            if (card.text && card.text.search(new RegExp(option.text, "i")) >= 0)
-                text = true
-        }
 
-    //console.log(faction + ' ' + level + ' ' + trait + ' ' + uses + ' ' + type + ' ' + secondaryFaction)
-        return faction && level && trait && uses && type && factionChoice && text
+            if (card.text && card.text.search(new RegExp(option.text, "i")) >= 0) {
+                text = true
+            }
+        }
+        if (option.tag) {
+            tag = false
+
+            for (let i = 0; i < option.tag.length; i++) {
+                if (card.tags && card.tags.search(new RegExp(option.tag[i], "i")) >= 0) {
+                    console.log('Tag found')
+
+                    tag = true
+                }
+            }
+        }   
+
+//    console.log(faction + ' ' + level + ' ' + trait + ' ' + uses + ' ' + type + ' ' + factionChoice + ' ' + text + ' ' + tag)
+        return faction && level && trait && uses && type && factionChoice && text && tag
     }
 
     calculateWeights(filteredData, draftWeighting)
@@ -597,6 +626,9 @@ export function extraDeckRequirements(props) {
                         return true
                     }
                     if (item.faction2_code === faction) {
+                        return true
+                    }
+                    if (item.faction3_code === faction) {
                         return true
                     }
 
