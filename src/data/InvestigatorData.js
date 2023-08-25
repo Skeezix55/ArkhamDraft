@@ -13,7 +13,8 @@ const investigatorRequirements = {
         deluxe: {}
     },
     '"Ashcan" Pete': {
-        deluxe: {}
+        deluxe: {},
+        advanced1: {}
     },
     'Bob Jenkins': {
         deluxe: {}
@@ -33,7 +34,7 @@ const investigatorRequirements = {
     },
     'Daisy Walker': {
         deluxe: {},
-        advanced1: {},
+        advanced1: {}
     },
     'Daniela Reyes': {
         deluxe: {}
@@ -139,6 +140,9 @@ const investigatorRequirements = {
         advanced1: {}
     },
     'Stella Clark': {
+        deluxe: {}
+    },
+    'Subject 5U-21': {
         deluxe: {}
     },
     'Tommy Muldoon': {

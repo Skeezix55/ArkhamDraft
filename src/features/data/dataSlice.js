@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { changeSetting, changeInvestigatorList, changeInvestigatorDeck, calculateFilteredCount } from '../settings/settingsSlice'
+import { reset, changeSetting, changeInvestigatorList, changeInvestigatorDeck, calculateFilteredCount } from '../settings/settingsSlice'
 import { setDeckList, changeDeckName, changeLevel0, updateDeckRequirements } from '../draft/draftSlice'
 
 import DraftPhases from '../../data/DraftPhases'
@@ -45,7 +45,15 @@ const dataSlice = createSlice({
             state.deckLoaded = action.payload
         },
     },
-    extraReducers: {
+    extraReducers: (builder) => {
+        builder.addCase(reset, function (state, action) {
+            state.deckLoading = false
+            state.fetchError = false
+            state.deckFetchError = false
+            state.deckLoaded = false
+            state.tabooMerged = false
+        })
+/*
         'settings/reset': (state, action) => {
             state.deckLoading = false
             state.fetchError = false
@@ -53,8 +61,8 @@ const dataSlice = createSlice({
             state.deckLoaded = false
             state.tabooMerged = false
         }
+*/
     }
-
 })
 
 export async function fetchCards(dispatch, getState) {

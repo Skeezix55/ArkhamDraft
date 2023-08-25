@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAction } from '@reduxjs/toolkit'
 
-import { beginDraft, endDraft, changeSetting, calculateFilteredCount } from '../settings/settingsSlice'
+import { reset, beginDraft, endDraft, changeSetting, calculateFilteredCount } from '../settings/settingsSlice'
 import { mergeTaboo } from '../data/dataSlice'
 
 import { extraDeckRequirements } from '../../data/CardFilter'
@@ -296,14 +296,100 @@ const draftSlice = createSlice({
             if (removeIndex >= 0) state.deckModifiers.splice(removeIndex, 1)
         }
     },
-    extraReducers: {
-        'settings/reset': (state, action) => {
+    extraReducers: (builder) => {
+        builder.addCase(reset, (state, action) => {
             return { ...initialState }
-        },
-        'settings/changeSetting': (state, action) => {
+        })
+        .addCase(changeSetting, (state, action) => {
             if (action.payload.setting === 'ExileCheckbox') {
                 let inc = 1
                 const exileCode = action.payload.id.substring(0, 5)
+
+                if (exileCode === '08076') {    // burn after reading
+                    inc = 2
+                }
+
+                const countObject = state.level0Adds.filter(item => item.name === 'Exile')[0]
+                if (action.payload.value) countObject.count += inc
+                else countObject.count -= inc
+            }
+
+            if (action.payload.setting === 'RemovedCards') {
+                const countObject = state.level0Adds.filter(item => item.name === 'Removed')[0]
+                if (action.payload.value) countObject.count = parseInt(action.payload.value)
+            }
+        })
+        .addCase(endDraft, (state, action) => {
+            if (state.phase === DraftPhases.UpgradeLevel0SwapPhase) {
+                state.level0Swaps.forEach( item => {
+                    item.count -= item.drafted
+                    item.drafted = 0
+                })
+            }
+            else if (state.phase === DraftPhases.UpgradeLevel0AddPhase) {
+                state.level0Adds.forEach( item => {
+                    item.count -= item.drafted
+                    item.drafted = 0
+
+                    if (item.name === 'Versatile') {
+                        item.versatileCount -= item.versatileDrafted
+                        item.versatileDrafted = 0
+                    }
+                })
+            }
+        })
+    }
+/*
+    extraReducers: (builder) => {
+        builder.addCase(reset, (state, action) => {
+            return { ...initialState }
+        }),
+        builder.addCase(changeSetting, (state, action) => {
+            if (action.payload.setting === 'ExileCheckbox') {
+                let inc = 1
+                const exileCode = action.payload.id.substring(0, 5)
+
+                if (exileCode === '08076') {    // burn after reading
+                    inc = 2
+                }
+
+                const countObject = state.level0Adds.filter(item => item.name === 'Exile')[0]
+                if (action.payload.value) countObject.count += inc
+                else countObject.count -= inc
+            }
+
+            if (action.payload.setting === 'RemovedCards') {
+                const countObject = state.level0Adds.filter(item => item.name === 'Removed')[0]
+                if (action.payload.value) countObject.count = parseInt(action.payload.value)
+            }
+        }),
+        builder.addCase(endDraft, (state, action) => {
+            if (state.phase === DraftPhases.UpgradeLevel0SwapPhase) {
+                state.level0Swaps.forEach( item => {
+                    item.count -= item.drafted
+                    item.drafted = 0
+                })
+            }
+            else if (state.phase === DraftPhases.UpgradeLevel0AddPhase) {
+                state.level0Adds.forEach( item => {
+                    item.count -= item.drafted
+                    item.drafted = 0
+
+                    if (item.name === 'Versatile') {
+                        item.versatileCount -= item.versatileDrafted
+                        item.versatileDrafted = 0
+                    }
+                })
+            }
+        })
+//        'settings/reset': (state, action) => {
+//            return { ...initialState }
+//        },
+/-*
+        'settings/changeSetting': (state, action) => {
+            if (action.payload.setting === 'ExileCheckbox') {
+                let inc = 1
+            const exileCode = action.payload.id.substring(0, 5)
 
                 if (exileCode === '08076') {    // burn after reading
                     inc = 2
@@ -338,7 +424,9 @@ const draftSlice = createSlice({
                 })
             }
         }
+*-/
     }
+*/
 })
 
 function addCardToList(card, list, addCount) {
@@ -493,6 +581,7 @@ export function updateDeckRequirements(dispatch, getState, phaseOverride) {
     // check additional requirements needed
     const requirementOptions = extraDeckRequirements({
         investigatorData: state.settings.investigatorData,
+        classChoices: state.settings.classChoices,
         mergedList: state.draft.mergedList,
         deckSize: state.settings.deckSize,
         phase: phase,

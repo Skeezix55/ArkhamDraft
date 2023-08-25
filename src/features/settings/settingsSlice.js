@@ -251,7 +251,7 @@ function changeInvestigatorDeck(data, parallel) {
 
 function calculateFilteredCount(dispatch, getState) {
     const state = getState()
-
+    
     const filteredCards = FilterCards({
         cardData: state.data.cardData,
         investigatorData: state.settings.investigatorData,
@@ -282,7 +282,7 @@ function calculateFilteredCount(dispatch, getState) {
         draftType: state.draft.draftType,
         collection: state.collection
     })
-
+    
     // for filtered research, we need all draftable cards, level 0-5
     const allFilteredCards = FilterCards({
         cardData: state.data.cardData,

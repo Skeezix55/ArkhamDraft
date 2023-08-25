@@ -8,6 +8,7 @@ import { costWithTaboo, isCardLegalBurnOption } from '../draft/DrawDraft'
 import ResearchLogs from '../data/ResearchLogs'
 
 function DeckOptionsPanel(props) {
+
     const deckList = useSelector(state => state.draft.deckList)
     const burnCards = useSelector(state => state.settings.burnCards)
     const exileSelection = useSelector(state => state.settings.exileSelection)
@@ -17,6 +18,8 @@ function DeckOptionsPanel(props) {
     const removedCards = useSelector(state => state.settings.removedCards)
     const showDeckOptions = useSelector(state => state.draft.showDeckOptions)
     const draftXP = useSelector(state => state.settings.draftXP)
+    const classChoice1Value = useSelector(state => state.settings.classChoices['faction_1'])
+    const investigatorData = useSelector(state => state.settings.investigatorData)
 
     const dispatch = useDispatch()
 
@@ -162,6 +165,27 @@ function DeckOptionsPanel(props) {
         )  
     })
 
+    const factionList = ['guardian', 'seeker', 'rogue', 'mystic', 'survivor']
+
+    const classChoiceList = factionList.map((item, index) => {
+        return <option value={item} key={index}>
+            {item[0].toUpperCase() + item.slice(1)}
+            </option>
+    })
+
+    const suziDiv = investigatorData.name === 'Subject 5U-21' ? <div>
+        <h4 className="section-header">Subject 5U-21 Options</h4>
+        <div className="fbsetting" style={{marginBottom: '15px'}}>
+            <label className="fbdraftsettingleft">Upgrade class:</label>
+            <span className="fbdraftsettingcenter">
+            <select className="fbinvestigatorselect" name="ClassChoice1" value={classChoice1Value} onChange={handleChange}>
+                {classChoiceList}
+            </select>
+            </span>
+            <label className="fbdraftsettingright"></label>
+        </div>
+    </div> : null
+    
     const researchCheckboxes = researchArray.length > 0 ? researchArray.map( item => {
         return (
             <div className="fblist" key={item}>
@@ -225,6 +249,7 @@ function DeckOptionsPanel(props) {
                 </span>
                 <label className="fbdraftsettingright"></label>
             </div>
+            {suziDiv}
             {exileDiv}
             {researchDiv}
             {otherDiv}

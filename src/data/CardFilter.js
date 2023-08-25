@@ -76,15 +76,20 @@ function FilterCards(props) {
 //console.log(draftUseLimited)
 //console.log(phase)
 //console.log(mergedList)
+    const deckOptions = investigatorData.deck_options
+
     if (!cardData || !investigatorData) return []
 
     const useLimited = phase >= 1 && phase <= 3 ? draftUseLimited[phase-1] : true
 
-    const deckOptions = investigatorData.deck_options
+
     const filteredDeck = filterDeckForLimited(mergedList, deckOptions)
 
+    // deckOptions tends to be if any of them are true, it's legal (||) (exceot for not)
+    // requirementOptioms is all have to be true (&&)
     const requirementOptions = extraDeckRequirements({
         investigatorData: investigatorData,
+        classChoices: classChoices,
         mergedList: mergedList,
         deckSize: deckSize,
         phase: phase,
@@ -128,6 +133,7 @@ function FilterCards(props) {
             break 
     }
 
+    var firstLoop = true
     const filteredData = cardData.filter(card => {
         if (card.type_code === 'investigator') return false
         if (card.type_code === 'story') return false
@@ -264,6 +270,7 @@ function FilterCards(props) {
             }
         }
         else {
+//if (!legal || rejected) console.log(card.name + ': REJECTED')
             if (!legal || rejected) return false
         }
 
@@ -327,36 +334,38 @@ function FilterCards(props) {
             return false
         }
 
-        // check to see if it passes all required tests
-        if (requirementOptions && isLevel0Upgrade(phase)) {
+// check to see if it passes all required tests
+//console.log('RequirementOptions')
+//console.log(requirementOptions)
+        if (requirementOptions) {
             var sizeNeeded = 0
             var othersNeeded = 0
             const sizeRequirement = requirementOptions.filter(item => item.name.includes('Deck size'))
 
-            if (sizeRequirement.length > 0) sizeNeeded = sizeRequirement[0].requirement - sizeRequirement[0].count
+            if (sizeRequirement.length > 0) sizeNeeded = sizeRequirement[0].requirementTarget - sizeRequirement[0].requirementCount
 
             const otherRequirements = requirementOptions.filter(item => !item.name.includes('Deck size'))
             var level0List = phase === DraftPhases.UpgradeLevel0SwapPhase ? level0Swaps : level0Adds
             const draftTotal = level0List.reduce((acc, a) => acc + a.count - a.drafted, 0)
-
-            if (otherRequirements.length > 0) othersNeeded = otherRequirements.reduce((acc, a) => a.name.length > 0 ? acc + a.requirement - a.count : acc, 0)
-            const cardsNeeded = sizeNeeded < draftTotal ? draftTotal : sizeNeeded
+//            if (otherRequirements.length > 0) othersNeeded = otherRequirements.reduce((acc, a) => !a.requirementName ? acc + a.requirement - a.count : acc, 0)
+//            const cardsNeeded = sizeNeeded < draftTotal ? draftTotal : sizeNeeded
 
 //            find deck size requirement, test against sum of others, if greater, no requirement enforced
 //            otherwise, go in order
 //            if (othersNeeded >= sizeNeeded) {
-            if (othersNeeded >= cardsNeeded) {
+                // if no requirementCount, treat as a normal options
+                //  otherwise, test if count < target
                 for (let i = 0; i < requirementOptions.length; i++) {
-                    if (requirementOptions[i].count < requirementOptions[i].requirement) {
+                    if (!requirementOptions[i].requirementTarget || requirementOptions[i].requirementCount < requirementOptions[i].requirementTarget) {
                         if (!testDeckOption(card, requirementOptions[i])) {
 //console.log('Reject (Failed requirement): ' + card.name + ' (' + card.code + ')')
                             return false
                         }
 
-                        break
+//                        break
                     }
                 }
-            }
+//            }
         }
 
         const modifiedCost = calculateModifiedCost(card, phase, deckModifiers, mergedList, maxLevel, investigatorData.name, parallel)
@@ -365,6 +374,8 @@ function FilterCards(props) {
 //console.log('Reject (Cost): ' + card.name + '(' + card.code + ')')
             return false
         }
+        
+        firstLoop = false
 //console.log('Accept: ' + card.name + '(' + card.code + ')')
         return true
     }).map(card => {    // return new items with only necessary fields so we can add to it
@@ -451,6 +462,7 @@ function FilterCards(props) {
         let type = true
         let text = true
         let tag = true
+        let permanent = true
 
         if (option.name === 'Secondary Class') {
             factionChoice = false
@@ -554,15 +566,17 @@ function FilterCards(props) {
 
             for (let i = 0; i < option.tag.length; i++) {
                 if (card.tags && card.tags.search(new RegExp(option.tag[i], "i")) >= 0) {
-                    console.log('Tag found')
-
                     tag = true
                 }
             }
         }   
+        if (option.permanent) {
+            permanent = card.permanent
+        }
 
-//    console.log(faction + ' ' + level + ' ' + trait + ' ' + uses + ' ' + type + ' ' + factionChoice + ' ' + text + ' ' + tag)
-        return faction && level && trait && uses && type && factionChoice && text && tag
+//        console.log(faction + ' ' + level + ' ' + trait + ' ' + uses + ' ' + type + ' ' + factionChoice + ' ' + text + ' ' + tag + ' ' + permanent)
+
+        return faction && level && trait && uses && type && factionChoice && text && tag && permanent
     }
 
     calculateWeights(filteredData, draftWeighting)
@@ -592,10 +606,13 @@ function calculateWeights(filteredData, draftWeighting) {
 }
 
 export function extraDeckRequirements(props) {
-    const { investigatorData, mergedList, phase, deckSize } = props
+    const { investigatorData, mergedList, phase, deckSize, classChoices } = props
 
     // requirement trait: exclude if it doesn't pass a different option AND the requirement
     let requirementOptions = []
+
+    // no restrictions will exist for empty decks)
+    if (phase == DraftPhases.AllCards) return requirementOptions
 
     if (investigatorData.name === 'Joe Diamond') {
         const joeRequiredCards = mergedList.filter(item => {
@@ -607,19 +624,29 @@ export function extraDeckRequirements(props) {
             return false
         })
 
+    // there are 2 types of extra requirement
+    // some apply to only the level 0 upgrade display box - these will have a requirementName field
+    // the rest apply everywhere - these will not have a requirementName field, and may or may not have a name field
+
     const joeCount = countList(joeRequiredCards)
         if (deckSize - countList(mergedList) + joeCount <= 10) {
             requirementOptions.push({
                 name: 'Insights',
-                count: joeCount,
-                requirement: 10,
+                requirementCount: joeCount,
+                requirementTarget: 10,
                 trait: ['insight']
             })
         }
     }
-    else if (investigatorData.name === 'Lola Hayes') {
-        const lolaRequiredCards = ['guardian', 'seeker', 'rogue', 'mystic', 'survivor'].map(faction => {
-            return {
+    else if (investigatorData.name === 'Lola Hayes' || investigatorData.name == 'Subject 5U-21') {
+        const atleastOption = investigatorData.deck_options.filter(item => {
+            if (item.atleast) return true
+            return false
+        })[0].atleast
+
+        // both currently use all factions
+        const atleastRequiredCards = ['guardian', 'seeker', 'rogue', 'mystic', 'survivor'].map(faction => {
+                return {
                 faction: faction,
                 count: countListInclusive(mergedList.filter(item => {
                     if (item.faction_code === faction) {
@@ -637,41 +664,45 @@ export function extraDeckRequirements(props) {
             }
         }).sort((e1, e2) => e2.count - e1.count)
 
+        const atleastFactions = atleastOption.factions
+        const atleastMin = atleastOption.min
+
         let count = 0
-        for (let i = 0; i < 3; i++) {
-            count += Math.min(7, lolaRequiredCards[i].count)
+        for (let i = 0; i < atleastFactions; i++) {
+            count += Math.min(atleastMin, atleastRequiredCards[i].count)
         }
 
         var totalCount
         if (isLevel0Upgrade(phase) || isUpgrade(phase)) totalCount = count
         else totalCount = deckSize - countList(mergedList) + count
 
-        if (totalCount <= 21) {
-            const minCount = lolaRequiredCards[2].count
+        const totalNeeded = atleastFactions * atleastMin 
+
+        if (totalCount <= totalNeeded) {
+            const minCount = atleastRequiredCards[atleastFactions - 1].count
 
             let factionRequirement = []
             let completeFactions = 0
             let remaining = 0
             
             for (let i = 0; i < 5; i++) {
-                if (lolaRequiredCards[i].count >= 7) {
+                if (atleastRequiredCards[i].count >= atleastMin) {
                     completeFactions = completeFactions + 1
                 }
-                else if (lolaRequiredCards[i].count >= minCount) {
-                    factionRequirement.push(lolaRequiredCards[i].faction)
+                else if (atleastRequiredCards[i].count >= minCount) {
+                    factionRequirement.push(atleastRequiredCards[i].faction)
                 }
             }
 
-            for (let i = 0; i < 3; i++) {
-                if (lolaRequiredCards[i].count < 7) remaining += 7 - lolaRequiredCards[i].count
+            for (let i = 0; i < atleastFactions; i++) {
+                if (atleastRequiredCards[i].count < atleastMin) remaining += atleastMin - atleastRequiredCards[i].count
             }
             
             // used in filtering
             requirementOptions.push({
                 name: '',
-                requirementName: '',
-                count: minCount,
-                requirement: 7,
+                requirementCount: minCount,
+                requirementTarget: atleastMin,
                 faction: factionRequirement
             })
 
@@ -679,11 +710,20 @@ export function extraDeckRequirements(props) {
             requirementOptions.push({
                 name: 'Class (7 cards)',
                 requirementName: 'Class',
-                count: completeFactions,
+                requirementCount: completeFactions,
                 remaining: remaining,
-                requirement: 3
+                requirementTarget: atleastFactions
             })
         }
+//        faction: [classChoices[0]]
+        // not a requirement, just an added regular - maybe it is a requirement
+        if (investigatorData.name === 'Subject 5U-21' && isUpgrade(phase)) {
+            requirementOptions.push({
+                name: '',
+                faction: [classChoices['faction_1']]
+//                faction: ['rogue']
+                })  
+            }
     }
 
     var skillCount = 10
@@ -701,8 +741,8 @@ export function extraDeckRequirements(props) {
         requirementOptions.push({
             name: 'Skills',
             requirementName: 'Skills',
-            count: skillCount,
-            requirement: 10,
+            requirementCount: skillCount,
+            requirementTarget: 10,
             type: ['skill']
         })
     }
@@ -713,8 +753,8 @@ export function extraDeckRequirements(props) {
         requirementOptions.push({
             name: 'Deck size',
             requirementName: 'Deck size',
-            count: size,
-            requirement: deckSize,
+            requirementCount: size,
+            requirementTarget: deckSize,
             size: true
         })
     }

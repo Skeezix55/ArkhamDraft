@@ -192,7 +192,7 @@ function StandardChaosDraft(dispatch, getState) {
 function SimpleDraft(dispatch, getState) {
     let state = getState()
 
-    // generates draft cards
+// generates draft cards
     const filteredData = FilterCards({ 
         cardData: state.data.cardData,
         investigatorData: state.settings.investigatorData,
