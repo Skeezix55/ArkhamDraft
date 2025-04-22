@@ -281,7 +281,8 @@ p {
 .investigator-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 288px;
+/*    grid-template-rows: 288px;*/
+    grid-template-rows: 100%;
     row-gap: 10px;
     justify-items: center;
     align-items: start;
@@ -399,17 +400,17 @@ p {
 }
 .draft-card {
     width: 100%;
-    height: 400px;
-    padding-bottom: 139%;
-    border: transparent solid 1px;
+    aspect-ratio: 0.72;
+/*    padding-bottom: 139%;*/
+/*    border: transparent solid 1px;*/
     border-radius: 12px;
     box-sizing: border-box;
     position: relative;
 }
 .draft-card-selected {
     width: 100%;
-    height: 400px;
-    padding-bottom: 150%;
+    aspect-ratio: 0.72;
+/*    padding-bottom: 150%;*/
     border: 2px solid black;
     border-radius: 12px;
     box-sizing: border-box;
@@ -418,8 +419,8 @@ p {
 }
 .draft-card-loading {
     width: 100%;
-    height: 400px;
-    padding-bottom: 139%;
+    aspect-ratio: 0.72;
+/*    padding-bottom: 139%;*/
     border: transparent solid 1px;
     border-radius: 12px;
     box-sizing: border-box;
@@ -427,22 +428,20 @@ p {
 }  
 .draft-image {
     width: 100%;
-    height: 400px;
+    height: 100%;
     box-sizing: border-box;
     border-radius: 12px;
 }
 .draft-image-selected {
-    width: 100%;
+    width: 94%;
+    height: 94%;
     box-sizing: border-box;
-    border-width: 8px 10px 5px 10px;
-    border-style: solid;
-    border-color: transparent;
+/*    border-width: 8px 10px 5px 10px;
+    border-style: solid;*/
+/*    border-color: transparent;*/
+    background-color: red;
     border-radius: 12px;
-}
-
-.draft-card-loading > h3 {
-    padding: 10px 10px;
-    margin-bottom: -10px;
+    margin-top: 3%;
 }
 .imageStatus {
     display: inline-block;
@@ -462,12 +461,19 @@ p {
     left: 0%;
     width: 100%;
 }
+.draft-card-selected-button {
+    position: absolute;
+    top: 86%;
+    left: 25%;
+    width: 50%;
+    height: 10%;
+}
 .draft-card-button {
     position: absolute;
-    margin: 0;
-    padding: 0;
-    top: 88%;
-    left: 28%;
+    top: 84%;
+    left: 25%;
+    width: 50%;
+    height: 10%;
 }
 .xpDots {
     font-size: 80%;
@@ -940,11 +946,6 @@ input, select {
         font-size: 5pt;
         margin: 2px 0 0 0;
     }
-    .draft-card-loading {
-        padding-bottom: 137%;
-        border: transparent solid 2px;
-        border-radius: 6px;
-    }  
     .cardName {
         font-size: 10pt;
     }
@@ -958,30 +959,60 @@ input, select {
         top: 50%;
         left: 0%;
     }
+    .draft-card-selected-button {
+        position: absolute;
+        top: 78%;
+        left: 16%;
+        width: 60%;
+        height: 14%;
+    }
     .draft-card-button {
-        top: 84%;
+        position: absolute;
+        top: 75%;
         left: 20%;
         width: 60%;
-        height: 13%;
+        height: 14%;
+    }
+    .draft-image {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        border-radius: 6px;
     }
     .draft-image-selected {
-        border-width: 6px 6px 2px 6px;
-        border-style: solid;
-        border-color: transparent;
+        width: 90%;
+        height: 90%;
+        box-sizing: border-box;
+        border-radius: 6px;
+        margin-top: 3%;
     }    
     .draft-card {
-        padding-bottom: 137%;
+        width: 100%;
+        aspect-ratio: 0.72;
+/*        padding-bottom: 137%;*/
         border-radius: 6px;
+        box-sizing: border-box;
+        position: relative;
+        margin-bottom: -5%;
     }
     .draft-card-selected {
-        padding-bottom: 155%;
+        width: 100%;
+        aspect-ratio: 0.72;
+/*        padding-bottom: 155%; */
         border-radius: 6px;
+        box-sizing: border-box;
+        position: relative;
+        margin-bottom: -5%;
     }
     .draft-card-loading {
         width: 100%;
-        padding-bottom: 137%;
+        aspect-ratio: 0.72;
+/*        padding-bottom: 137%;*/
         border-radius: 6px;
-    }  
+        box-sizing: border-box;
+        position: relative;
+        margin-bottom: -5%;
+        }  
     .modifierleft {
         height: 10px;
         line-height: 10px;
@@ -1006,4 +1037,8 @@ input, select {
         right: 2%;
         width: 96%;
     }
+    .investigator-image {
+        border-radius: 6px;
+    }
+    
 }

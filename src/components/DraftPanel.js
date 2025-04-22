@@ -242,10 +242,17 @@ function DraftPanel(props) {
             }
         }
 
-        var draftButton = (requireConfirmation && selectedDraftCard !== i) ?
-        <button className='button-rect button-green draft-card-button' onClick={() => { handleSelect(i) }}>Select</button> :
-        <button className='button-rect button-green draft-card-button' onClick={() => { handleDraft(i) }}>Draft</button>
+        var draftButton;
 
+        if (requireConfirmation) {
+            draftButton = (selectedDraftCard !== i) ?
+                <button className='button-rect button-green draft-card-button' onClick={() => { handleSelect(i) }}>Select</button> :
+                <button className='button-rect button-green draft-card-selected-button' onClick={() => { handleDraft(i) }}>Draft</button>
+        }
+        else {
+            draftButton = <button className='button-rect button-green draft-card-button' onClick={() => { handleDraft(i) }}>Draft</button>
+        }
+        
         var borderColor = (requireConfirmation && selectedDraftCard === i) ? 'black' : 'transparent'
 
         if (draftPool[i].imagesrc === undefined) {
