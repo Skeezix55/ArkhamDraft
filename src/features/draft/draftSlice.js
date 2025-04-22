@@ -1,4 +1,4 @@
-import { createSlice, createAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 import { reset, beginDraft, endDraft, changeSetting, calculateFilteredCount } from '../settings/settingsSlice'
 import { mergeTaboo } from '../data/dataSlice'
@@ -32,6 +32,7 @@ const initialState = {
         { name: 'Adaptable', count: 0, drafted: 0 },
         { name: 'Versatile', count: 0, drafted: 0, versatileCount: 0, versatileDrafted: 0 },
         { name: 'Ancestral Knowledge', count: 0, drafted: 0 },
+        { name: 'Underworld Market', count: 0, drafted: 0 },
         { name: 'Removed', count: 0, drafted: 0 },
         { name: 'Requirement (Deck size)', count: 0, drafted: 0 },
         { name: 'Requirement (Class)', count: 0, drafted: 0 },
@@ -477,7 +478,7 @@ function startDraft(phase) {
         dispatch(clearBuildXPList())
         
         if (isLevel0Build(state.draft.phase)) {
-            if (state.settings.investigator === 'Father Mateo' || (state.settings.investigator === 'Roland Banks' && state.settings.parallel)) {
+            if ((state.settings.investigator === 'Father Mateo' && !state.settings.parallel) || (state.settings.investigator === 'Roland Banks' && state.settings.parallel)) {
                 dispatch(addToBuildXPList({ name: state.settings.investigator + (state.settings.parallel ? ' (Parallel)' : ''), value: 5 }))
             }
         }

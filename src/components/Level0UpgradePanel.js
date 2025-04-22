@@ -21,7 +21,7 @@ function Level0UpgradePanel(props) {
     function handleStartDraft() {
         dispatch(startDraft(phase))
     }
-    
+
     if (!deckLoaded) return null
 
     var level0List = phase === DraftPhases.UpgradeLevel0SwapPhase ? level0Swaps : level0Adds

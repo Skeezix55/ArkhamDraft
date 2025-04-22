@@ -10,7 +10,18 @@ function InvestigatorPanel(props) {
 
     let investigatorCardImage = null
     let investigatorCardImageBack = null
-        
+    
+    // handle weirdly rotated ArkhamDB images
+    function imageDidLoad(props)
+    {
+        const { index, event } = props;
+
+        if (event.target.naturalHeight > event.target.naturalWidth) {
+            if ( index === 0) event.target.className = 'investigator-image rotatecw'
+            else event.target.className = 'investigator-image rotateccw'
+        }
+    }
+
     if (cardData) {
         const factionCode = investigatorData.faction_code;
         const classColor = ColorForClass(factionCode)
@@ -20,7 +31,7 @@ function InvestigatorPanel(props) {
         }
         else {
             const imagesrc = "https://www.arkhamdb.com" + investigatorData.imagesrc
-            investigatorCardImage = <div className="investigator-div" style={{backgroundColor: classColor}}><img className="investigator-image" src={imagesrc} alt={props.investigator} /></div>
+            investigatorCardImage = <div className="investigator-div" style={{backgroundColor: classColor}}><img className="investigator-image" src={imagesrc} alt={props.investigator} onLoad={event => imageDidLoad({index: 0, event: event})}/></div>
         }
 
         if (investigatorData.backimagesrc === undefined) {
@@ -28,7 +39,7 @@ function InvestigatorPanel(props) {
         }
         else {
             const backimagesrc = "https://www.arkhamdb.com" + investigatorData.backimagesrc
-            investigatorCardImageBack = <div className="investigator-div" style={{backgroundColor: classColor}}><img className="investigator-image" src={backimagesrc} alt={investigator + ' (back)'} /></div>
+            investigatorCardImageBack = <div className="investigator-div" style={{backgroundColor: classColor}}><img className="investigator-image" src={backimagesrc} alt={investigator + ' (back)'} onLoad={event => imageDidLoad({index: 1, event: event})}/></div>
         }
     }
 

@@ -2,6 +2,9 @@ import { countList, countListInclusive, calculateModifiedCost } from '../draft/D
 import ResearchLogs from './ResearchLogs'
 import DraftPhases, { isLevel0Build, isLevel0Upgrade, isUpgrade } from './DraftPhases'
 
+// if it's 10 other spirit cards, what happens while upgrading?  Should it not use that filter because you could always just remove a different one?
+// I think the convention is that you have to remove cards later in ArkhamDB.  I could ask about this.
+
 // card data:
 // pack_code
 // pack_name
@@ -76,12 +79,11 @@ function FilterCards(props) {
 //console.log(draftUseLimited)
 //console.log(phase)
 //console.log(mergedList)
-    const deckOptions = investigatorData.deck_options
+    const deckOptions = investigatorData ? investigatorData.deck_options : null
 
     if (!cardData || !investigatorData) return []
 
     const useLimited = phase >= 1 && phase <= 3 ? draftUseLimited[phase-1] : true
-
 
     const filteredDeck = filterDeckForLimited(mergedList, deckOptions)
 
@@ -125,7 +127,7 @@ function FilterCards(props) {
         case DraftPhases.UpgradePhase:
             minLevel = 1
             maxLevel = draftXP - draftProgress
-            if (maxLevel < 1) maxLevel = 1
+            if (maxLevel < 0) maxLevel = 0  //tb
             break
         default:
             minLevel = 0
@@ -133,7 +135,7 @@ function FilterCards(props) {
             break 
     }
 
-    var firstLoop = true
+//    var firstLoop = true
     const filteredData = cardData.filter(card => {
         if (card.type_code === 'investigator') return false
         if (card.type_code === 'story') return false
@@ -141,7 +143,9 @@ function FilterCards(props) {
         if (card.type_code === 'enemy') return false
         if (card.type_code === 'treachery') return false
         if (card.bonded_to) return false
-//console.log(card.name)
+
+        // bonded cards without the bonded_to field - these may be updated in ArkhamDB someday - fixed!
+
         if (isLevel0Upgrade(phase) && card.permanent) {
 //console.log('Reject (Permanent): ' + card.name + ' (' + card.code + ')')
             return false
@@ -155,8 +159,6 @@ function FilterCards(props) {
         if (card.tabooxp !== undefined) xp += card.tabooxp
         if (card.exceptional || (card.tabooexceptional !== undefined && card.tabooexceptional)) xp *= 2
 
-        // simple level 0 test here
-        if (maxLevel === 0 && xp > 0) return false
         if (xp < minLevel) return false
 
         if (!isLevel0Build(phase) && isAtDeckCreation(card)) {
@@ -164,7 +166,22 @@ function FilterCards(props) {
             return false
         }
 
-        if (card.restrictions && card.restrictions.investigator) return false
+        if (card.restrictions) {
+            if (card.restrictions.investigator) return false
+
+            if (card.restrictions.trait) {
+                var legalTrait = false
+
+                for (let i = 0; i < card.restrictions.trait.length; i++) {
+                    if (investigatorData.traits.toLowerCase().includes(card.restrictions.trait[i])) {
+                        legalTrait = true
+                    }
+                }
+//console.log(card.name + ': ' + legalTrait)
+                if (!legalTrait) return false;
+            }
+        }
+
         if (!collection[card.pack_code]) return false
 
 //        if (deckList && filteredResearch[card.name]) {
@@ -227,11 +244,6 @@ function FilterCards(props) {
             let option = deckOptions[i]
             let optionLegal = false
 
-            if (option.name === 'Trait Choice') {
-                const selectedOptions = option.option_select.filter(item => item.name === traitChoice)
-                if (selectedOptions.length > 0) option = selectedOptions[0]
-            }
-
             if (testDeckOption(card, option)) {
                 optionLegal = true
 
@@ -244,7 +256,6 @@ function FilterCards(props) {
                     if (!useLimited) optionLegal = false
                     else {
                         const inDeck = countDeckLimited(filteredDeck, deckOptions[i])
-
                         if (inDeck >= deckOptions[i].limit) {
 //console.log('Reject (Over limited limit): ' + card.name + ' (' + card.code + ')')
                             optionLegal = false
@@ -338,21 +349,21 @@ function FilterCards(props) {
 //console.log('RequirementOptions')
 //console.log(requirementOptions)
         if (requirementOptions) {
-            var sizeNeeded = 0
-            var othersNeeded = 0
-            const sizeRequirement = requirementOptions.filter(item => item.name.includes('Deck size'))
+//            var sizeNeeded = 0
+//            var othersNeeded = 0
+//            const sizeRequirement = requirementOptions.filter(item => item.name.includes('Deck size'))
 
-            if (sizeRequirement.length > 0) sizeNeeded = sizeRequirement[0].requirementTarget - sizeRequirement[0].requirementCount
+//            if (sizeRequirement.length > 0) sizeNeeded = sizeRequirement[0].requirementTarget - sizeRequirement[0].requirementCount
 
-            const otherRequirements = requirementOptions.filter(item => !item.name.includes('Deck size'))
-            var level0List = phase === DraftPhases.UpgradeLevel0SwapPhase ? level0Swaps : level0Adds
-            const draftTotal = level0List.reduce((acc, a) => acc + a.count - a.drafted, 0)
-//            if (otherRequirements.length > 0) othersNeeded = otherRequirements.reduce((acc, a) => !a.requirementName ? acc + a.requirement - a.count : acc, 0)
-//            const cardsNeeded = sizeNeeded < draftTotal ? draftTotal : sizeNeeded
+//            const otherRequirements = requirementOptions.filter(item => !item.name.includes('Deck size'))
+//            var level0List = phase === DraftPhases.UpgradeLevel0SwapPhase ? level0Swaps : level0Adds
+//            const draftTotal = level0List.reduce((acc, a) => acc + a.count - a.drafted, 0)
+////            if (otherRequirements.length > 0) othersNeeded = otherRequirements.reduce((acc, a) => !a.requirementName ? acc + a.requirement - a.count : acc, 0)
+////            const cardsNeeded = sizeNeeded < draftTotal ? draftTotal : sizeNeeded
 
-//            find deck size requirement, test against sum of others, if greater, no requirement enforced
-//            otherwise, go in order
-//            if (othersNeeded >= sizeNeeded) {
+////            find deck size requirement, test against sum of others, if greater, no requirement enforced
+////            otherwise, go in order
+////            if (othersNeeded >= sizeNeeded) {
                 // if no requirementCount, treat as a normal options
                 //  otherwise, test if count < target
                 for (let i = 0; i < requirementOptions.length; i++) {
@@ -375,14 +386,14 @@ function FilterCards(props) {
             return false
         }
         
-        firstLoop = false
-//console.log('Accept: ' + card.name + '(' + card.code + ')')
+//        firstLoop = false
+//console.log('Accept: ' + card.name + ' (' + card.code + ')')
         return true
     }).map(card => {    // return new items with only necessary fields so we can add to it
         var restrictions = undefined
         if (card.restrictions) {
             if (card.restrictions.investigator) restrictions = { ...card.restrictions, investigator: { ...card.restrictions.investigator }}
-            else card.restrictions = { ...card.restrictions }
+            else restrictions = { ...card.restrictions }
         }
 
         return { 
@@ -426,11 +437,15 @@ function FilterCards(props) {
             let legal = false
 
             for (let i = 0; i < options.length; i++) {
-                if (options[i].limit) continue;
+                if (options[i].limit) {
+                    continue;
+                }
 
                 const optionLegal = testDeckOption(item, options[i])
 
-                if (optionLegal) legal = true
+                if (optionLegal) {
+                    legal = true
+                }
             }
 
             if (!legal) filteredDeck.push(item)
@@ -460,9 +475,14 @@ function FilterCards(props) {
         let trait = true
         let uses = true
         let type = true
-        let text = true
+//        let text = true
         let tag = true
         let permanent = true
+
+        if (option.name === 'Trait Choice') {
+            const selectedOptions = option.option_select.filter(item => item.name === traitChoice)
+            if (selectedOptions.length > 0) option = selectedOptions[0]
+        }
 
         if (option.name === 'Secondary Class') {
             factionChoice = false
@@ -553,7 +573,9 @@ function FilterCards(props) {
             if (cardType && option.type.find(item => item === cardType))
                 type = true
         }
-            
+
+        // text requirement removed - going by tag now
+/*
         if (option.text) {
             text = false
 
@@ -561,6 +583,7 @@ function FilterCards(props) {
                 text = true
             }
         }
+*/
         if (option.tag) {
             tag = false
 
@@ -576,8 +599,8 @@ function FilterCards(props) {
 
 //        console.log(faction + ' ' + level + ' ' + trait + ' ' + uses + ' ' + type + ' ' + factionChoice + ' ' + text + ' ' + tag + ' ' + permanent)
 
-        return faction && level && trait && uses && type && factionChoice && text && tag && permanent
-    }
+    return faction && level && trait && uses && type && factionChoice && tag && permanent
+}
 
     calculateWeights(filteredData, draftWeighting)
 
@@ -590,6 +613,7 @@ function calculateWeights(filteredData, draftWeighting) {
         'medium': [ 1, 1, 1, 1, 1, 1 ],
         'high':   [ 1, 2, 3, 4, 6, 8 ]
     }
+
     var weightSum = 0
     for (let i = 0; i < filteredData.length; i++) {
         const weightArray = weightData[draftWeighting]
@@ -598,9 +622,9 @@ function calculateWeights(filteredData, draftWeighting) {
         else weightSum += 1
 
 //if (filteredData[i].traits.includes('Spell')) weightSum += 500
-//if (filteredData[i].name === 'Adaptable') weightSum += 500
+//if (filteredData[i].name === 'Underworld Market') weightSum += 500
+//if (filteredData[i].name === 'Versatile') weightSum += 500
 //if (filteredData[i].subname && filteredData[i].subname.includes('Untranslated')) weightSum += 500
-
         filteredData[i].weightValue = weightSum
     }
 }
@@ -612,7 +636,7 @@ export function extraDeckRequirements(props) {
     let requirementOptions = []
 
     // no restrictions will exist for empty decks)
-    if (phase == DraftPhases.AllCards) return requirementOptions
+    if (phase === DraftPhases.AllCards) return requirementOptions
 
     if (investigatorData.name === 'Joe Diamond') {
         const joeRequiredCards = mergedList.filter(item => {
@@ -638,7 +662,7 @@ export function extraDeckRequirements(props) {
             })
         }
     }
-    else if (investigatorData.name === 'Lola Hayes' || investigatorData.name == 'Subject 5U-21') {
+    else if (investigatorData.name === 'Lola Hayes' || investigatorData.name === 'Subject 5U-21') {
         const atleastOption = investigatorData.deck_options.filter(item => {
             if (item.atleast) return true
             return false
@@ -898,6 +922,7 @@ function isAtDeckCreation(card) {
         case 'Down the Rabbit Hole':
         case 'Short Supply':
         case 'In the Thick of It':
+        case 'Ascetic':
             return true
         default:
             break

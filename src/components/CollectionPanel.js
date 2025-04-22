@@ -65,6 +65,16 @@ function CollectionSettings(props) {
                 </div>
                 <div className="card-container">
                     <CollectionCycle 
+                        includedSets={['fhvp']}
+                        columnValue='col1'
+                    />
+                    <CollectionCycle 
+                        includedSets={['tdcp']}
+                        columnValue='col2'
+                    />
+                </div>
+                <div className="card-container">
+                    <CollectionCycle 
                         includedSets={['nat', 'har', 'win', 'jac', 'ste']}
                         header='Starter Decks'
                         columnValue='col1'

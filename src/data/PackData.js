@@ -54,7 +54,9 @@ const PackData = {
     'rttfa': 'Return to the Forgotten Age',
     'rttcu': 'Return to the Circle Undone',
     'eoep': 'Edge of the Earth',
-    'tskp': 'The Scarlet Keys'
+    'tskp': 'The Scarlet Keys',
+    'fhvp': 'The Feast of Hemlock Vale',
+    'tdcp': 'The Drowned City'
 }
 
 export default PackData

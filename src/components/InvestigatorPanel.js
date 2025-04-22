@@ -5,9 +5,11 @@ import { changeInvestigatorList, changeSetting, calculateFilteredCount } from '.
 
 function InvestigatorPanel(props) {
     const investigatorData = [
+        'Agatha Crane',
         'Agnes Baker',
         'Agnes Baker (Parallel)',
         'Akachi Onyele',
+        'Alessandra Zorzi',
         'Amanda Sharpe',
         'Amina Zidane',
         '"Ashcan" Pete',
@@ -24,28 +26,39 @@ function InvestigatorPanel(props) {
         'Dexter Drake',
         'Diana Stanley',
         'Father Mateo',
+        'Father Mateo (Parallel)',
         'Finn Edwards',
+        'George Barnaby',
         'Gloria Goldberg',
+        'Hank Samson',
         'Harvey Walters',
         'Jacqueline Fine',
         'Jenny Barnes',
         'Jim Culver',
+        'Jim Culver (Parallel)',
         'Joe Diamond',
+        'Kate Winthrop',
+        'K\u014dhaku Narukami',
         'Kymani Jones',
         'Leo Anderson',
         'Lily Chen',
         'Lola Hayes',
+        'Lucius Galloway',
         'Luke Robinson',
         'Mandy Thompson',
         'Marie Lambeau',
+        'Marion Tavares',
         'Mark Harrigan',
+        'Michael McGlen',
         'Minh Thi Phan',
         'Monterey Jack',
+        'Monterey Jack (Parallel)',
         'Nathaniel Cho',
         'Norman Withers',
         'Patrice Hathaway',
         'Preston Fairmont',
         'Rex Murphy',
+        'Rex Murphy (Parallel)',
         'Rita Young',
         'Roland Banks',
         'Roland Banks (Parallel)',
@@ -55,7 +68,7 @@ function InvestigatorPanel(props) {
         '"Skids" O\'Toole',
         '"Skids" O\'Toole (Parallel)',
         'Stella Clark',
-        'Subject 5U-21',
+//        'Subject 5U-21',
         'Tommy Muldoon',
         'Tony Morgan',
         'Trish Scarborough',
@@ -64,8 +77,10 @@ function InvestigatorPanel(props) {
         'Wendy Adams',
         'Wendy Adams (Parallel)',
         'William Yorick',
+        'Wilson Richards',
         'Winifred Habbamock',
-        'Zoey Samaras'
+        'Zoey Samaras',
+        'Zoey Samaras (Parallel)'
     ]
 
     const settings = useSelector(state => state.settings)
@@ -80,19 +95,30 @@ function InvestigatorPanel(props) {
     }
 
     function handleChangeInvestigator(event) {
+        if (event.target.value === 'Agatha Crane') {
+            dispatch(changeSetting( 'PrimaryClass', 'seeker' ))
+        }
         dispatch(changeInvestigatorList(event.target.value))
         dispatch(calculateFilteredCount)
+    }
+
+    // requires an investigator change
+    function handleChangePrimary(event) {
+        dispatch(changeSetting(event.target.name, event.target.value))
+        dispatch(changeInvestigatorList(settings.investigator))
     }
 
     function handleRandom(event) {
         dispatch(changeInvestigatorList(investigatorData[Math.floor(Math.random() * investigatorData.length)]))
     }
 
+    let primaryFactionList = null
     let secondaryFactionList = null
     let classChoiceList = []
     let deckSizeList = null
     let traitChoiceList = null
     let tabooList = null
+    let primaryClassValue = settings.primaryClass
     let secondaryClassValue = settings.secondaryClass
     let classChoice1Value = settings.classChoices['faction_1']
     let classChoice2Value = settings.classChoices['faction_2']
@@ -100,6 +126,16 @@ function InvestigatorPanel(props) {
     let deckSizeValue = settings.selectedDeckSize ? settings.selectedDeckSize : settings.deckSize
 
     if (settings.investigatorData) {
+        // Agatha Crane has two separate cards, deckOptions does not distinguish, so we'll do this manually
+        if (settings.investigator === 'Agatha Crane') {
+            primaryFactionList = [ 'seeker', 'mystic' ].map((item, index) => {
+                return <option value={item} key={index}>
+                    {item[0].toUpperCase() + item.slice(1)}
+                    </option>
+            })
+
+        }
+
         const deckOptions = settings.investigatorData.deck_options
 
         for (let i = 0; i < deckOptions.length; i++) {
@@ -167,6 +203,19 @@ function InvestigatorPanel(props) {
         </span>
         <span className="fbinvestigatorbutton"></span>
     </div>
+
+    const primaryClassDiv = primaryFactionList ?
+        <div className="fbsetting">
+            <label className="fbinvestigatorleft" value={primaryClassValue}>Class:</label>
+            <span className="fbinvestigatorcenter">
+                <select className="fbinvestigatorselect" name="PrimaryClass" value={settings.primaryClass} onChange={handleChangePrimary}>
+                    {primaryFactionList}
+                </select>
+            </span>
+            <span className="fbinvestigatorbutton"></span>
+        </div>
+        :
+        null
 
     const secondaryClassDiv = secondaryFactionList ?
         <div className="fbsetting">
@@ -247,6 +296,7 @@ function InvestigatorPanel(props) {
                 </span>
                 <span className="fbinvestigatorbutton"><button id="fbbutton-random" onClick={handleRandom}>Random</button></span>
             </div>
+            {primaryClassDiv}
             {secondaryClassDiv}
             {classChoice1Div}
             {classChoice2Div}

@@ -113,7 +113,8 @@ function SettingsExport(props) {
         })[0]
     
         const weaknessCard = cardData[weaknessID]
-        if (!weaknessCard.octgn_id) weaknessCard.octgn_id = ''
+//console.log(weaknessCard)
+//        if (!weaknessCard.octgn_id) weaknessCard.octgn_id = ''
 
         specialCards.push({name: weaknessCard.name, key: weaknessCard.code, type_code: weaknessCard.type_code, count: 1 })
 

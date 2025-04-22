@@ -5,8 +5,9 @@ import DraftPhases from '../../data/DraftPhases'
 
 const initialState = {
     investigatorData: null,
-    investigator: 'Agnes Baker',
+    investigator: 'Agatha Crane',
     parallel: false,
+    primaryClass: 'seeker',
     secondaryClass: '',
     classChoices: { faction_1: 'guardian', faction_2: 'seeker' },
     selectedDeckSize: '',
@@ -31,7 +32,7 @@ const initialState = {
     burnCards: [ '', '' ],
     exileSelection: {},
     researchSelection: {},
-    otherUpgradeSettings: { GMM: '1' },
+    otherUpgradeSettings: { GMM: '1', Pelt: [false, false] },
     removedCards: 0,
 
     drafting: false,
@@ -48,6 +49,11 @@ const settingsSlice = createSlice({
             state.investigatorData = action.payload.data
             state.investigator = state.investigatorData.name
             state.parallel = action.payload.parallel
+
+            // Agatha Crane has two cards, can't tell from deckoptions, so we'll do it manually
+            if (state.investigator === 'Agatha Crane') {
+                state.primaryClass = state.investigatorData.faction_code
+            }
 
             const secondaryOptions = state.investigatorData.deck_options.filter(item => item.name === 'Secondary Class')
             if (secondaryOptions.length > 0) {
@@ -81,6 +87,9 @@ const settingsSlice = createSlice({
         changeSetting: {
             reducer(state, action) {
                 switch (action.payload.setting) {
+                    case 'PrimaryClass':
+                        state.primaryClass = action.payload.value;
+                        break
                     case 'SecondaryClass':
                         state.secondaryClass = action.payload.value
                         break
@@ -155,7 +164,15 @@ const settingsSlice = createSlice({
                         state.researchSelection[action.payload.value] = state.researchSelection[action.payload.value] ? false : true
                         break
                     case 'OtherUpgrade':
-                        state.otherUpgradeSettings[action.payload.value.id] = action.payload.value.value
+                        if (action.payload.value.id === 'Pelt1') {
+                            state.otherUpgradeSettings['Pelt'][0] = action.payload.value.value
+                        }
+                        else if (action.payload.value.id === 'Pelt2') {
+                            state.otherUpgradeSettings['Pelt'][1] = action.payload.value.value
+                        }
+                        else {
+                            state.otherUpgradeSettings[action.payload.value.id] = action.payload.value.value
+                        }
                         break
                     case 'RemovedCards':
                         state.removedCards = action.payload.value
@@ -185,6 +202,7 @@ const settingsSlice = createSlice({
                 }
                 else if (name.includes('OtherUpgrade')) {
                     const settingID = name.substring(12)
+
                     return { payload: {setting: 'OtherUpgrade', value: { id: settingID, value: value }}}
                 }
                             
@@ -206,7 +224,7 @@ const settingsSlice = createSlice({
             state.burnCards = [ '', '' ]
             state.exileSelection = {}
             state.researchSelection = {}
-            state.otherUpgradeSettings = { GMM: '0' }
+            state.otherUpgradeSettings = { GMM: '0', Pelt: [false, false] }
             state.removedCards = 0
             state.drafting = false
             state.complete = false
@@ -234,10 +252,18 @@ function changeInvestigatorList(entry) {
         }
 
         const cardData = getState().data.cardData
-        const investigatorID = Object.keys(cardData)
-        .filter(key => {
-            return cardData[key].name === name && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' && cardData[key].duplicate_of_name === undefined : true)
-        })[0]
+        const settings = getState().settings
+
+        // Agatha has two investigator cards, we need to choose the correct one
+        const investigatorID = (name === 'Agatha Crane') ?
+            Object.keys(cardData)
+                .filter(key => {
+                    return cardData[key].name === name && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' && cardData[key].duplicate_of_name === undefined : true) && (cardData[key].faction_code === settings.primaryClass)
+                })[0] :
+            Object.keys(cardData)
+                .filter(key => {
+                    return cardData[key].name === name && (parallel ? typeof cardData[key].alternate_of_name !== 'undefined' && cardData[key].duplicate_of_name === undefined : true)
+                })[0]
 
         dispatch(changeInvestigator({ data: cardData[investigatorID], parallel: parallel }))
     }
@@ -251,7 +277,7 @@ function changeInvestigatorDeck(data, parallel) {
 
 function calculateFilteredCount(dispatch, getState) {
     const state = getState()
-    
+
     const filteredCards = FilterCards({
         cardData: state.data.cardData,
         investigatorData: state.settings.investigatorData,
@@ -312,6 +338,7 @@ function calculateFilteredCount(dispatch, getState) {
     const research = filterResearch({
         filteredData: allFilteredCards
     })
+
 
     dispatch(changeSetting('FilteredCount', count))
     dispatch(changeSetting('FilteredResearch', research))

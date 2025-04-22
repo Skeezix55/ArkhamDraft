@@ -72,7 +72,8 @@ export async function fetchCards(dispatch, getState) {
     })
     .then(res => {
         dispatch(updateCardData(res))
-        dispatch(changeInvestigatorList( 'Agnes Baker' ))
+        dispatch(changeSetting( 'PrimaryClass', 'seeker' ))
+        dispatch(changeInvestigatorList( 'Agatha Crane' ))
 
         dispatch(calculateFilteredCount)
     })
@@ -96,7 +97,7 @@ export async function fetchTaboo(dispatch, getState) {
 
         dispatch(calculateFilteredCount)
     })
-    .catch((err) => {
+    .catch((err) => {        
         dispatch(changeFetchError(true))
     })
 }

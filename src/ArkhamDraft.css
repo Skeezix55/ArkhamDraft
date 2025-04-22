@@ -27,7 +27,7 @@ p {
     margin: auto;
     padding: 5px;
     width: 90%;
-    max-width: 700px;
+    max-width: 900px;
     font-size: min(2.0vw, 8pt);
     box-sizing: border-box;
 }
@@ -42,7 +42,7 @@ p {
     padding-bottom: 5px;
     margin-bottom: 5px;
     width: 95%;
-    max-width: 700px;
+    max-width: 900px;
     border: 2px solid black;
     background-color: #ebebeb;
   }
@@ -281,6 +281,7 @@ p {
 .investigator-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: 288px;
     row-gap: 10px;
     justify-items: center;
     align-items: start;
@@ -289,18 +290,34 @@ p {
 }
 .investigator-div {
     width: 100%;
-    height: 0;
-    padding-bottom: 70%;
+    height: 100%;
+/*    padding-bottom: 70%; */
 }
 .investigator-div-loading { 
     width: 100%;
-    height: 0;
-    padding-bottom: 70%;
+    height: 100%;
+/*    padding-bottom: 70%; */
     border: black solid 1px;
     border-radius: 8px;
 }
 .investigator-image {
     width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+    padding: auto;
+}
+.rotatecw {
+    transform: rotate(90deg) scale(1.4);
+    width: auto;
+    height: 100%;
+    border-radius: 12px;
+}
+.rotateccw {
+    transform: rotate(-90deg) scale(1.4);
+    width: auto;
+    height: 100%;
+    border-radius: 12px;
 }
 .investigator-div-loading > p {
     margin-bottom: 5px;
@@ -320,20 +337,32 @@ p {
 }
 
 .floatingImageLeft {
-    display: block;
+    display: flex; 
+    align-items: center;
     position: fixed;
     z-index: 3;
     top: 50%;
-    left: 3%;
+    left: 2%;
+    width: max(400px, calc((91% - 900px) / 2));
+    height: 100%;
     transform: translateY(-50%);
 }
 .floatingImageRight {
-    display: block;
+    display: flex; 
+    align-items: center;
     position: fixed;
     z-index: 3;
     top: 50%;
-    right: 3%;
+    right: 2%;  
+    width: max(400px, calc((91% - 900px) / 2));
+    height: 100%;
     transform: translateY(-50%);
+}
+.overlayImage {
+    width: 100%;
+    object-fit: contain;
+    border-radius: 4%;
+    padding: auto;
 }
 .signatureDiv {
     display: flex;
@@ -370,7 +399,7 @@ p {
 }
 .draft-card {
     width: 100%;
-    height: 0;
+    height: 400px;
     padding-bottom: 139%;
     border: transparent solid 1px;
     border-radius: 12px;
@@ -379,7 +408,7 @@ p {
 }
 .draft-card-selected {
     width: 100%;
-    height: 0;
+    height: 400px;
     padding-bottom: 150%;
     border: 2px solid black;
     border-radius: 12px;
@@ -389,7 +418,7 @@ p {
 }
 .draft-card-loading {
     width: 100%;
-    height: 0;
+    height: 400px;
     padding-bottom: 139%;
     border: transparent solid 1px;
     border-radius: 12px;
@@ -398,7 +427,9 @@ p {
 }  
 .draft-image {
     width: 100%;
+    height: 400px;
     box-sizing: border-box;
+    border-radius: 12px;
 }
 .draft-image-selected {
     width: 100%;
@@ -406,6 +437,7 @@ p {
     border-width: 8px 10px 5px 10px;
     border-style: solid;
     border-color: transparent;
+    border-radius: 12px;
 }
 
 .draft-card-loading > h3 {
@@ -965,5 +997,13 @@ input, select {
         line-height: 0.8em;
         margin-top: -2px;
         vertical-align: middle;
+    }
+    .floatingImageLeft {
+        left: 2%;
+        width: 96%;
+    }
+    .floatingImageRight {
+        right: 2%;
+        width: 96%;
     }
 }

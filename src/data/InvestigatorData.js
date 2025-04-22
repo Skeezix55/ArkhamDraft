@@ -1,9 +1,15 @@
 const investigatorRequirements = {
+    'Agatha Crane': {
+        deluxe: {}
+    },
     'Agnes Baker': {
         deluxe: {},
         advanced1: {}
     },
     'Akachi Onyele': {
+        deluxe: {}
+    },
+    'Alessandra Zorzi': {
         deluxe: {}
     },
     'Amanda Sharpe': {
@@ -50,9 +56,20 @@ const investigatorRequirements = {
         deluxe: {}
     },
     'Father Mateo': {
-        deluxe: {}
+        deluxe: {},
+        advanced1: {}
     },
     'Finn Edwards': {
+        deluxe: {}
+    },
+    'George Barnaby': {
+        deluxe: {}
+    },
+    'Gloria Goldberg': {
+        deluxe: {},
+        replacement1: {}
+    },
+    'Hank Samson': {
         deluxe: {}
     },
     'Harvey Walters': {
@@ -66,9 +83,16 @@ const investigatorRequirements = {
         replacement1: {}
     },
     'Jim Culver': {
-        deluxe: {}
+        deluxe: {},
+        advanced1: {}
     },
     'Joe Diamond': {
+        deluxe: {}
+    },
+    'Kate Winthrop': {
+        deluxe: {}
+    },
+    'K\u014dhaku Narukami': {
         deluxe: {}
     },
     'Kymani Jones': {
@@ -83,6 +107,9 @@ const investigatorRequirements = {
     'Lola Hayes': {
         deluxe: {}
     },
+    'Lucius Galloway': {
+        deluxe: {}
+    },
     'Luke Robinson': {
         deluxe: {}
     },
@@ -92,14 +119,21 @@ const investigatorRequirements = {
     'Marie Lambeau': {
         deluxe: {}
     },
+    'Marion Tavares': {
+        deluxe: {}
+    },
     'Mark Harrigan': {
+        deluxe: {}
+    },
+    'Michael McGlen': {
         deluxe: {}
     },
     'Minh Thi Phan': {
         deluxe: {}
     },
     'Monterey Jack': {
-        deluxe: {}
+        deluxe: {},
+        advanced1: {}
     },
     'Nathaniel Cho': {
         deluxe: {}
@@ -115,7 +149,8 @@ const investigatorRequirements = {
         deluxe: {}
     },
     'Rex Murphy': {
-        deluxe: {}
+        deluxe: {},
+        advanced1: {}
     },
     'Rita Young': {
         deluxe: {}
@@ -142,9 +177,11 @@ const investigatorRequirements = {
     'Stella Clark': {
         deluxe: {}
     },
+/*
     'Subject 5U-21': {
         deluxe: {}
     },
+*/
     'Tommy Muldoon': {
         deluxe: {}
     },
@@ -167,11 +204,15 @@ const investigatorRequirements = {
     'William Yorick': {
         deluxe: {}
     },
+    'Wilson Richards': {
+        deluxe: {}
+    },
     'Winifred Habbamock': {
         deluxe: {}
     },
     'Zoey Samaras': {
-        deluxe: {}
+        deluxe: {},
+        advanced1: {}
     }
 }
 

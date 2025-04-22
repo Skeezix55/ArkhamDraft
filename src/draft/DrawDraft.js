@@ -92,7 +92,7 @@ export function draftCard() {
             level0Adds: state.draft.level0Adds,
             level0Requirements: state.draft.level0Requirements
             })
-    
+//console.log('Filtered count: ' + filteredData.length)
         if (draftIndex >= 0) {
             const draftTarget = calculateDraftTarget({
                 draftType: state.settings.draftType,
@@ -279,7 +279,7 @@ function DrawCard(cardData, phase, mergedList, deckModifiers, draftPool, draftPr
     // modifiers is the global list of modifiers to apply to every card
     // newModifiers is the list to be displayed for this card
     const newCard = addModifiers(randomCard, phase, deckModifiers, mergedList, draftTarget-draftProgress, investigator, parallel)
-    
+        
     return newCard
 }
 
@@ -340,6 +340,14 @@ function DraftCard(dispatch, getState, card, filteredData, draftTarget) {
             dispatch(addToRemovedList({ card: item, count: 1 }))
         })
     }
+    if (card.name === 'Underworld Market') {
+        deckSize = deckSize + 10
+        dispatch(changeSetting('DeckSize', deckSize))
+        dispatch(addLevel0('Underworld Market', 10))
+    }
+    if (card.name === 'Ascetic') {
+        dispatch(addToBuildXPList({ name:'Ascentic', value: 10 }))
+    }
 
     let addCount = 1
 
@@ -392,7 +400,7 @@ function DraftCard(dispatch, getState, card, filteredData, draftTarget) {
     }
 
     updateDraftModifiers(card, state.draft.deckModifiers, dispatch)
-
+    
     if (phase === DraftPhases.VersatilePhase) {
         dispatch(draftVersatile())
     }
@@ -426,7 +434,7 @@ function DraftCard(dispatch, getState, card, filteredData, draftTarget) {
     }
 
     addDeckModifier(card, dispatch, getState, removeCount)
-}
+    }
 
 function weightedCardDraw(cardData) {
     const maxWeight = cardData[cardData.length-1].weightValue

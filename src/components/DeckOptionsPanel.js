@@ -58,9 +58,11 @@ function DeckOptionsPanel(props) {
 
     var exileArray = []
     var greenman = 0
-
+    var peltshipment = 0
+    
     for (let i = 0; i < deckList.length; i++) {
         if (deckList[i].name === 'Green Man Medallion') greenman += deckList[i].count
+        if (deckList[i].name === 'Pelt Shipment') peltshipment += deckList[i].count
         if (deckList[i].exile) exileArray.push(deckList[i])
     }
 
@@ -214,15 +216,31 @@ function DeckOptionsPanel(props) {
         </div>
     </div> : null
 
-    const otherDiv = greenman > 0 ? <div>
-        <h4 className="section-header">Other Cards</h4>
+    const greenmanDiv = greenman > 0 ? 
         <div className="fbsetting">
             <label className="fbdraftsettingleft">Green Man Medallion: </label>
             <span className="fbdraftsettingcenter">
                 <input className="fbdraftsettingnumber" name="OtherUpgradeGMM" type="number" value={otherSettings['GMM']} min="1" onChange={handleChange}></input>
             </span>
             <span className="fbdraftsettingright"> XP discount</span>
-        </div>
+        </div> : null
+
+    var peltdiscount = (otherSettings['Pelt'][0] ? 1 : 0) + (otherSettings['Pelt'][1] ? 1 : 0)
+    const peltDiv = peltshipment > 0 ? 
+        <div className="fbsetting">
+            <label className="fbdraftsettingleft">Pelt Shipment: </label>
+            <span className="fbdraftsettingcenter">
+                <input type="checkbox" className="fbexilecheckbox" checked={otherSettings['Pelt'][0]} name="OtherUpgradePelt1" onChange={handleCheckbox} />
+                {peltshipment > 1 ? <input type="checkbox" className="fbexilecheckbox" checked={otherSettings['Pelt'][1]} name="OtherUpgradePelt2" onChange={handleCheckbox} /> : null}
+                <span> {peltdiscount} XP discount</span>
+            </span>
+            <span className="fbdraftsettingright"></span>
+        </div> : null
+
+    const otherDiv = greenmanDiv || peltDiv ? <div>
+        <h4 className="section-header">Other Cards</h4>
+        {greenmanDiv}
+        {peltDiv}
     </div> : null
 
     const deckMods = <div>

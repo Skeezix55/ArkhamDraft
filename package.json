@@ -40,7 +40,7 @@
     "gh-pages": "^2.2.0"
   },
   "overrides": {
-      "nth-check": "2.1.1",
-      "async": "3.2.4"
+    "nth-check": "2.1.1",
+    "async": "3.2.4"
   }
 }

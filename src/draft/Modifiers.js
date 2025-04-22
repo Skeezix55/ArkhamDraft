@@ -115,6 +115,22 @@ export function addDeckModifier(card, dispatch, getState, count) {
 
         updated = true
     }
+    else if (card.name === 'Pelt Shipment' && phase === DraftPhases.UpgradePhase) {
+        const modifier = (state.settings.otherUpgradeSettings['Pelt'][0] ? -1 : 0) + (state.settings.otherUpgradeSettings['Pelt'][1] ? -1 : 0)
+
+        if (existingModifier) {
+            let newModifier = cloneModifier(existingModifier)
+
+            newModifier.modifier = existingModifier.modifier - modifier
+            
+            newModifierList.push(newModifier)
+        }
+        else {
+            newModifierList.push({ name: 'Pelt Shipment', limit: 1, modifier: modifier })
+        }
+
+        updated = true
+    }
 
     // Research cards
     if (Object.keys(ResearchLogs).indexOf(card.name) >= 0) {
@@ -334,7 +350,7 @@ export function availableUpgrades(card, mergedList, deckModifiers, maxCost, forc
 
         return { text: 'Upgrade Level ' + item.xp, level: item.xp, modifier: modifier }
     }).filter(item => item !== null)
-
+    
     const keepOriginal = canKeepOriginal(card, investigator, parallel)
 
     if (existingCards.length > 0 && keepOriginal) {
@@ -358,7 +374,7 @@ export function availableUpgrades(card, mergedList, deckModifiers, maxCost, forc
             }
         }
     }
-
+    
     const defaultIndex = upgradeOptions.findIndex(item => {
         if (item.level === undefined && defaultLevel < 0) return true
         if (item.level === defaultLevel) return true
@@ -367,7 +383,7 @@ export function availableUpgrades(card, mergedList, deckModifiers, maxCost, forc
     })
 
     const defaultIsUpgrade = (defaultLevel >= 0)
-
+    
     return { modifier: { name: 'UpgradeOptions', options: upgradeOptions }, defaultIndex: defaultIndex, isUpgrade: defaultIsUpgrade }
 }
 

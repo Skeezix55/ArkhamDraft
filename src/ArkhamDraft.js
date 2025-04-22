@@ -56,13 +56,12 @@ function ArkhamDraft() {
     if (overlayImage) {
         const overlayPosition = (overlayX < windowSize['width']/2) ? 'Right' : 'Left'
     
-        overlay = <div className={"floatingImage"+overlayPosition}><img src={overlayImage} alt="" /></div>
+        overlay = <div className={"floatingImage"+overlayPosition}><img className="overlayImage" src={overlayImage} alt="" /></div>
     }
 
     const cardData = useSelector(state => state.data.cardData)
     const tabooData = useSelector(state => state.data.tabooData)
     const fetchError = useSelector(state => state.data.fetchError)
-
     const draftTab = useSelector(state => state.settings.draftTab)
     const cardList = useSelector(state => state.draft.cardList)
     const removedList = useSelector(state => state.draft.removedList)
