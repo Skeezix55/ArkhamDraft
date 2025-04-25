@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/ArkhamDraft/static/css/main.258d53b8.css",
-    "main.js": "/ArkhamDraft/static/js/main.b6667a65.js",
+    "main.js": "/ArkhamDraft/static/js/main.e52bf9f4.js",
     "index.html": "/ArkhamDraft/index.html",
     "main.258d53b8.css.map": "/ArkhamDraft/static/css/main.258d53b8.css.map",
-    "main.b6667a65.js.map": "/ArkhamDraft/static/js/main.b6667a65.js.map"
+    "main.e52bf9f4.js.map": "/ArkhamDraft/static/js/main.e52bf9f4.js.map"
   },
   "entrypoints": [
     "static/css/main.258d53b8.css",
-    "static/js/main.b6667a65.js"
+    "static/js/main.e52bf9f4.js"
   ]
 }
